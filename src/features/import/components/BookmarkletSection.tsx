@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { useClipboard } from "../../../hooks/useClipboard";
 
-const bookmarkletCode = `javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
+const bookmarkletCode = `javascript:(function(){const t='https://monadnadnad.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
 export const BookmarkletSection: React.FC = () => {
   const [showBookmarklet, setShowBookmarklet] = useState(false);

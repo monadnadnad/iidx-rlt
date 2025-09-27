@@ -14,7 +14,7 @@ export const GitHubLink: React.FC<GitHubLinkProps> = ({ variant = "icon" }) => {
           <GitHubIcon fontSize="medium" />
         </ListItemIcon>
         <Link
-          href="https://github.com/oyasume/iidx-rlt"
+          href="https://github.com/monadnadnad/iidx-rlt"
           target="_blank"
           rel="noopener noreferrer"
           variant="body2"
@@ -30,7 +30,7 @@ export const GitHubLink: React.FC<GitHubLinkProps> = ({ variant = "icon" }) => {
   return (
     <IconButton
       component="a"
-      href="https://github.com/oyasume/iidx-rlt"
+      href="https://github.com/monadnadnad/iidx-rlt"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="GitHub"

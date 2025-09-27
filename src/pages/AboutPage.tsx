@@ -187,7 +187,7 @@ export const AboutPage = () => {
         <Typography variant="caption" color="text.secondary" component="p">
           本アプリケーションはオープンソースソフトウェアを利用しています。ライセンス情報は
           <Link
-            href="https://github.com/oyasume/iidx-rlt/blob/main/THIRD_PARTY_NOTICES.txt"
+            href="https://github.com/monadnadnad/iidx-rlt/blob/main/THIRD_PARTY_NOTICES.txt"
             target="_blank"
             rel="noopener noreferrer"
           >
