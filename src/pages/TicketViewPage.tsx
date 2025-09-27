@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
@@ -126,15 +126,20 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           <AtariRulePanel rules={selectedAtariRules} playSide={playSide} />
           <Divider />
           {tickets.length === 0 && !isSample ? (
-            <Box>
-              <Typography variant="body1">チケットがありません</Typography>
-              <Typography color="text.secondary">
-                先にチケットをインポートするか、<Link to="/sample">サンプル</Link>でお試しください。
-              </Typography>
-              <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
-                インポートページへ
-              </Button>
-            </Box>
+            <Stack spacing={2}>
+              <Alert severity="warning">
+                URL変更に伴い、以前保存したチケットは引き継がれていません。お手数ですが再度チケットの取り込みをお願いします。
+              </Alert>
+              <Box>
+                <Typography>チケットがありません。</Typography>
+                <Typography>
+                  チケットをインポートするか、<Link to="/sample">サンプル</Link>で当たり譜面候補などの機能を試せます。
+                </Typography>
+                <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
+                  インポートページへ
+                </Button>
+              </Box>
+            </Stack>
           ) : (
             <TicketResultsSection
               totalCount={totalCount}

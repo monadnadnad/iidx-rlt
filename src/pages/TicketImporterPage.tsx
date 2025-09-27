@@ -73,6 +73,9 @@ export const TicketImporterPage: React.FC = () => {
     <Page title="インポート">
       <Typography variant="h6" component="h2" gutterBottom>
         ブックマークレットで取り込む
+        <Alert severity="warning" sx={{ my: 1 }}>
+          URL変更に伴い、以前のブックマークレットは動作しません。お手数ですが下記のものを再登録してください。
+        </Alert>
       </Typography>
       <Stepper orientation="vertical">
         <Step active>
@@ -83,9 +86,6 @@ export const TicketImporterPage: React.FC = () => {
           </StepLabel>
           <StepContent>
             <Typography>IIDX公式サイトで以下のブックマークレットを実行し、結果をコピーしてください</Typography>
-            <Alert severity="warning" sx={{ my: 2 }}>
-              サイト移転に伴い、以前のブックマークレットは動作しませんので、お手数ですが下記の新しいものを再登録してください。
-            </Alert>
             <Box sx={{ mt: 1, border: "1px solid", borderColor: "divider" }}>
               <Box sx={{ bgcolor: "action.hover", px: 2, py: 0.5 }}>
                 <Button
@@ -98,7 +98,7 @@ export const TicketImporterPage: React.FC = () => {
               </Box>
               <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "action.hover" }}>{bookmarkletCode}</Box>
             </Box>
-            <Alert severity="info" sx={{ mt: 2 }}>
+            <Alert severity="info" sx={{ mt: 1 }}>
               <AlertTitle>補足</AlertTitle>
               <Typography color="text.secondary" variant="body2" component="div">
                 コピーしたコードをURLにしたブックマークを作成してください。
