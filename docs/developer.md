@@ -13,7 +13,7 @@
 ### リポジトリのクローン
 
 ```bash
-git clone https://github.com/oyasume/iidx-rlt.git
+git clone https://github.com/monadnadnad/iidx-rlt.git
 cd iidx-rlt
 ```
 

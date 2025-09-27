@@ -1,22 +1,42 @@
-import { Box, Divider, Step, StepContent, StepLabel, Stepper, Typography } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Divider,
+  Link,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 
 import { Page } from "../components/layout/Page";
 import { useSnackbar } from "../contexts/SnackbarContext";
-import { BookmarkletSection } from "../features/import/components/BookmarkletSection";
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
 import { ManualImportForm } from "../features/import/components/ManualImportForm";
 import { useImporter } from "../features/import/hooks/useImporter";
+import { useClipboard } from "../hooks/useClipboard";
 import { useTicketsStore } from "../store/ticketsStore";
 import { Ticket } from "../types";
+
+const bookmarkletCode = `javascript:(function(){const t='https://monadnadnad.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
 export const TicketImporterPage: React.FC = () => {
   const setTickets = useTicketsStore((s) => s.setTickets);
   const addTicket = useTicketsStore((s) => s.addTicket);
+
+  const { showSnackbar } = useSnackbar();
+
+  const { copyToClipboard } = useClipboard();
+
   const { state, importTickets } = useImporter(setTickets);
   const [jsonText, setJsonText] = useState("");
-  const { showSnackbar } = useSnackbar();
+
   const [isManualLoading, setIsManualLoading] = useState(false);
 
   const handleManualImport = (ticket: Ticket): void => {
@@ -51,43 +71,72 @@ export const TicketImporterPage: React.FC = () => {
 
   return (
     <Page title="インポート">
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6" component="h2" gutterBottom>
-          ブックマークレットで取り込む
-        </Typography>
-        <Stepper orientation="vertical">
-          <Step active>
-            <StepLabel>
-              <Typography variant="h6" component="h3">
-                公式サイトからチケットをコピー
+      <Typography variant="h6" component="h2" gutterBottom>
+        ブックマークレットで取り込む
+      </Typography>
+      <Stepper orientation="vertical">
+        <Step active>
+          <StepLabel>
+            <Typography variant="h6" component="h3">
+              ブックマークレットの登録と実行
+            </Typography>
+          </StepLabel>
+          <StepContent>
+            <Typography>IIDX公式サイトで以下のブックマークレットを実行し、結果をコピーしてください</Typography>
+            <Alert severity="warning" sx={{ my: 2 }}>
+              サイト移転に伴い、以前のブックマークレットは動作しませんので、お手数ですが下記の新しいものを再登録してください。
+            </Alert>
+            <Box sx={{ mt: 1, border: "1px solid", borderColor: "divider" }}>
+              <Box sx={{ bgcolor: "action.hover", px: 2, py: 0.5 }}>
+                <Button
+                  size="small"
+                  startIcon={<ContentCopyIcon />}
+                  onClick={() => void copyToClipboard(bookmarkletCode)}
+                >
+                  コピー
+                </Button>
+              </Box>
+              <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "action.hover" }}>{bookmarkletCode}</Box>
+            </Box>
+            <Alert severity="info" sx={{ mt: 2 }}>
+              <AlertTitle>補足</AlertTitle>
+              <Typography color="text.secondary" variant="body2" component="div">
+                コピーしたコードをURLにしたブックマークを作成してください。
+                <br />
+                その後、IIDX公式サイトでブックマークを開くことで実行されます。
+                <br />
+                ブックマークレットの説明自体は外部サイトを確認してください。
+                <br />
+                Androidでブックマークレットがうまく動作しない場合は
+                <Link href="https://gcgx.games/web/bookmarklet2.html" target="_blank" rel="noopener noreferrer">
+                  こちらのサイト
+                </Link>
+                を参考にしてみてください。
               </Typography>
-            </StepLabel>
-            <StepContent>
-              <BookmarkletSection />
-            </StepContent>
-          </Step>
-          <Step active>
-            <StepLabel>
-              <Typography variant="h6" component="h3">
-                データを貼り付けてインポート
-              </Typography>
-            </StepLabel>
-            <StepContent>
-              <JsonImportForm
-                jsonText={jsonText}
-                onTextChange={setJsonText}
-                onImportClick={() => void importTickets(jsonText)}
-                isLoading={state.status === "loading"}
-              />
-            </StepContent>
-          </Step>
-        </Stepper>
-        <Divider sx={{ my: 3 }} />
-        <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-          手動でチケットを追加する
-        </Typography>
-        <ManualImportForm isLoading={isManualLoading} onImport={handleManualImport} />
-      </Box>
+            </Alert>
+          </StepContent>
+        </Step>
+        <Step active>
+          <StepLabel>
+            <Typography variant="h6" component="h3">
+              結果を貼り付けてインポートする
+            </Typography>
+          </StepLabel>
+          <StepContent>
+            <JsonImportForm
+              jsonText={jsonText}
+              onTextChange={setJsonText}
+              onImportClick={() => void importTickets(jsonText)}
+              isLoading={state.status === "loading"}
+            />
+          </StepContent>
+        </Step>
+      </Stepper>
+      <Divider sx={{ my: 3 }} />
+      <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+        手動でチケットを追加する
+      </Typography>
+      <ManualImportForm isLoading={isManualLoading} onImport={handleManualImport} />
     </Page>
   );
 };

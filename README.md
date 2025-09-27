@@ -1,6 +1,6 @@
 # RLT Manager
 
-公開先: https://oyasume.github.io/iidx-rlt/
+公開先: https://monadnadnad.github.io/iidx-rlt/
 
 KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレーンチケット」（譜面の配置を固定できるアイテム）の活用を支援するツールです。
 

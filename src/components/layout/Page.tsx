@@ -9,7 +9,7 @@ interface PageProps {
 }
 
 const SITE_NAME = "RLT Manager";
-const SITE_URL = "https://oyasume.github.io/iidx-rlt";
+const SITE_URL = "https://monadnadnad.github.io/iidx-rlt";
 
 export const Page: React.FC<PageProps> = ({ title, description, children }) => {
   const fullTitle = title ? `${title} - ${SITE_NAME}` : SITE_NAME;

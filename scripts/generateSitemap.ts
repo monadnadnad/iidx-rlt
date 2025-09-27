@@ -2,7 +2,7 @@ import { writeFile } from "fs/promises";
 import { resolve } from "path";
 import { SitemapStream, streamToPromise, SitemapItemLoose } from "sitemap";
 
-const hostname = "https://oyasume.github.io";
+const hostname = "https://monadnadnad.github.io";
 
 const links: SitemapItemLoose[] = [{ url: "/iidx-rlt/" }, { url: "/iidx-rlt/tickets/" }];
 

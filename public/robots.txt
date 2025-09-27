@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://oyasume.github.io/iidx-rlt/sitemap.xml
+Sitemap: https://monadnadnad.github.io/iidx-rlt/sitemap.xml
