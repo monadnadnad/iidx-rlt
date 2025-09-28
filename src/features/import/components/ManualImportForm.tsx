@@ -34,13 +34,12 @@ export const ManualImportForm = ({ onImport, isLoading }: ManualImportFormProps)
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: ManualImportFormValues) => {
-    const ticket: Ticket =
-      data.expiration && data.expiration.trim() !== ""
-        ? { laneText: data.laneText, expiration: data.expiration }
-        : { laneText: data.laneText };
+  const onSubmit = (values: ManualImportFormValues) => {
+    const expiration = values.expiration?.trim() ?? "";
+    const hasExpiration = expiration !== "";
+    const ticket: Ticket = hasExpiration ? { laneText: values.laneText, expiration } : { laneText: values.laneText };
     onImport(ticket);
-    reset({ laneText: "", expiration: data.expiration ?? "" });
+    reset({ laneText: "", expiration: values.expiration ?? "" });
   };
 
   return (
