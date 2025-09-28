@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import InfoIcon from "@mui/icons-material/Info";
+import HistoryIcon from "@mui/icons-material/History";
 import React from "react";
 
 import { AppHeader } from "./AppHeader";
@@ -15,6 +16,7 @@ import { useSnackbar } from "../../contexts/SnackbarContext";
 const navItems: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
   { path: "/tickets", label: "チケット一覧", icon: <ListAltIcon /> },
+  { path: "/updates", label: "更新履歴", icon: <HistoryIcon /> },
   { path: "/about", label: "About", icon: <InfoIcon /> },
 ];
 

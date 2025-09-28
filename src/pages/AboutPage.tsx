@@ -25,10 +25,9 @@ export const AboutPage = () => {
     <Page title="About">
       <Box sx={{ px: 2, py: 4 }}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" component="h1" gutterBottom sx={{ flexGrow: 1 }}>
             このツールについて
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />
           <GitHubLink />
           <XLink />
         </Box>
