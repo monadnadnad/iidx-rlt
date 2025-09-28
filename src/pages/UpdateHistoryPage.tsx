@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 
-import { UpdateHistoryItem } from "../components/history/UpdateHistoryItem";
+import { UpdateHistoryCard } from "../components/history/UpdateHistoryCard";
 import { Page } from "../components/layout/Page";
 import { updateHistory } from "../data/updateHistory";
 
@@ -16,7 +16,7 @@ export const UpdateHistoryPage: React.FC = () => {
         </Typography>
         <Stack spacing={2} component="section">
           {updateHistory.map((entry) => (
-            <UpdateHistoryItem key={entry.id} entry={entry} />
+            <UpdateHistoryCard key={entry.id} entry={entry} />
           ))}
         </Stack>
       </Stack>

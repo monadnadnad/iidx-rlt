@@ -7,8 +7,8 @@ import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { PlaySideToggle } from "../components/ui/PlaySideToggle";
-import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
-import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
+import { AtariInfoSheet } from "../features/ticket/components/AtariInfoSheet";
+import { AtariRuleCard } from "../features/ticket/components/AtariRuleCard";
 import { TextageForm } from "../features/ticket/components/TextageForm";
 import { TicketList } from "../features/ticket/components/TicketList";
 import { TicketResultsSection } from "../features/ticket/components/TicketResultsSection";
@@ -123,7 +123,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             searchMode={query.filterMode}
             onModeChange={handlers.handleFilterModeChange}
           />
-          <AtariRulePanel rules={selectedAtariRules} playSide={playSide} />
+          <AtariRuleCard rules={selectedAtariRules} playSide={playSide} />
           <Divider />
           {tickets.length === 0 && !isSample ? (
             <Stack spacing={2}>
@@ -159,7 +159,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           )}
         </Stack>
         {detailTicket && detailTicketRules.length > 0 && (
-          <AtariInfoPanel ticket={detailTicket} rules={detailTicketRules} onClose={() => setDetailTicket(null)} />
+          <AtariInfoSheet ticket={detailTicket} rules={detailTicketRules} onClose={() => setDetailTicket(null)} />
         )}
       </FormProvider>
     </Page>

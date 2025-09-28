@@ -1,9 +1,8 @@
 import React from "react";
-import { Paper, List, ListItem, ListItemText, Typography } from "@mui/material";
-import { Panel } from "../../../components/ui/Panel";
+import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { AtariRule, PlaySide, SearchPattern } from "../../../types";
 
-interface AtariRulePanelProps {
+interface AtariRuleCardProps {
   rules: AtariRule[];
   playSide: PlaySide;
 }
@@ -14,18 +13,22 @@ const formatPattern = (pattern: SearchPattern, playSide: PlaySide): string => {
   return playSide === "1P" ? `${sPart} | ${nsPart}` : `${nsPart} | ${sPart}`;
 };
 
-export const AtariRulePanel: React.FC<AtariRulePanelProps> = ({ rules, playSide }) => {
+export const AtariRuleCard: React.FC<AtariRuleCardProps> = ({ rules, playSide }) => {
   if (!rules || rules.length === 0) return null;
 
   return (
-    <Paper variant="outlined" sx={{ p: 0 }}>
-      <Panel
+    <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <CardHeader
+        disableTypography
         title={
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="subtitle1" component="h2">
             当たり配置になるチケットのパターン
           </Typography>
         }
-      >
+        sx={{ pb: 1.5, px: 2, pt: 2 }}
+      />
+      <Divider sx={{ mx: 2 }} />
+      <CardContent sx={{ pt: 2, pb: 1 }}>
         <List dense>
           {rules.flatMap((rule) =>
             rule.patterns.map((pattern, index) => (
@@ -35,7 +38,7 @@ export const AtariRulePanel: React.FC<AtariRulePanelProps> = ({ rules, playSide 
             ))
           )}
         </List>
-      </Panel>
-    </Paper>
+      </CardContent>
+    </Card>
   );
 };

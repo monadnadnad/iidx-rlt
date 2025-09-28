@@ -3,18 +3,18 @@ import LaunchIcon from "@mui/icons-material/Launch";
 import { Box, IconButton, List, ListItem, ListItemText, Typography } from "@mui/material";
 import ReactGA from "react-ga4";
 
-import { FloatingPanel } from "../../../components/ui/FloatingPanel";
+import { FloatingSheet } from "../../../components/ui/FloatingSheet";
 import { useSettingsStore } from "../../../store/settingsStore";
 import { AtariRule, Ticket } from "../../../types";
 import { makeTextageUrl } from "../../../utils/makeTextageUrl";
 
-interface AtariInfoPanelProps {
+interface AtariInfoSheetProps {
   ticket: Ticket;
   rules: AtariRule[];
   onClose: () => void;
 }
 
-export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) => {
+export const AtariInfoSheet = ({ ticket, rules, onClose }: AtariInfoSheetProps) => {
   const playSide = useSettingsStore((s) => s.playSide);
 
   const handleOpenTextage = (rule: AtariRule) => {
@@ -27,7 +27,7 @@ export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) 
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const panelTitle = (
+  const sheetTitle = (
     <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         <Box component="span">{ticket.laneText}</Box>
@@ -42,7 +42,7 @@ export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) 
   );
 
   return (
-    <FloatingPanel open={!!ticket} onClose={onClose} title={panelTitle}>
+    <FloatingSheet open={!!ticket} onClose={onClose} title={sheetTitle}>
       <List>
         {rules.map((rule) => (
           <ListItem key={rule.id} disablePadding>
@@ -53,6 +53,6 @@ export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) 
           </ListItem>
         ))}
       </List>
-    </FloatingPanel>
+    </FloatingSheet>
   );
 };

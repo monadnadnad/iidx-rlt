@@ -1,14 +1,13 @@
-import { Drawer, Paper, useTheme, useMediaQuery } from "@mui/material";
-import { Panel } from "./Panel";
+import { Box, Divider, Drawer, Paper, useTheme, useMediaQuery } from "@mui/material";
 
-interface FloatingPanelProps {
+interface FloatingSheetProps {
   open: boolean;
   onClose: () => void;
   title?: React.ReactNode;
   children: React.ReactNode;
 }
 
-export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, title, children }) => {
+export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, title, children }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const hasCoarsePointer = useMediaQuery("(pointer: coarse)");
@@ -18,7 +17,17 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
     return null;
   }
 
-  const panelContent = <Panel title={title}>{children}</Panel>;
+  const sheetContent = (
+    <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
+      {title && (
+        <>
+          {title}
+          <Divider sx={{ mb: 1 }} />
+        </>
+      )}
+      {children}
+    </Box>
+  );
 
   if (useBottomSheet) {
     return (
@@ -38,7 +47,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
           },
         }}
       >
-        {panelContent}
+        {sheetContent}
       </Drawer>
     );
   }
@@ -56,7 +65,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
         boxShadow: theme.shadows[3],
       })}
     >
-      {panelContent}
+      {sheetContent}
     </Paper>
   );
 };
