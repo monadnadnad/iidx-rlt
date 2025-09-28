@@ -11,9 +11,6 @@ export const UpdateHistoryPage: React.FC = () => {
         <Typography variant="h5" component="h1" gutterBottom>
           更新履歴
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          主な更新内容をまとめています。
-        </Typography>
         <Stack spacing={2} component="section">
           {updateHistory.map((entry) => (
             <UpdateHistoryCard key={entry.id} entry={entry} />

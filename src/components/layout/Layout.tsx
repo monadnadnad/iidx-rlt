@@ -1,17 +1,17 @@
-import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
-import { Outlet, useLocation } from "react-router-dom";
-import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import InfoIcon from "@mui/icons-material/Info";
 import HistoryIcon from "@mui/icons-material/History";
-import React from "react";
+import InfoIcon from "@mui/icons-material/Info";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
+import React, { useEffect } from "react";
+import { Outlet, useLocation } from "react-router";
 
-import { AppHeader } from "./AppHeader";
-import { AppDrawer } from "./AppDrawer";
-import { AppBottomNavigation } from "./AppBottomNavigation";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 import { AppNavItem } from "../../types";
 import { AppSnackbar } from "../ui/AppSnackbar";
-import { useSnackbar } from "../../contexts/SnackbarContext";
+import { AppBottomNavigation } from "./AppBottomNavigation";
+import { AppDrawer } from "./AppDrawer";
+import { AppHeader } from "./AppHeader";
 
 const navItems: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
@@ -27,6 +27,10 @@ export const Layout: React.FC = () => {
   const currentPath = location.pathname === "/" ? "/tickets" : location.pathname;
   const tabIndex = navItems.findIndex((item) => item.path === currentPath);
   const { open, message, severity, closeSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
