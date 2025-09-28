@@ -13,7 +13,7 @@ export const UpdateHistoryCard: React.FC<UpdateHistoryCardProps> = ({ entry }) =
   const releaseLabel = releaseDate.isValid() ? releaseDate.format("YYYY/MM/DD") : entry.releasedAt;
 
   return (
-    <Card component="article" variant="outlined" sx={{ borderRadius: 2 }}>
+    <Card component="article" variant="outlined">
       <CardHeader
         title={entry.title}
         subheader={

@@ -42,6 +42,16 @@ export const getTheme = (mode: PaletteMode) =>
           },
         },
       },
+      MuiCard: {
+        variants: [
+          {
+            props: { variant: "outlined" },
+            style: ({ theme }) => ({
+              borderRadius: theme.shape.borderRadius,
+            }),
+          },
+        ],
+      },
       MuiButton: {
         styleOverrides: {
           root: {

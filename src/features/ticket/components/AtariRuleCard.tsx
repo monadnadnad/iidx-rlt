@@ -17,7 +17,7 @@ export const AtariRuleCard: React.FC<AtariRuleCardProps> = ({ rules, playSide })
   if (!rules || rules.length === 0) return null;
 
   return (
-    <Card variant="outlined" sx={{ borderRadius: 2 }}>
+    <Card variant="outlined">
       <CardHeader
         disableTypography
         title={
