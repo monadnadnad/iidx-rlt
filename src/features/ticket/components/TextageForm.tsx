@@ -63,15 +63,7 @@ export const TextageForm: React.FC<TextageFormProps> = ({
         value={selectedSong}
         onChange={(_event, newValue) => onSongSelect?.(newValue)}
         slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="楽曲を選択"
-            variant="outlined"
-            slotProps={{ inputLabel: { shrink: true } }}
-            placeholder={placeholder}
-          />
-        )}
+        renderInput={(params) => <TextField {...params} label="楽曲を選択" placeholder={placeholder} />}
         sx={{ maxWidth: "500px" }}
       />
     </Stack>

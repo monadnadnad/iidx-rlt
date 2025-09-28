@@ -18,29 +18,23 @@ declare module "@mui/material/styles" {
   }
 }
 
-const lightPalette = {
-  highlight: {
-    gold: "#FFD700",
-    silver: "#C0C0C0",
-    bronze: "#CD7F32",
-  },
-};
-
-const darkPalette = {
-  highlight: {
-    gold: "#FFD700",
-    silver: "#C0C0C0",
-    bronze: "#CD7F32",
-  },
-};
-
 export const getTheme = (mode: PaletteMode) =>
   createTheme({
     palette: {
       mode,
-      ...(mode === "light" ? lightPalette : darkPalette),
+      highlight: {
+        gold: "#FFD700",
+        silver: "#C0C0C0",
+        bronze: "#CD7F32",
+      },
     },
     components: {
+      MuiTextField: {
+        defaultProps: {
+          variant: "outlined",
+          slotProps: { inputLabel: { shrink: true } },
+        },
+      },
       MuiToggleButton: {
         styleOverrides: {
           root: {

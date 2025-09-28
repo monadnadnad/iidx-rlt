@@ -18,7 +18,6 @@ export const JsonImportForm: React.FC<JsonImportFormProps> = ({ jsonText, onText
         value={jsonText}
         onChange={(e) => onTextChange(e.target.value)}
         placeholder="ここにコピーしたデータを貼り付けます"
-        variant="outlined"
         disabled={isLoading}
       />
       <Button
