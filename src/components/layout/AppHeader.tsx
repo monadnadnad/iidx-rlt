@@ -35,7 +35,7 @@ export const AppHeader: React.FC = () => {
           color="inherit"
           onClick={handleSurveyClick}
         >
-          フィードバック（バグ・要望）
+          フィードバック
         </Button>
       </Toolbar>
     </AppBar>
