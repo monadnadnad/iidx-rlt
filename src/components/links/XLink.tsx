@@ -14,7 +14,7 @@ export const XLink: React.FC<XLinkProps> = ({ variant = "icon" }) => {
           <XIcon fontSize="medium" />
         </ListItemIcon>
         <MuiLink
-          href="https://twitter.com/kurupi_sfw"
+          href="https://twitter.com/kurupi_sfw/status/1946146384685760611"
           target="_blank"
           rel="noopener noreferrer"
           variant="body2"
