@@ -101,13 +101,9 @@ export const TicketImporterPage: React.FC = () => {
             <Alert severity="info" sx={{ mt: 1 }}>
               <AlertTitle>補足</AlertTitle>
               <Typography color="text.secondary" variant="body2" component="div">
-                コピーしたコードをURLにしたブックマークを作成してください。
+                IIDX公式サイトで、上記をURLにしたブックマークを作成してください。
                 <br />
-                その後、IIDX公式サイトでブックマークを開くことで実行されます。
-                <br />
-                ブックマークレットの説明自体は外部サイトを確認してください。
-                <br />
-                Androidでブックマークレットがうまく動作しない場合は
+                Androidでうまく動作しない場合の対処法や、ブックマークレットの説明自体は
                 <Link href="https://gcgx.games/web/bookmarklet2.html" target="_blank" rel="noopener noreferrer">
                   こちらのサイト
                 </Link>
