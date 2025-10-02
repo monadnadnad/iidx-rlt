@@ -9,6 +9,7 @@ import { Outlet, useLocation } from "react-router";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 import { AppNavItem } from "../../types";
 import { AppSnackbar } from "../ui/AppSnackbar";
+import { ReloadPrompt } from "../ui/ReloadPrompt";
 import { AppBottomNavigation } from "./AppBottomNavigation";
 import { AppDrawer } from "./AppDrawer";
 import { AppHeader } from "./AppHeader";
@@ -43,6 +44,7 @@ export const Layout: React.FC = () => {
       </Box>
       {isMobile && <AppBottomNavigation navItems={navItems} tabIndex={tabIndex} />}
       <AppSnackbar open={open} onClose={closeSnackbar} message={message} severity={severity} />
+      {!import.meta.env.SSR && <ReloadPrompt />}
     </Box>
   );
 };

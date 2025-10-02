@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import checker from "vite-plugin-checker";
 import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig(() => {
@@ -15,7 +15,7 @@ export default defineConfig(() => {
       }),
       visualizer(),
       VitePWA({
-        registerType: "autoUpdate",
+        registerType: "prompt",
         manifest: {
           name: "RLT Manager",
           short_name: "RLT Manager",
@@ -24,7 +24,6 @@ export default defineConfig(() => {
           scope: "/iidx-rlt/",
           display: "standalone",
           background_color: "#ffffff",
-          theme_color: "#000000",
           icons: [
             {
               src: "icons/icon192.png",
