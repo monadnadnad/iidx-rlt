@@ -44,7 +44,7 @@
   `;
 
   const lastPage = getLastPageNumber(document);
-  const baseUrl = "https://p.eagate.573.jp/game/2dx/32/djdata/random_lane/index.html";
+  const baseUrl = "https://p.eagate.573.jp/game/2dx/33/djdata/random_lane/index.html";
   const MAX_PAGES = 20; // 無限ループ防止用の最大ページ数
 
   document.body.innerHTML = loadingHTML;
