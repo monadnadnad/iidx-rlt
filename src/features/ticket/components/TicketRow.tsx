@@ -1,55 +1,85 @@
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import LaunchIcon from "@mui/icons-material/Launch";
-import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, ListItem, ListItemButton, Link, Typography } from "@mui/material";
 
-import { HighlightColor, SongInfo, Ticket } from "../../../types";
+import { HighlightColor, Ticket } from "../../../types";
 
-export const TicketRow: React.FC<{
+type TicketRowProps = {
   ticket: Ticket & { highlightColor?: HighlightColor };
-  selectedSong: SongInfo | null;
-  onOpenTextage: (_laneText: string) => void;
-  onRowClick: (ticket: Ticket) => void;
-}> = ({ ticket, selectedSong, onOpenTextage, onRowClick }) => {
+  selected?: boolean;
+  onSelect?: (ticket: Ticket) => void;
+  textageUrl?: string;
+  onTextageFollow?: (laneText: string) => void;
+};
+
+export const TicketRow: React.FC<TicketRowProps> = ({
+  ticket,
+  selected = false,
+  onSelect,
+  textageUrl,
+  onTextageFollow,
+}) => {
+  const expiration = ticket.expiration ?? "";
+
   return (
-    <TableRow
-      key={ticket.laneText}
-      onClick={() => onRowClick(ticket)}
-      sx={{ "&:hover": { cursor: "pointer", backgroundColor: "action.hover" } }}
-    >
-      <TableCell component="th" scope="row">
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {ticket.highlightColor && (
-              <FiberManualRecordIcon sx={{ color: `highlight.${ticket.highlightColor}`, fontSize: "1rem" }} />
-            )}
-          </Box>
-          <Typography variant="body1" component="span" sx={{ mr: 1 }}>
-            {ticket.laneText}
-          </Typography>
-          <Tooltip title="Textageで確認" placement="right" disableHoverListener={!selectedSong}>
-            <span>
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenTextage(ticket.laneText);
-                }}
-                disabled={!selectedSong}
-                sx={{ visibility: selectedSong ? "visible" : "hidden" }}
-                aria-label="Textageで確認"
-                color={selectedSong ? "primary" : "inherit"}
-              >
-                <LaunchIcon fontSize="small" />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Box>
-      </TableCell>
-      <TableCell>
-        <Typography variant="body2" color="text.secondary">
-          {ticket.expiration ?? ""}
+    <ListItem disablePadding>
+      <ListItemButton
+        selected={selected}
+        onClick={() => onSelect?.(ticket)}
+        aria-selected={selected}
+        alignItems="center"
+        sx={{ gap: 2 }}
+      >
+        <HighlightAccent color={ticket.highlightColor} />
+        <Typography variant="body1" noWrap>
+          {ticket.laneText}
         </Typography>
-      </TableCell>
-    </TableRow>
+        {expiration && (
+          <Typography
+            component="span"
+            sx={{
+              color: "text.secondary",
+              fontSize: "0.75rem",
+            }}
+            noWrap
+          >
+            {expiration} まで
+          </Typography>
+        )}
+        <Box sx={{ flexGrow: 1 }} />
+        {textageUrl && (
+          <Link
+            href={textageUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            variant="body2"
+            onClick={(event) => {
+              event.stopPropagation();
+              onTextageFollow?.(ticket.laneText);
+            }}
+            sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
+          >
+            <LaunchIcon fontSize="inherit" />
+            <Typography component="span" variant="inherit">
+              Textageで確認
+            </Typography>
+          </Link>
+        )}
+      </ListItemButton>
+    </ListItem>
   );
 };
+
+const HighlightAccent: React.FC<{ color?: HighlightColor }> = ({ color }) => (
+  <Box
+    component="span"
+    sx={{
+      width: 6,
+      height: 28,
+      borderRadius: 3,
+      backgroundColor: color ? `highlight.${color}` : "transparent",
+      flexShrink: 0,
+    }}
+    aria-hidden="true"
+  />
+);
