@@ -5,8 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import { AppNavItem } from "../../types";
 
 const mockTabs: AppNavItem[] = [
-  { path: "/import", label: "インポート", icon: <div data-testid="import-icon" /> },
-  { path: "/tickets", label: "チケット一覧", icon: <div data-testid="tickets-icon" /> },
+  { path: "/import", label: "インポート", icon: <div /> },
+  { path: "/tickets", label: "チケット一覧", icon: <div /> },
 ];
 
 const TestComponent = (props: { tabIndex: number }) => (
