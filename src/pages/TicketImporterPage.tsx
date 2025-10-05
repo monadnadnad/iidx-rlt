@@ -12,7 +12,7 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactGA from "react-ga4";
 
 import { Page } from "../components/layout/Page";
@@ -34,7 +34,18 @@ export const TicketImporterPage: React.FC = () => {
 
   const { copyToClipboard } = useClipboard();
 
-  const { state, importTickets } = useImporter(setTickets);
+  const { state, importTickets } = useImporter(setTickets, {
+    onSuccess: (importedCount) => {
+      setJsonText("");
+      showSnackbar(`${importedCount}件のチケットをインポートしました。`, "success");
+      ReactGA.event("import_tickets_success", {
+        imported_count: importedCount,
+      });
+    },
+    onError: (errorMessage) => {
+      showSnackbar(errorMessage, "error");
+    },
+  });
   const [jsonText, setJsonText] = useState("");
 
   const [isManualLoading, setIsManualLoading] = useState(false);
@@ -54,20 +65,6 @@ export const TicketImporterPage: React.FC = () => {
       setIsManualLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (state.status === "success") {
-      setJsonText("");
-      showSnackbar(`${state.importedCount}件のチケットをインポートしました。`, "success");
-      ReactGA.event({
-        category: "User",
-        action: "import_tickets_success",
-        value: state.importedCount,
-      });
-    } else if (state.status === "error" && state.error) {
-      showSnackbar(state.error, "error");
-    }
-  }, [state.status, state.error, state.importedCount, showSnackbar]);
 
   return (
     <Page title="インポート">
