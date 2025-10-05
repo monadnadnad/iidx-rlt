@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
@@ -127,9 +127,6 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           <Divider />
           {tickets.length === 0 && !isSample ? (
             <Stack spacing={2}>
-              <Alert severity="warning">
-                URL変更に伴い、以前保存したチケットは引き継がれていません。お手数ですが再度チケットの取り込みをお願いします。
-              </Alert>
               <Box>
                 <Typography>チケットがありません。</Typography>
                 <Typography>

@@ -24,6 +24,7 @@ export default defineConfig(() => {
           scope: "/iidx-rlt/",
           display: "standalone",
           background_color: "#ffffff",
+          theme_color: "#1976d2",
           icons: [
             {
               src: "icons/icon192.png",

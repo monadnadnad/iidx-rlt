@@ -71,7 +71,7 @@ export const TicketImporterPage: React.FC = () => {
 
   return (
     <Page title="インポート">
-      <Typography variant="h6" component="h2" gutterBottom>
+      <Typography variant="h6" component="h1" gutterBottom>
         ブックマークレットで取り込む
         <Alert severity="warning" sx={{ my: 1 }}>
           URL変更に伴い、以前のブックマークレットは動作しません。お手数ですが下記のものを再登録してください。
@@ -80,14 +80,14 @@ export const TicketImporterPage: React.FC = () => {
       <Stepper orientation="vertical">
         <Step active>
           <StepLabel>
-            <Typography variant="h6" component="h3">
+            <Typography variant="h6" component="h2">
               ブックマークレットの登録と実行
             </Typography>
           </StepLabel>
           <StepContent>
-            <Typography>IIDX公式サイトで以下のブックマークレットを実行し、結果をコピーしてください</Typography>
-            <Box sx={{ mt: 1, border: "1px solid", borderColor: "divider" }}>
-              <Box sx={{ bgcolor: "action.hover", px: 2, py: 0.5 }}>
+            <Typography>IIDX公式サイトで以下のブックマークレットを実行してください</Typography>
+            <Box sx={{ mt: 1, border: 1, borderColor: "divider", borderRadius: 1, overflow: "hidden" }}>
+              <Box sx={{ px: 1, py: 0.5, borderBottomColor: "divider", borderBottom: 1, borderColor: "divider" }}>
                 <Button
                   size="small"
                   startIcon={<ContentCopyIcon />}
@@ -96,7 +96,19 @@ export const TicketImporterPage: React.FC = () => {
                   コピー
                 </Button>
               </Box>
-              <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "action.hover" }}>{bookmarkletCode}</Box>
+              <Box
+                component="pre"
+                sx={{
+                  m: 0,
+                  p: 2,
+                  bgcolor: "action.hover",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-all",
+                  fontSize: "0.875rem",
+                }}
+              >
+                <code>{bookmarkletCode}</code>
+              </Box>
             </Box>
             <Alert severity="info" sx={{ mt: 1 }}>
               <AlertTitle>補足</AlertTitle>
@@ -114,7 +126,7 @@ export const TicketImporterPage: React.FC = () => {
         </Step>
         <Step active>
           <StepLabel>
-            <Typography variant="h6" component="h3">
+            <Typography variant="h6" component="h2">
               結果を貼り付けてインポートする
             </Typography>
           </StepLabel>
@@ -129,7 +141,7 @@ export const TicketImporterPage: React.FC = () => {
         </Step>
       </Stepper>
       <Divider sx={{ my: 3 }} />
-      <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+      <Typography variant="h6" component="h1" sx={{ mb: 2 }}>
         手動でチケットを追加する
       </Typography>
       <ManualImportForm isLoading={isManualLoading} onImport={handleManualImport} />

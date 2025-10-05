@@ -1,6 +1,7 @@
-import { alpha, AppBar, Button, Link, Toolbar, Typography } from "@mui/material";
+import { alpha, AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import ReactGA from "react-ga4";
+import { Link as RouterLink } from "react-router-dom";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";
@@ -24,9 +25,12 @@ export const AppHeader: React.FC = () => {
       }}
     >
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          {APP_TITLE}
-        </Typography>
+        <Link component={RouterLink} to="/" color="inherit" underline="none">
+          <Typography variant="h6" component="div">
+            {APP_TITLE}
+          </Typography>
+        </Link>
+        <Box sx={{ flexGrow: 1 }} />
         <Button
           component={Link}
           href={SURVEY_URL}

@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, ListItem, ListItemIcon, Link } from "@mui/material";
+import { ListItem, ListItemButton, ListItemIcon, IconButton, ListItemText } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
 interface GitHubLinkProps {
@@ -9,20 +9,18 @@ interface GitHubLinkProps {
 export const GitHubLink: React.FC<GitHubLinkProps> = ({ variant = "icon" }) => {
   if (variant === "listitem") {
     return (
-      <ListItem>
-        <ListItemIcon sx={{ minWidth: 0, mr: 1.5, display: "flex", alignItems: "center" }}>
-          <GitHubIcon fontSize="medium" />
-        </ListItemIcon>
-        <Link
+      <ListItem disablePadding>
+        <ListItemButton
+          component="a"
           href="https://github.com/monadnadnad/iidx-rlt"
           target="_blank"
           rel="noopener noreferrer"
-          variant="body2"
-          color="inherit"
-          underline="hover"
         >
-          GitHub
-        </Link>
+          <ListItemIcon>
+            <GitHubIcon />
+          </ListItemIcon>
+          <ListItemText primary="GitHub"></ListItemText>
+        </ListItemButton>
       </ListItem>
     );
   }
