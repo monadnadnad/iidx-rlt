@@ -1,7 +1,7 @@
-import LaunchIcon from "@mui/icons-material/Launch";
-import { Box, ListItem, ListItemButton, Link, Typography } from "@mui/material";
+import { Box, ListItem, ListItemButton, Typography } from "@mui/material";
 
 import { HighlightColor, Ticket } from "../../../types";
+import { TextageLink } from "./TextageLink";
 
 type TicketRowProps = {
   ticket: Ticket & { highlightColor?: HighlightColor };
@@ -33,38 +33,18 @@ export const TicketRow: React.FC<TicketRowProps> = ({
         <Typography variant="body1" noWrap>
           {ticket.laneText}
         </Typography>
-        {expiration && (
-          <Typography
-            component="span"
-            sx={{
-              color: "text.secondary",
-              fontSize: "0.75rem",
-            }}
-            noWrap
-          >
-            {expiration} まで
-          </Typography>
-        )}
-        <Box sx={{ flexGrow: 1 }} />
-        {textageUrl && (
-          <Link
-            href={textageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            variant="body2"
-            onClick={(event) => {
-              event.stopPropagation();
-              onTextageFollow?.(ticket.laneText);
-            }}
-            sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
-          >
-            <LaunchIcon fontSize="inherit" />
-            <Typography component="span" variant="inherit">
-              Textageで確認
-            </Typography>
-          </Link>
-        )}
+        <TextageLink href={textageUrl} onFollow={() => onTextageFollow?.(ticket.laneText)} />
+        <Typography
+          component="span"
+          sx={{
+            color: "text.secondary",
+            fontSize: "0.75rem",
+            alignSelf: "flex-end",
+          }}
+          noWrap
+        >
+          {expiration && `有効期限: ${expiration}`}
+        </Typography>
       </ListItemButton>
     </ListItem>
   );
@@ -80,6 +60,5 @@ const HighlightAccent: React.FC<{ color?: HighlightColor }> = ({ color }) => (
       backgroundColor: color ? `highlight.${color}` : "transparent",
       flexShrink: 0,
     }}
-    aria-hidden="true"
   />
 );

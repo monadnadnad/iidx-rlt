@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { TicketRow } from "./TicketRow";
 import { Ticket } from "types";
+import { TicketRow } from "./TicketRow";
 
 const mockTicket: Ticket = { laneText: "1234567", expiration: "2999/12/31" };
 
@@ -12,7 +12,7 @@ describe("TicketRow", () => {
     render(<TicketRow ticket={mockTicket} />);
 
     expect(screen.getByText(mockTicket.laneText)).toBeInTheDocument();
-    expect(screen.getByText(`${mockTicket.expiration} まで`)).toBeInTheDocument();
+    expect(screen.getByText(`有効期限: ${mockTicket.expiration}`)).toBeInTheDocument();
   });
 
   it("textageUrlが指定されていない場合はリンクが表示されないこと", () => {
