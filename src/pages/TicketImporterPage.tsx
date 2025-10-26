@@ -100,7 +100,7 @@ export const TicketImporterPage: React.FC = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={activeTab} onChange={(_, nextTab: number) => setActiveTab(nextTab)} variant="fullWidth">
           <Tab label="ブックマークレット" {...getA11yProps(0)} />
-          <Tab label="手動で追加する" {...getA11yProps(1)} />
+          <Tab label="手入力する" {...getA11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={activeTab} index={0}>

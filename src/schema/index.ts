@@ -38,10 +38,8 @@ export const atariRuleSchema = z.object({
 });
 export const atariRulesSchema = z.array(atariRuleSchema);
 
-export const lanePermutationSchema = createLaneTextSchema(7, false);
-
 export const manualImportFormSchema = z.object({
-  laneText: lanePermutationSchema,
+  laneText: createLaneTextSchema(7, false),
   expiration: z.string().optional(),
 });
 export type ManualImportFormValues = z.input<typeof manualImportFormSchema>;

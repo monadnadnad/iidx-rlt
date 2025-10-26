@@ -14,7 +14,7 @@ import { manualImportFormSchema, ManualImportFormValues } from "../../../schema"
 import { Ticket } from "../../../types";
 
 interface ManualImportFormProps {
-  onImport: (ticket: Ticket) => void;
+  onImport?: (ticket: Ticket) => void;
   isLoading: boolean;
 }
 
@@ -38,7 +38,7 @@ export const ManualImportForm = ({ onImport, isLoading }: ManualImportFormProps)
     const expiration = values.expiration?.trim() ?? "";
     const hasExpiration = expiration !== "";
     const ticket: Ticket = hasExpiration ? { laneText: values.laneText, expiration } : { laneText: values.laneText };
-    onImport(ticket);
+    onImport?.(ticket);
     reset({ laneText: "", expiration: values.expiration ?? "" });
   };
 

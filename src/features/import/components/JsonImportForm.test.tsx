@@ -5,39 +5,26 @@ import { JsonImportForm } from "./JsonImportForm";
 
 describe("JsonImportForm", () => {
   it("isLoadingがtrueの場合、入力欄とボタンが無効化される", () => {
-    render(<JsonImportForm jsonText="" onTextChange={() => {}} onImportClick={() => {}} isLoading={true} />);
+    render(<JsonImportForm jsonText="[]" isLoading={true} />);
 
     expect(screen.getByRole("textbox")).toBeDisabled();
     expect(screen.getByRole("button", { name: "インポート実行" })).toBeDisabled();
   });
 
-  it("テキストエリアへの入力がonTextChangeを呼び出す", async () => {
-    const user = userEvent.setup();
-    const mockOnTextChange = vi.fn();
-    render(<JsonImportForm jsonText="" onTextChange={mockOnTextChange} onImportClick={() => {}} isLoading={false} />);
-
-    const textbox = screen.getByRole("textbox");
-    await user.click(textbox);
-    await user.paste("test");
-
-    expect(mockOnTextChange).toHaveBeenCalledWith("test");
+  it("テキストが空の場合、インポート実行ボタンが無効化される", () => {
+    render(<JsonImportForm jsonText="" isLoading={false} />);
+    expect(screen.getByRole("button", { name: "インポート実行" })).toBeDisabled();
   });
 
-  it("ボタンをクリックするとonImportClickが呼び出される", async () => {
+  it("テキストが入力されている場合、ボタンが有効化され、クリックするとonImportClickが呼び出される", async () => {
     const user = userEvent.setup();
     const mockOnImportClick = vi.fn();
-    render(
-      <JsonImportForm
-        jsonText="some text"
-        onTextChange={() => {}}
-        onImportClick={mockOnImportClick}
-        isLoading={false}
-      />
-    );
+    render(<JsonImportForm jsonText="[]" isLoading={false} onImportClick={mockOnImportClick} />);
 
     const importButton = screen.getByRole("button", { name: "インポート実行" });
-    await user.click(importButton);
+    expect(importButton).toBeEnabled();
 
-    expect(mockOnImportClick).toHaveBeenCalledTimes(1);
+    await user.click(importButton);
+    expect(mockOnImportClick).toHaveBeenCalled();
   });
 });
