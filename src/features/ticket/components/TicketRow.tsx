@@ -33,18 +33,18 @@ export const TicketRow: React.FC<TicketRowProps> = ({
         <Typography variant="body1" noWrap>
           {ticket.laneText}
         </Typography>
-        <TextageLink href={textageUrl} onFollow={() => onTextageFollow?.(ticket.laneText)} />
         <Typography
           component="span"
           sx={{
             color: "text.secondary",
             fontSize: "0.75rem",
-            alignSelf: "flex-end",
           }}
           noWrap
+          hidden={!expiration}
         >
           {expiration && `有効期限: ${expiration}`}
         </Typography>
+        <TextageLink href={textageUrl} onFollow={() => onTextageFollow?.(ticket.laneText)} />
       </ListItemButton>
     </ListItem>
   );
