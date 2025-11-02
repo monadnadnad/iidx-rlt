@@ -4,9 +4,8 @@
 
 ## 必要な環境
 
-- Node.js v22 以上
-- npm v11 以上
-- Git
+- Node.js v22 以上（推奨: Volta などで 22.18.0 を固定）
+- pnpm 9 系
 
 ## セットアップ
 
@@ -20,7 +19,7 @@ cd iidx-rlt
 ### 依存関係のインストール
 
 ```bash
-npm ci
+pnpm install
 ```
 
 ### アプリケーションデータの生成
@@ -28,8 +27,8 @@ npm ci
 ローカルに、楽曲マスターデータと当たり配置定義ファイルを生成する必要があります。
 
 ```
-npm run update-master
-npm run build:presets
+pnpm update-master
+pnpm build:presets
 ```
 
 ## 開発サーバーの起動
@@ -37,13 +36,13 @@ npm run build:presets
 開発サーバーを起動して、ブラウザで http://localhost:5173/iidx-rlt を開きます。
 
 ```
-npm run dev
+pnpm dev
 ```
 
 ## テストの実行
 
 ```
-npm test
+pnpm test
 ```
 
 ## リンターとフォーマッターの実行
@@ -51,8 +50,8 @@ npm test
 以下のコマンドでリンターとフォーマッターを実行できます。
 
 ```bash
-npm run lint
-npm run format
+pnpm lint
+pnpm format
 ```
 
 ## 4. プロジェクト構造
@@ -72,13 +71,13 @@ npm run format
 `scripts/buildAtariPresets.ts` スクリプトが Google Sheets から生成します。
 
 ```
-npm run build:presets
+pnpm run build:presets
 ```
 
 #### `songs.json` (楽曲マスターデータ):
 
 ```
-npm run update-master
+pnpm run update-master
 ```
 
 ### ユーザーデータ

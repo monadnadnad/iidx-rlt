@@ -2,7 +2,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { HelmetProvider, HelmetServerState } from "react-helmet-async";
-import { StaticRouter } from "react-router-dom";
+import { StaticRouter } from "react-router";
 
 import { WebApp } from "./app/WebApp";
 import { getTheme } from "./theme";

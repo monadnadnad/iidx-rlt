@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 
 import { Layout } from "../components/layout/Layout";
 import { SnackbarProvider } from "../contexts/SnackbarContext";

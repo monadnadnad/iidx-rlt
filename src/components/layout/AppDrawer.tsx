@@ -1,6 +1,6 @@
 import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { GitHubLink } from "../../components/links/GitHubLink";
 import { XLink } from "../../components/links/XLink";

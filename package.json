@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsc && vite build && npm run prerender &&  tsx scripts/generateSitemap.ts",
+    "build": "tsc && vite build && pnpm prerender && tsx scripts/generateSitemap.ts",
     "prerender": "vite build --ssr src/prerender-entry.tsx --outDir dist-ssr && tsx scripts/prerender.ts",
     "preview": "vite preview",
     "dev": "vite",
@@ -35,10 +35,11 @@
     "react-ga4": "^2.1.0",
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.62.0",
-    "react-router-dom": "^7.8.0",
+    "react-router": "^7.9.5",
     "swr": "^2.3.6",
-    "zustand": "^4.5.4",
-    "zod": "^4.0.17"
+    "workbox-window": "^7.3.0",
+    "zod": "^4.0.17",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.0",
@@ -80,5 +81,6 @@
     "vite-plugin-checker": "^0.10.2",
     "vite-plugin-pwa": "^1.0.2",
     "vitest": "^3.2.2"
-  }
+  },
+  "packageManager": "pnpm@9.15.9"
 }
