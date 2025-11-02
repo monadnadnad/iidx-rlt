@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { AppBottomNavigation } from "./AppBottomNavigation";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { AppNavItem } from "../../types";
 
 const mockTabs: AppNavItem[] = [

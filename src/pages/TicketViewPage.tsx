@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";

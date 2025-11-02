@@ -1,7 +1,7 @@
 import { alpha, AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import ReactGA from "react-ga4";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";
