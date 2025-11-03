@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { Song } from "../../src/schema/song";
 import { Difficulty, songsSchema } from "../../src/schema/song";
+import { createTextageUrl } from "./textage";
 
 export const TARGET_LEVELS = [10, 11, 12] as const;
 export const TARGET_DIFFICULTIES: Difficulty[] = ["sph", "spa", "spl"];
@@ -52,9 +53,19 @@ export const iidxDataTableTextageTagSchema = z.record(z.string(), z.string());
 export const iidxDataTableChartInfoSchema = z.record(z.string(), iidxDataTableChartInfoValueSchema);
 export const iidxDataTableChartInfoWithIdSchema = iidxDataTableChartInfoValueSchema.extend({ id: z.string() });
 
+const songMetadataSchema = z.strictObject({
+  artist: z.string(),
+  genre: z.string(),
+  version: z.number().int().min(-1), // -1: CS, 0: 1st style, 1: substream, 2: 2nd style, ...
+});
+
+export const iidxDataTableSongInfoSchema = z.record(z.string(), songMetadataSchema);
+export type SongMetadata = z.infer<typeof songMetadataSchema>;
+
 export type ChartInfoDependencies = {
   titlesById: Map<string, string>;
   textageTagsById: Map<string, string>;
+  songInfoById: Map<string, SongMetadata>;
   targetDifficulties?: readonly Difficulty[];
   targetLevels?: readonly number[];
 };
@@ -92,6 +103,7 @@ const resolveBpmValue = (value: ChartInfo["bpm"], index: number): BpmSingle | nu
 export const createChartInfoToSongsSchema = ({
   titlesById,
   textageTagsById,
+  songInfoById,
   targetDifficulties = TARGET_DIFFICULTIES,
   targetLevels = TARGET_LEVELS,
 }: ChartInfoDependencies) =>
@@ -105,6 +117,11 @@ export const createChartInfoToSongsSchema = ({
       const textageTag = textageTagsById.get(chart.id);
       if (!textageTag) {
         throw new Error(`textage-tag.json is missing entry for chart id "${chart.id}"`);
+      }
+
+      const songInfo = songInfoById.get(chart.id);
+      if (!songInfo) {
+        throw new Error(`song-info.json is missing entry for chart id "${chart.id}"`);
       }
 
       return targetDifficulties.flatMap((difficulty) => {
@@ -124,12 +141,22 @@ export const createChartInfoToSongsSchema = ({
           return [];
         }
 
+        const textageUrl = createTextageUrl({
+          textageTag,
+          difficulty,
+          level,
+          version: songInfo.version,
+        });
+
         return [
           {
-            id: `chart-${chart.id}-${difficulty}`,
+            id: `${chart.id}-${difficulty}`,
             songId: chart.id,
             title,
-            textageTag,
+            artist: songInfo.artist,
+            genre: songInfo.genre,
+            version: songInfo.version,
+            textageUrl,
             difficulty,
             level,
             bpm: toBpmRange(bpmValue),

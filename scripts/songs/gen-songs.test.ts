@@ -34,6 +34,14 @@ const createParser = (overrides?: {
         ["5678", "missing"],
         ["9999", "filtered"],
       ]),
+    songInfoById: new Map([
+      ["1234", { artist: "Example Artist", genre: "Example Genre", version: 29 }],
+      ["2468", { artist: "Array BPM Artist", genre: "Array BPM Genre", version: 28 }],
+      ["4680", { artist: "Object BPM Artist", genre: "Object BPM Genre", version: 27 }],
+      ["5791", { artist: "Zero Notes Artist", genre: "Zero Notes Genre", version: 26 }],
+      ["5678", { artist: "Missing Title Artist", genre: "Missing Title Genre", version: 25 }],
+      ["9999", { artist: "Filtered Artist", genre: "Filtered Genre", version: 24 }],
+    ]),
     targetDifficulties: overrides?.targetDifficulties ?? TARGET_DIFFICULTIES,
     targetLevels: overrides?.targetLevels ?? TARGET_LEVELS,
   });
@@ -60,21 +68,27 @@ describe("createChartInfoToSongsSchema", () => {
 
     expect(result).toHaveLength(2);
     expect(result[0]).toStrictEqual({
-      id: "chart-1234-sph",
+      id: "1234-sph",
       songId: "1234",
       title: "Example Song",
-      textageTag: "example-tag",
+      textageUrl: "https://textage.cc/score/29/example-tag.html?1HB00",
       difficulty: "sph",
+      genre: "Example Genre",
+      artist: "Example Artist",
+      version: 29,
       level: 11,
       notes: 750,
       bpm: { min: 95, max: 190 },
     });
     expect(result[1]).toStrictEqual({
-      id: "chart-1234-spa",
+      id: "1234-spa",
       songId: "1234",
       title: "Example Song",
-      textageTag: "example-tag",
+      textageUrl: "https://textage.cc/score/29/example-tag.html?1AC00",
       difficulty: "spa",
+      genre: "Example Genre",
+      artist: "Example Artist",
+      version: 29,
       level: 12,
       notes: 800,
       bpm: { min: 95, max: 190 },

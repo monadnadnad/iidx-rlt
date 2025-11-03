@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   createChartInfoToSongsSchema,
   iidxDataTableChartInfoSchema,
+  iidxDataTableSongInfoSchema,
   iidxDataTableTextageTagSchema,
   iidxDataTableTitleSchema,
   sortSongs,
@@ -16,12 +17,13 @@ import {
 const OUTPUT_RELATIVE_PATH = "public/data/songs.json";
 const DATA_SOURCE_DIR = ".";
 
-type ResourceKey = "title" | "textage-tag" | "chart-info";
+type ResourceKey = "title" | "textage-tag" | "chart-info" | "song-info";
 
 const RESOURCE_FILENAMES: Record<ResourceKey, string> = {
   title: "title.json",
   "textage-tag": "textage-tag.json",
   "chart-info": "chart-info.json",
+  "song-info": "song-info.json",
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,19 +38,22 @@ const loadJsonResource = async (resource: ResourceKey, basePath: string): Promis
 };
 
 export const generateSongsData = async () => {
-  const [titlesRaw, textageTagsRaw, chartInfoRaw] = await Promise.all([
+  const [titlesRaw, textageTagsRaw, chartInfoRaw, songInfoRaw] = await Promise.all([
     loadJsonResource("title", DATA_SOURCE_DIR),
     loadJsonResource("textage-tag", DATA_SOURCE_DIR),
     loadJsonResource("chart-info", DATA_SOURCE_DIR),
+    loadJsonResource("song-info", DATA_SOURCE_DIR),
   ]);
 
   const titlesMap = new Map(Object.entries(iidxDataTableTitleSchema.parse(titlesRaw)));
   const textageTagsMap = new Map(Object.entries(iidxDataTableTextageTagSchema.parse(textageTagsRaw)));
   const chartInfoRecord = iidxDataTableChartInfoSchema.parse(chartInfoRaw);
+  const songInfoMap = new Map(Object.entries(iidxDataTableSongInfoSchema.parse(songInfoRaw)));
 
   const parser = createChartInfoToSongsSchema({
     titlesById: titlesMap,
     textageTagsById: textageTagsMap,
+    songInfoById: songInfoMap,
     targetDifficulties: TARGET_DIFFICULTIES,
     targetLevels: TARGET_LEVELS,
   });
