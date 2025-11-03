@@ -12,6 +12,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "update-master": "tsx ./scripts/updateMaster.ts",
+    "gen-songs": "tsx ./scripts/songs/gen-songs.ts",
     "build:presets": "tsx ./scripts/buildAtariPresets.ts",
     "storybook": "storybook dev -p 6006",
     "license-check": "npx license-checker --production --markdown > THIRD_PARTY_NOTICES.txt"

@@ -1,4 +1,5 @@
 import { z } from "zod";
+export * from "./song";
 
 const validateDuplicate = (val: string) => {
   const digits = val.replace(/\*/g, "");
