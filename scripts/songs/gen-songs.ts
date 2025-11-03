@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -15,7 +15,7 @@ import {
 } from "./schema";
 
 const OUTPUT_RELATIVE_PATH = "public/data/songs.json";
-const DATA_SOURCE_DIR = ".";
+const DATA_SOURCE_URL = "https://chinimuruhi.github.io/IIDX-Data-Table/textage/";
 
 type ResourceKey = "title" | "textage-tag" | "chart-info" | "song-info";
 
@@ -30,19 +30,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, "../..");
 
-const loadJsonResource = async (resource: ResourceKey, basePath: string): Promise<unknown> => {
+const ensureTrailingSlash = (value: string) => (value.endsWith("/") ? value : `${value}/`);
+
+const fetchJsonResource = async (resource: ResourceKey): Promise<unknown> => {
   const filename = RESOURCE_FILENAMES[resource];
-  const filePath = resolve(projectRoot, basePath, filename);
-  const content = await readFile(filePath, "utf-8");
-  return JSON.parse(content) as unknown;
+  const resourceUrl = new URL(filename, ensureTrailingSlash(DATA_SOURCE_URL));
+  const response = await fetch(resourceUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${resourceUrl.href}: ${response.status} ${response.statusText}`);
+  }
+  return (await response.json()) as unknown;
 };
 
 export const generateSongsData = async () => {
   const [titlesRaw, textageTagsRaw, chartInfoRaw, songInfoRaw] = await Promise.all([
-    loadJsonResource("title", DATA_SOURCE_DIR),
-    loadJsonResource("textage-tag", DATA_SOURCE_DIR),
-    loadJsonResource("chart-info", DATA_SOURCE_DIR),
-    loadJsonResource("song-info", DATA_SOURCE_DIR),
+    fetchJsonResource("title"),
+    fetchJsonResource("textage-tag"),
+    fetchJsonResource("chart-info"),
+    fetchJsonResource("song-info"),
   ]);
 
   const titlesMap = new Map(Object.entries(iidxDataTableTitleSchema.parse(titlesRaw)));
