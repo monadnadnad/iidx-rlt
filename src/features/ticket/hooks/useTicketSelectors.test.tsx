@@ -5,6 +5,8 @@ import { AtariRule, PlaySide, SongInfo, Ticket, TicketQuery } from "../../../typ
 
 const mockAtariRule: AtariRule = {
   id: "test",
+  songId: "song-1",
+  difficulty: "spa",
   title: "Test",
   url: "",
   priority: 5,
@@ -19,8 +21,11 @@ const mockAtariRule: AtariRule = {
 };
 
 const mockSong: SongInfo = {
+  id: "song-1-spa",
+  songId: "song-1",
   title: "Test",
   url: "",
+  difficulty: "spa",
   level: 12,
 };
 

@@ -8,12 +8,14 @@ const SILVER_QUALITY_THRESHOLD = 2;
 const SILVER_QUANTITY_THRESHOLD = 3;
 
 type RulesByPatternKey = Map<string, AtariRule[]>;
-type RulesBySong = Map<string, AtariRule[]>;
+type RulesByChart = Map<string, AtariRule[]>;
+
+const createChartKey = (songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]) => `${songId}#${difficulty}`;
 
 interface IAtariMap {
   // チケット全体に対して計算してもいいが、当たりパターン自体少ないのでルールを全探索する
   getRulesForTicket(ticket: Ticket, playSide: PlaySide): AtariRule[] | undefined;
-  getRulesForSong(title: string): AtariRule[] | undefined;
+  getRulesForSong(songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]): AtariRule[] | undefined;
   getColorForTicket(ticket: Ticket, playSide: PlaySide): HighlightColor | undefined;
 }
 
@@ -45,14 +47,15 @@ const createRulesByPatternKey = (allRules: AtariRule[]): RulesByPatternKey => {
   return rulesByPatternKey;
 };
 
-const createRulesBySong = (allRules: AtariRule[]): RulesBySong => {
-  const rulesBySong = new Map<string, AtariRule[]>();
+const createRulesByChart = (allRules: AtariRule[]): RulesByChart => {
+  const rulesByChart = new Map<string, AtariRule[]>();
   for (const rule of allRules) {
-    const rules = rulesBySong.get(rule.title) ?? [];
+    const key = createChartKey(rule.songId, rule.difficulty);
+    const rules = rulesByChart.get(key) ?? [];
     rules.push(rule);
-    rulesBySong.set(rule.title, rules);
+    rulesByChart.set(key, rules);
   }
-  return rulesBySong;
+  return rulesByChart;
 };
 
 const getRulesForTicket = (
@@ -73,14 +76,14 @@ const getRulesForTicket = (
 
 export const createAtariMap = (atariRules: AtariRule[]): IAtariMap => {
   const rulesByPatternKey = createRulesByPatternKey(atariRules);
-  const rulesBySong = createRulesBySong(atariRules);
+  const rulesByChart = createRulesByChart(atariRules);
 
   return {
     getRulesForTicket: (ticket: Ticket, playSide: PlaySide): AtariRule[] | undefined => {
       return getRulesForTicket(ticket, playSide, rulesByPatternKey);
     },
-    getRulesForSong: (title: string): AtariRule[] | undefined => {
-      return rulesBySong.get(title);
+    getRulesForSong: (songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]): AtariRule[] | undefined => {
+      return rulesByChart.get(createChartKey(songId, difficulty));
     },
     getColorForTicket: (ticket: Ticket, playSide: PlaySide): HighlightColor => {
       const rules = getRulesForTicket(ticket, playSide, rulesByPatternKey);

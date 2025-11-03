@@ -4,8 +4,11 @@ import { useTicketQuery } from "./useTicketQuery";
 import { SongInfo } from "../../../types";
 
 const mockSong: SongInfo = {
-  title: "A(A)",
+  id: "1234-spa",
+  songId: "1234",
+  title: "A",
   url: "https://textage.cc/score/7/a_amuro.html?1AC00",
+  difficulty: "spa",
   level: 12,
 };
 

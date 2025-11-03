@@ -24,11 +24,10 @@ pnpm install
 
 ### アプリケーションデータの生成
 
-ローカルに、楽曲マスターデータと当たり配置定義ファイルを生成する必要があります。
+ローカルに、楽曲マスターデータを生成する必要があります。
 
 ```
-pnpm update-master
-pnpm build:presets
+pnpm gen-songs
 ```
 
 ## 開発サーバーの起動
@@ -68,16 +67,12 @@ pnpm format
 
 #### `atari-rules.json` (当たり配置ルール):
 
-`scripts/buildAtariPresets.ts` スクリプトが Google Sheets から生成します。
-
-```
-pnpm run build:presets
-```
+リポジトリ直下の `public/data/atari-rules.json` を直接編集して管理します。Zod スキーマ `atariRuleSchema` で構造が検証されます。
 
 #### `songs.json` (楽曲マスターデータ):
 
 ```
-pnpm run update-master
+pnpm run gen-songs
 ```
 
 ### ユーザーデータ

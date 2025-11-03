@@ -141,5 +141,4 @@ storybook-static
 # custom
 stats.html
 public/data/songs.json
-public/data/atari-rules.json
 docs/ai

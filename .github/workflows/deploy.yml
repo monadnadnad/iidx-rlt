@@ -39,8 +39,6 @@ jobs:
           workflow_conclusion: success
           branch: main
           if_no_artifact_found: error
-      - name: Fetch and build atari rules
-        run: pnpm build:presets
       - name: Verify data files
         run: ls -R public/data
       - name: Build App

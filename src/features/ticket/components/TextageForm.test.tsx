@@ -6,8 +6,11 @@ import { TextageForm } from "./TextageForm";
 
 describe("TextageForm", () => {
   const song: SongInfo = {
-    title: "A(A)",
+    id: "1234-spa",
+    songId: "1234",
+    title: "A",
     url: "https://textage.cc/score/7/a_amuro.html?1AC00",
+    difficulty: "spa",
     level: 12,
   };
   const allSongsData: SongInfo[] = [song];
@@ -29,8 +32,9 @@ describe("TextageForm", () => {
     const autocomplete = screen.getByLabelText("楽曲を選択");
     await user.click(autocomplete);
     await user.type(autocomplete, "A");
-    const songOption = await screen.findByText("A(A)");
-    await user.click(songOption);
+    const optionElements = await screen.findAllByRole("option");
+    expect(optionElements.length).toBeGreaterThan(0);
+    await user.click(optionElements[0]);
 
     expect(onSongSelect).toHaveBeenCalledWith(song);
   });

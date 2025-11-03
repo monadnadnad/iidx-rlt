@@ -1,4 +1,5 @@
 import { getTheme } from "./theme";
+import type { AtariRule as SchemaAtariRule, SearchPattern as SchemaSearchPattern, Song as SchemaSong } from "./schema";
 
 export interface Ticket {
   laneText: string;
@@ -8,27 +9,13 @@ export interface Ticket {
 const _theme = getTheme("light");
 export type HighlightColor = keyof typeof _theme.palette.highlight | undefined;
 
-export interface SearchPattern {
-  scratchSideText: string;
-  isScratchSideUnordered: boolean;
-  nonScratchSideText: string;
-  isNonScratchSideUnordered: boolean;
-}
+export type SearchPattern = SchemaSearchPattern;
 
 export type PlaySide = "1P" | "2P";
 
-export interface SongInfo {
-  title: string;
-  url: string;
-  level: number;
-}
+export type SongInfo = Pick<SchemaSong, "id" | "songId" | "title" | "url" | "difficulty" | "level">;
 
-export type AtariRule = Omit<SongInfo, "level"> & {
-  id: string;
-  priority: number;
-  description?: string;
-  patterns: SearchPattern[];
-};
+export type AtariRule = SchemaAtariRule;
 
 export interface AppSettings {
   playSide: PlaySide;
@@ -42,9 +29,9 @@ export interface AppNavItem {
 
 export type FilterMode = "recommend" | "all";
 
-export interface TicketQuery extends SearchPattern {
+export type TicketQuery = SearchPattern & {
   filterMode: FilterMode;
   textageSong: SongInfo | null;
   itemsPerPage: number;
   currentPage: number;
-}
+};

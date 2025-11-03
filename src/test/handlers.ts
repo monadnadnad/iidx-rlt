@@ -3,6 +3,8 @@ import { http, HttpResponse } from "msw";
 const MOCK_ATARI_RULES = [
   {
     id: "test-id-1",
+    songId: "test-song-id-1",
+    difficulty: "spa",
     title: "rage against usual",
     url: "",
     priority: 1,
@@ -20,13 +22,19 @@ const MOCK_ATARI_RULES = [
 
 const MOCK_SONGS = [
   {
-    title: "冥(A)",
+    id: "1258-spa",
+    songId: "1258",
+    title: "冥",
     url: "https://textage.cc/score/12/_mei.html?1AC00",
+    difficulty: "spa",
     level: 12,
   },
   {
-    title: "rage against usual(A)",
+    id: "2022-spa",
+    songId: "2022",
+    title: "rage against usual",
     url: "https://textage.cc/score/12/rageagst.html?1AC00",
+    difficulty: "spa",
     level: 12,
   },
 ];

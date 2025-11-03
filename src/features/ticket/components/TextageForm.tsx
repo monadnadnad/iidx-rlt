@@ -1,11 +1,11 @@
 import {
   Autocomplete,
-  TextField,
-  ToggleButtonGroup,
-  ToggleButton,
-  useTheme,
-  useMediaQuery,
   Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { SongInfo } from "../../../types";
 
@@ -40,6 +40,8 @@ export const TextageForm: React.FC<TextageFormProps> = ({
   const songs = searchMode === "recommend" ? atariSongs : allSongs;
   const placeholder = searchMode === "recommend" ? "当たり配置が定義済みの曲を検索" : "曲名で検索 (例: 冥)";
 
+  const formatSongLabel = (song: SongInfo) => `${song.title} [${song.difficulty.toUpperCase().replace("SP", "")}]`;
+
   return (
     <Stack spacing={2}>
       <ToggleButtonGroup
@@ -59,7 +61,8 @@ export const TextageForm: React.FC<TextageFormProps> = ({
       </ToggleButtonGroup>
       <Autocomplete
         options={songs}
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={formatSongLabel}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
         value={selectedSong}
         onChange={(_event, newValue) => onSongSelect?.(newValue)}
         slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}

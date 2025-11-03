@@ -23,10 +23,12 @@ export const useTicketSelectors = (
     currentPage,
   } = query;
 
-  const selectedAtariRules = useMemo(
-    () => (textageSong ? (atariMap.getRulesForSong(textageSong.title) ?? []) : []),
-    [atariMap, textageSong]
-  );
+  const selectedAtariRules = useMemo(() => {
+    if (!textageSong) {
+      return [];
+    }
+    return atariMap.getRulesForSong(textageSong.songId, textageSong.difficulty) ?? [];
+  }, [atariMap, textageSong]);
 
   const filteredTickets = useMemo(() => {
     const searched = filterTickets(
@@ -71,7 +73,7 @@ export const useTicketSelectors = (
   );
 
   const atariSongs = useMemo(
-    () => songs.filter((song) => (atariMap.getRulesForSong(song.title) ?? []).length > 0),
+    () => songs.filter((song) => (atariMap.getRulesForSong(song.songId, song.difficulty) ?? []).length > 0),
     [songs, atariMap]
   );
 

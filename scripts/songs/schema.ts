@@ -124,7 +124,7 @@ export const createChartInfoToSongsSchema = ({
         throw new Error(`song-info.json is missing entry for chart id "${chart.id}"`);
       }
 
-      return targetDifficulties.flatMap((difficulty) => {
+      const songs = targetDifficulties.flatMap((difficulty) => {
         const index = SP_DIFFICULTY_INDEX[difficulty];
         const level = chart.level.sp[index];
         if (level == null || level <= 0 || !targetLevels.includes(level)) {
@@ -141,7 +141,7 @@ export const createChartInfoToSongsSchema = ({
           return [];
         }
 
-        const textageUrl = createTextageUrl({
+        const url = createTextageUrl({
           textageTag,
           difficulty,
           level,
@@ -156,7 +156,7 @@ export const createChartInfoToSongsSchema = ({
             artist: songInfo.artist,
             genre: songInfo.genre,
             version: songInfo.version,
-            textageUrl,
+            url,
             difficulty,
             level,
             bpm: toBpmRange(bpmValue),
@@ -164,6 +164,8 @@ export const createChartInfoToSongsSchema = ({
           },
         ];
       });
+
+      return songs;
     })
     .pipe(songsSchema);
 

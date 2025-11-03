@@ -71,27 +71,19 @@ describe("createChartInfoToSongsSchema", () => {
       id: "1234-sph",
       songId: "1234",
       title: "Example Song",
-      textageUrl: "https://textage.cc/score/29/example-tag.html?1HB00",
-      difficulty: "sph",
-      genre: "Example Genre",
-      artist: "Example Artist",
       version: 29,
+      url: "https://textage.cc/score/29/example-tag.html?1HB00",
+      difficulty: "sph",
       level: 11,
-      notes: 750,
-      bpm: { min: 95, max: 190 },
     });
     expect(result[1]).toStrictEqual({
       id: "1234-spa",
       songId: "1234",
       title: "Example Song",
-      textageUrl: "https://textage.cc/score/29/example-tag.html?1AC00",
-      difficulty: "spa",
-      genre: "Example Genre",
-      artist: "Example Artist",
       version: 29,
+      url: "https://textage.cc/score/29/example-tag.html?1AC00",
+      difficulty: "spa",
       level: 12,
-      notes: 800,
-      bpm: { min: 95, max: 190 },
     });
   });
 
@@ -173,9 +165,7 @@ describe("createChartInfoToSongsSchema", () => {
 
     expect(result).toHaveLength(2);
     expect(result[0].difficulty).toBe("sph");
-    expect(result[0].bpm).toStrictEqual({ min: 180, max: 180 });
     expect(result[1].difficulty).toBe("spa");
-    expect(result[1].bpm).toStrictEqual({ min: 200, max: 200 });
   });
 
   it("BPMオブジェクトからレンジ値を拾う", () => {
@@ -202,8 +192,6 @@ describe("createChartInfoToSongsSchema", () => {
     const result: Song[] = parser.parse(chartInfo);
 
     expect(result).toHaveLength(2);
-    expect(result[0].bpm).toStrictEqual({ min: 140, max: 160 });
-    expect(result[1].bpm).toStrictEqual({ min: 200, max: 220 });
   });
 
   it("ノーツやレベルが0なら出力しない", () => {

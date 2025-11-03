@@ -1,0 +1,665 @@
+[
+  {
+    "id": "preset-0",
+    "songId": "1258",
+    "difficulty": "spa",
+    "title": "冥",
+    "url": "https://textage.cc/score/12/_mei.html?1AC00",
+    "priority": 1,
+    "description": "低速が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "12*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "35**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-1",
+    "songId": "1258",
+    "difficulty": "spa",
+    "title": "冥",
+    "url": "https://textage.cc/score/12/_mei.html?1AC00",
+    "priority": 1,
+    "description": "低速が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "35*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "12**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-2",
+    "songId": "2539",
+    "difficulty": "spa",
+    "title": "Xperanza",
+    "url": "https://textage.cc/score/25/xperanza.html?1AC00",
+    "priority": 1,
+    "description": "全体のトリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "17*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "35**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-3",
+    "songId": "1994",
+    "difficulty": "spa",
+    "title": "聖人の塔",
+    "url": "https://textage.cc/score/19/_seijin.html?1AC00",
+    "priority": 1,
+    "description": "二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "17*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "35**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-4",
+    "songId": "1994",
+    "difficulty": "spa",
+    "title": "聖人の塔",
+    "url": "https://textage.cc/score/19/_seijin.html?1AC00",
+    "priority": 1,
+    "description": "二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "35*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "17**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-5",
+    "songId": "1638",
+    "difficulty": "spl",
+    "title": "THANK YOU FOR PLAYING",
+    "url": "https://textage.cc/score/16/thank_u4.html?1XC00",
+    "priority": 1,
+    "description": "24分折り返しが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "45*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "23**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-6",
+    "songId": "2765",
+    "difficulty": "spa",
+    "title": "Inferno of Fomalhaut",
+    "url": "https://textage.cc/score/27/inffomal.html?1AC00",
+    "priority": 1,
+    "description": "ラストの二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "345",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-7",
+    "songId": "2281",
+    "difficulty": "spa",
+    "title": "Sounds Of Summer",
+    "url": "https://textage.cc/score/22/sosummer.html?1AC00",
+    "priority": 1,
+    "description": "中盤の長いトリルが割れるが皿側がきつい",
+    "patterns": [
+      {
+        "scratchSideText": "157",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-8",
+    "songId": "2562",
+    "difficulty": "spa",
+    "title": "東京神話",
+    "url": "https://textage.cc/score/25/_tksinwa.html?1AC00",
+    "priority": 1,
+    "description": "1-7, 5-7トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "15*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "7***",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-9",
+    "songId": "1701",
+    "difficulty": "spl",
+    "title": "AIR RAID FROM THA UNDAGROUND",
+    "url": "https://textage.cc/score/17/airraid.html?1XC00",
+    "priority": 5,
+    "description": "トリルがほぼ割れる",
+    "patterns": [
+      {
+        "scratchSideText": "156",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-10",
+    "songId": "1701",
+    "difficulty": "spl",
+    "title": "AIR RAID FROM THA UNDAGROUND",
+    "url": "https://textage.cc/score/17/airraid.html?1XC00",
+    "priority": 5,
+    "description": "トリルがほぼ割れる",
+    "patterns": [
+      {
+        "scratchSideText": "237",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-11",
+    "songId": "1601",
+    "difficulty": "spa",
+    "title": "3y3s",
+    "url": "https://textage.cc/score/16/3y3s.html?1AC00",
+    "priority": 1,
+    "description": "開幕発狂が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "137",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-12",
+    "songId": "1601",
+    "difficulty": "spa",
+    "title": "3y3s",
+    "url": "https://textage.cc/score/16/3y3s.html?1AC00",
+    "priority": 1,
+    "description": "開幕発狂が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-13",
+    "songId": "1793",
+    "difficulty": "spa",
+    "title": "Smashing Wedge",
+    "url": "https://textage.cc/score/27/smawedge.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-14",
+    "songId": "1793",
+    "difficulty": "spa",
+    "title": "Smashing Wedge",
+    "url": "https://textage.cc/score/27/smawedge.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "567",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-15",
+    "songId": "2033",
+    "difficulty": "spa",
+    "title": "狂イ咲ケ焔ノ華",
+    "url": "https://textage.cc/score/20/_kuruizk.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-16",
+    "songId": "2033",
+    "difficulty": "spa",
+    "title": "狂イ咲ケ焔ノ華",
+    "url": "https://textage.cc/score/20/_kuruizk.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "567",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-17",
+    "songId": "2142",
+    "difficulty": "spa",
+    "title": "ra'am",
+    "url": "https://textage.cc/score/21/raam.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-18",
+    "songId": "2142",
+    "difficulty": "spa",
+    "title": "ra'am",
+    "url": "https://textage.cc/score/21/raam.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "567",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-19",
+    "songId": "2059",
+    "difficulty": "spa",
+    "title": "アストライアの双皿",
+    "url": "https://textage.cc/score/20/_astraia.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-20",
+    "songId": "2059",
+    "difficulty": "spa",
+    "title": "アストライアの双皿",
+    "url": "https://textage.cc/score/20/_astraia.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "567",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-21",
+    "songId": "3073",
+    "difficulty": "spa",
+    "title": "Beyond Evolution",
+    "url": "https://textage.cc/score/30/beyondev.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-22",
+    "songId": "3083",
+    "difficulty": "spa",
+    "title": "Somnidiscotheque",
+    "url": "https://textage.cc/score/30/somnidis.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-23",
+    "songId": "3083",
+    "difficulty": "spa",
+    "title": "Somnidiscotheque",
+    "url": "https://textage.cc/score/30/somnidis.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "567",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-24",
+    "songId": "2970",
+    "difficulty": "spa",
+    "title": "n/a",
+    "url": "https://textage.cc/score/29/n_a.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "135",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-25",
+    "songId": "1425",
+    "difficulty": "spl",
+    "title": "KAMAITACHI",
+    "url": "https://textage.cc/score/14/kmitachi.html?1XC00",
+    "priority": 1,
+    "description": "34小節が割れる、ラストは難しい",
+    "patterns": [
+      {
+        "scratchSideText": "136",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-26",
+    "songId": "1950",
+    "difficulty": "spa",
+    "title": "子供の落書き帳",
+    "url": "https://textage.cc/score/19/_kodomo.html?1AC00",
+    "priority": 1,
+    "description": "23-24小節が押しやすい",
+    "patterns": [
+      {
+        "scratchSideText": "136",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-27",
+    "songId": "1232",
+    "difficulty": "spa",
+    "title": "rage against usual",
+    "url": "https://textage.cc/score/12/rageagst.html?1AC00",
+    "priority": 2,
+    "description": "発狂が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-28",
+    "songId": "3024",
+    "difficulty": "spa",
+    "title": "TECHNOPHOBIA",
+    "url": "https://textage.cc/score/30/tcphobia.html?1AC00",
+    "priority": 2,
+    "description": "発狂が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-29",
+    "songId": "2182",
+    "difficulty": "spl",
+    "title": "KAISER PHOENIX",
+    "url": "https://textage.cc/score/21/kaiserph.html?1XC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-30",
+    "songId": "2758",
+    "difficulty": "spa",
+    "title": "AKASHIC BREAK",
+    "url": "https://textage.cc/score/27/akashicb.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "157",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-31",
+    "songId": "1652",
+    "difficulty": "spa",
+    "title": "卑弥呼",
+    "url": "https://textage.cc/score/16/_himiko.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-32",
+    "songId": "2878",
+    "difficulty": "spa",
+    "title": "ディスコルディア",
+    "url": "https://textage.cc/score/28/_dscrdia.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-33",
+    "songId": "1615",
+    "difficulty": "spa",
+    "title": "Go Beyond!!",
+    "url": "https://textage.cc/score/16/gobeyond.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-34",
+    "songId": "2460",
+    "difficulty": "spa",
+    "title": "Go Ahead!!",
+    "url": "https://textage.cc/score/24/goahead.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-35",
+    "songId": "2664",
+    "difficulty": "spa",
+    "title": "Χ-DEN",
+    "url": "https://textage.cc/score/26/_kai_den.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-36",
+    "songId": "4025",
+    "difficulty": "spa",
+    "title": "VOX UP",
+    "url": "https://textage.cc/score/21/voxup_sp.html?1AC00",
+    "priority": 1,
+    "description": "R乱当たり配置",
+    "patterns": [
+      {
+        "scratchSideText": "127",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-37",
+    "songId": "4025",
+    "difficulty": "spa",
+    "title": "VOX UP",
+    "url": "https://textage.cc/score/21/voxup_sp.html?1AC00",
+    "priority": 5,
+    "description": "R乱当たり配置",
+    "patterns": [
+      {
+        "scratchSideText": "167",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-38",
+    "songId": "2571",
+    "difficulty": "spa",
+    "title": "シムルグの目醒め",
+    "url": "https://textage.cc/score/25/_simurgh.html?1AC00",
+    "priority": 1,
+    "description": "皿絡みが楽になる",
+    "patterns": [
+      {
+        "scratchSideText": "167",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  }
+]

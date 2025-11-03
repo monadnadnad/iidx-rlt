@@ -28,11 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Chrome for Puppeteer
-        run: pnpm exec puppeteer browsers install chrome
-
-      - name: Fetch latest master data
-        run: pnpm update-master
+      - name: Generate songs data
+        run: pnpm gen-songs
 
       - name: Upload song data artifact
         uses: actions/upload-artifact@v4

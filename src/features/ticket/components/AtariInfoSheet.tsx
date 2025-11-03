@@ -17,15 +17,16 @@ interface AtariInfoSheetProps {
 export const AtariInfoSheet = ({ ticket, rules, onClose }: AtariInfoSheetProps) => {
   const playSide = useSettingsStore((s) => s.playSide);
 
-  const handleOpenTextage = (rule: AtariRule) => {
+  const handleTextageFollow = (rule: AtariRule) => {
     ReactGA.event("click_textage_link_from_detail", {
       song_title: rule.title,
+      difficulty: rule.difficulty,
       lane_text: ticket.laneText,
       play_side: playSide,
     });
-    const url = makeTextageUrl(rule.url, playSide, ticket.laneText);
-    window.open(url, "_blank", "noopener,noreferrer");
   };
+
+  const formatRuleTitle = (rule: AtariRule) => `${rule.title} [${rule.difficulty.toUpperCase()}]`;
 
   const sheetTitle = (
     <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -44,14 +45,23 @@ export const AtariInfoSheet = ({ ticket, rules, onClose }: AtariInfoSheetProps) 
   return (
     <FloatingSheet open={!!ticket} onClose={onClose} title={sheetTitle}>
       <List>
-        {rules.map((rule) => (
-          <ListItem key={rule.id} disablePadding>
-            <ListItemText primary={rule.title} secondary={rule.description} />
-            <IconButton onClick={() => handleOpenTextage(rule)}>
-              <LaunchIcon />
-            </IconButton>
-          </ListItem>
-        ))}
+        {rules.map((rule) => {
+          const textageUrl = makeTextageUrl(rule.url, playSide, ticket.laneText);
+          return (
+            <ListItem key={rule.id} disablePadding>
+              <ListItemText primary={formatRuleTitle(rule)} secondary={rule.description} />
+              <IconButton
+                component="a"
+                href={textageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleTextageFollow(rule)}
+              >
+                <LaunchIcon />
+              </IconButton>
+            </ListItem>
+          );
+        })}
       </List>
     </FloatingSheet>
   );

@@ -18,10 +18,11 @@ const p2: SearchPattern = {
 
 const createRule = (id: string, priority: number, title: string, pattern: SearchPattern): AtariRule => ({
   id,
+  songId: `song-${id}`,
+  difficulty: "spa",
   title,
   url: "",
   priority: priority,
-  description: "",
   patterns: [pattern],
 });
 
@@ -29,7 +30,7 @@ describe(createAtariMap, () => {
   describe("getRulesForSong", () => {
     it("マッチするものだけ返す", () => {
       const map = createAtariMap([createRule("a", 1, "A", p1), createRule("b", 1, "B", p2)]);
-      const rules = map.getRulesForSong("A");
+      const rules = map.getRulesForSong("song-a", "spa");
       expect(rules).toBeDefined();
       expect(rules?.map((v) => v.id)).toEqual(["a"]);
     });
@@ -65,10 +66,11 @@ describe(createAtariMap, () => {
   describe("getHighlightColor", () => {
     const createRule = (priority: number): AtariRule => ({
       id: `rule-${priority}`,
+      songId: `song-${priority}`,
+      difficulty: "spa",
       title: `Song ${priority}`,
       url: "",
       priority: priority,
-      description: "",
       patterns: [
         {
           scratchSideText: "123",
