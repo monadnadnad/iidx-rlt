@@ -25,11 +25,11 @@ jobs:
           node-version: "22"
           cache: "pnpm"
 
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Install Chrome for Puppeteer
+        run: pnpm exec puppeteer browsers install chrome
 
       - name: Fetch latest master data
         run: pnpm update-master
