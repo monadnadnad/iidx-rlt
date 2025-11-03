@@ -132,6 +132,23 @@ export const AboutPage = () => {
           </Step>
         </Stepper>
         <Divider sx={{ my: 4 }} />
+        <Typography variant="h5" component="h2" gutterBottom>
+          データ参照元
+        </Typography>
+        <Typography component="p" sx={{ mt: 2 }}>
+          譜面URLや楽曲メタデータは
+          <Link href="https://textage.cc/" target="_blank" rel="noopener noreferrer">
+            Textage.cc
+          </Link>
+          様に帰属し、
+          <Link href="https://chinimuruhi.github.io/IIDX-Data-Table/" target="_blank" rel="noopener noreferrer">
+            IIDX Data Table
+          </Link>{" "}
+          様から提供されているデータを元に加工して使用させて頂いています。
+          <br />
+          URLへの短時間での大量アクセスなど、Textage 様へのご迷惑となる行為はお控えください。
+        </Typography>
+        <Divider sx={{ my: 4 }} />
         <Typography variant="h5" component="h2" gutterBottom sx={{ mb: 2 }}>
           プライバシーポリシー
         </Typography>
@@ -157,22 +174,14 @@ export const AboutPage = () => {
           本サイトは当該法人および関連企業とは一切関係ありません。
         </Typography>
         <Typography variant="caption" color="text.secondary" component="p">
-          譜面リンクには外部サイト「
-          <Link href="https://textage.cc/" target="_blank" rel="noopener noreferrer">
-            Textage
-          </Link>
-          」様を参照しているので、過度な負荷をかけないようお願い致します。
-        </Typography>
-        <Typography variant="caption" color="text.secondary" component="p">
-          本サイトはオープンソースソフトウェアを利用しています。ライセンス情報は
+          本サイトはオープンソースソフトウェアを利用しています。
           <Link
             href="https://github.com/monadnadnad/iidx-rlt/blob/main/THIRD_PARTY_NOTICES.txt"
             target="_blank"
             rel="noopener noreferrer"
           >
-            こちら
+            ライセンス情報
           </Link>
-          をご覧ください。
         </Typography>
       </Box>
     </Page>

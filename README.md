@@ -51,3 +51,9 @@ KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレー
   - スマホメインで使われることを想定
 - PWA (Service Worker/Workbox)
   - ゲームセンターは通信環境の悪い地下にあることも多いので、オフラインで動くようにキャッシュ戦略を設定
+
+## データソース
+
+譜面URLや楽曲メタデータは
+[Textage.cc](https://textage.cc/) 様に帰属し、
+[IIDX Data Table](https://chinimuruhi.github.io/IIDX-Data-Table/) で公開されている JSON を加工して生成しています。

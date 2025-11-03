@@ -4,7 +4,7 @@
 
 ## 必要な環境
 
-- Node.js v22 以上（推奨: Volta などで 22.18.0 を固定）
+- Node.js v22 以上
 - pnpm 9 系
 
 ## セットアップ
@@ -22,9 +22,10 @@ cd iidx-rlt
 pnpm install
 ```
 
-### アプリケーションデータの生成
+### 曲データの生成
 
-ローカルに、楽曲マスターデータを生成する必要があります。
+以下で `public/data/songs.json` が生成されます。
+本番ではGitHub Actionsで main ブランチで手動でワークフローを実行します。
 
 ```
 pnpm gen-songs
@@ -46,8 +47,6 @@ pnpm test
 
 ## リンターとフォーマッターの実行
 
-以下のコマンドでリンターとフォーマッターを実行できます。
-
 ```bash
 pnpm lint
 pnpm format
@@ -55,9 +54,9 @@ pnpm format
 
 ## 4. プロジェクト構造
 
-- `public/`: 静的アセット（HTML、ブックマークレット、データファイルなど）
-- `scripts/`: データ生成やマスターデータ更新のためのスクリプト
-- `src/`: アプリケーションのソースコード
+- `public/`: 静的アセット（HTML、ブックマークレット、データ）
+- `scripts/songs`: 曲データを生成するスクリプト
+- `src/`: ソースコード
 
 ## データ管理
 
@@ -67,12 +66,13 @@ pnpm format
 
 #### `atari-rules.json` (当たり配置ルール):
 
-リポジトリ直下の `public/data/atari-rules.json` を直接編集して管理します。Zod スキーマ `atariRuleSchema` で構造が検証されます。
+リポジトリ直下の `public/data/atari-rules.json` を直接編集して管理します。
+Zod スキーマ `atariRuleSchema` で構造が検証されます。
 
 #### `songs.json` (楽曲マスターデータ):
 
 ```
-pnpm run gen-songs
+pnpm gen-songs
 ```
 
 ### ユーザーデータ
