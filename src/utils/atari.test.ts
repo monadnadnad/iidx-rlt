@@ -26,7 +26,7 @@ const createRule = (id: string, priority: number, title: string, pattern: Search
   patterns: [pattern],
 });
 
-describe(createAtariMap, () => {
+describe("createAtariMap", () => {
   describe("getRulesForSong", () => {
     it("マッチするものだけ返す", () => {
       const map = createAtariMap([createRule("a", 1, "A", p1), createRule("b", 1, "B", p2)]);
