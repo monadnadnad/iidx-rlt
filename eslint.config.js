@@ -23,6 +23,7 @@ const typeAwareRules = {
   "func-style": ["error", "expression", { allowArrowFunctions: true }],
 };
 
+const sourceFiles = ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"];
 const vitestTestFiles = ["src/**/*.test.ts", "src/**/*.test.tsx", "scripts/**/*.test.ts"];
 
 export default [
@@ -30,7 +31,7 @@ export default [
   ...tseslint.configs.recommendedTypeChecked,
   prettier,
   {
-    files: ["src/**/*.ts", "src/**/*.tsx"],
+    files: sourceFiles,
     languageOptions: typeAwareLanguageOptions,
     plugins: {
       "react-hooks": reactHooks,
@@ -38,13 +39,6 @@ export default [
     rules: {
       ...typeAwareRules,
       ...reactHooks.configs.recommended.rules,
-    },
-  },
-  {
-    files: ["scripts/**/*.ts"],
-    languageOptions: typeAwareLanguageOptions,
-    rules: {
-      ...typeAwareRules,
     },
   },
   {
@@ -61,6 +55,10 @@ export default [
     rules: {
       ...vitest.configs.recommended.rules,
       "@typescript-eslint/unbound-method": "off",
+      "vitest/prefer-strict-equal": "warn",
+      "vitest/padding-around-expect-groups": "warn",
+      "vitest/padding-around-all": "warn",
+      "vitest/padding-around-test-blocks": "warn",
     },
   },
 ];

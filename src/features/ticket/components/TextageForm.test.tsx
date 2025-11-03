@@ -33,7 +33,9 @@ describe("TextageForm", () => {
     await user.click(autocomplete);
     await user.type(autocomplete, "A");
     const optionElements = await screen.findAllByRole("option");
+
     expect(optionElements.length).toBeGreaterThan(0);
+
     await user.click(optionElements[0]);
 
     expect(onSongSelect).toHaveBeenCalledWith(song);

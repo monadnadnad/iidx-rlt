@@ -6,12 +6,14 @@ import { AppSnackbar } from "./AppSnackbar";
 describe("AppSnackbar", () => {
   it("openがfalseなら何も描画されない", () => {
     const { container } = render(<AppSnackbar open={false} onClose={() => {}} message="" severity="success" />);
+
     expect(container).toBeEmptyDOMElement();
   });
 
   it("messagが正しく表示される", () => {
     render(<AppSnackbar open={true} onClose={() => {}} message="テストメッセージ" severity="error" />);
     const alert = screen.getByRole("alert");
+
     expect(alert).toHaveTextContent("テストメッセージ");
   });
 

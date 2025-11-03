@@ -19,7 +19,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: false,
     };
     const result = filterTickets(sampleTickets, pattern, "1P");
-    expect(result.map((t) => t.laneText)).toEqual(["1234567"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["1234567"]);
   });
 
   it("1Pの順不同検索が正しく動作すること", () => {
@@ -30,7 +31,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: true,
     };
     const result = filterTickets(sampleTickets, pattern, "1P");
-    expect(result.map((t) => t.laneText)).toEqual(["1746352"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["1746352"]);
   });
 
   it("2Pの順序通り検索が正しく動作すること", () => {
@@ -41,7 +43,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: false,
     };
     const result = filterTickets(sampleTickets, pattern, "2P");
-    expect(result.map((t) => t.laneText)).toEqual(["7654321"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["7654321"]);
   });
 
   it("2Pの順不同検索が正しく動作すること", () => {
@@ -52,7 +55,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: true,
     };
     const result = filterTickets(sampleTickets, pattern, "2P");
-    expect(result.map((t) => t.laneText)).toEqual(["3645271"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["3645271"]);
   });
 
   it("ワイルドカード（皿側）が正しく動作すること", () => {
@@ -63,7 +67,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: false,
     };
     const result = filterTickets(sampleTickets, pattern, "1P");
-    expect(result.map((t) => t.laneText)).toEqual(["1234567"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["1234567"]);
   });
 
   it("ワイルドカード（非皿側）が正しく動作すること", () => {
@@ -74,7 +79,8 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: false,
     };
     const result = filterTickets(sampleTickets, pattern, "1P");
-    expect(result.map((t) => t.laneText)).toEqual(["1234567"]);
+
+    expect(result.map((t) => t.laneText)).toStrictEqual(["1234567"]);
   });
 
   it("不正な長さの検索条件の場合結果が空になること", () => {
@@ -85,6 +91,6 @@ describe("filterTickets", () => {
       isNonScratchSideUnordered: false,
     };
 
-    expect(filterTickets(sampleTickets, invalidPattern, "1P")).toEqual([]);
+    expect(filterTickets(sampleTickets, invalidPattern, "1P")).toStrictEqual([]);
   });
 });

@@ -21,7 +21,8 @@ describe("useTicketQuery", () => {
         result.current.handleTextageSongChange(mockSong);
         result.current.handlePageChange(5);
       });
-      expect(result.current.query.textageSong).toEqual(mockSong);
+
+      expect(result.current.query.textageSong).toStrictEqual(mockSong);
       expect(result.current.query.currentPage).toBe(5);
 
       act(() => {
@@ -41,13 +42,14 @@ describe("useTicketQuery", () => {
       act(() => {
         result.current.handlePageChange(5);
       });
+
       expect(result.current.query.currentPage).toBe(5);
 
       act(() => {
         result.current.handleTextageSongChange(mockSong);
       });
 
-      expect(result.current.query.textageSong).toEqual(mockSong);
+      expect(result.current.query.textageSong).toStrictEqual(mockSong);
       expect(result.current.query.currentPage).toBe(1);
     });
   });
@@ -59,6 +61,7 @@ describe("useTicketQuery", () => {
       act(() => {
         result.current.handlePageChange(5);
       });
+
       expect(result.current.query.currentPage).toBe(5);
 
       act(() => {
@@ -76,6 +79,7 @@ describe("useTicketQuery", () => {
       act(() => {
         result.current.handlePageChange(10);
       });
+
       expect(result.current.query.currentPage).toBe(10);
     });
   });

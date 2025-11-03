@@ -27,6 +27,7 @@ describe("AppDrawer", () => {
 
   it("タブが正しいパスにリンクされていること", () => {
     render(<TestComponent tabIndex={0} />);
+
     expect(screen.getByRole("link", { name: "インポート" })).toHaveAttribute("href", "/import");
     expect(screen.getByRole("link", { name: "チケット一覧" })).toHaveAttribute("href", "/tickets");
   });

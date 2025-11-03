@@ -43,7 +43,9 @@ describe("useImporter", () => {
     act(() => {
       result.current.importTickets("");
     });
+
     expect(result.current.state.status).toBe("error");
+
     act(() => {
       result.current.resetStatus();
     });

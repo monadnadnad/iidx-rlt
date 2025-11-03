@@ -13,6 +13,7 @@ describe("JsonImportForm", () => {
 
   it("テキストが空の場合、インポート実行ボタンが無効化される", () => {
     render(<JsonImportForm jsonText="" isLoading={false} />);
+
     expect(screen.getByRole("button", { name: "インポート実行" })).toBeDisabled();
   });
 
@@ -22,9 +23,11 @@ describe("JsonImportForm", () => {
     render(<JsonImportForm jsonText="[]" isLoading={false} onImportClick={mockOnImportClick} />);
 
     const importButton = screen.getByRole("button", { name: "インポート実行" });
+
     expect(importButton).toBeEnabled();
 
     await user.click(importButton);
+
     expect(mockOnImportClick).toHaveBeenCalled();
   });
 });

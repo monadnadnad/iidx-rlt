@@ -136,7 +136,9 @@ describe("createChartInfoToSongsSchema", () => {
     const result: Song[] = parser.parse(chartInfo);
 
     expect(result).toHaveLength(1);
+
     const song = result.at(0);
+
     expect(song?.difficulty).toBe("spa");
   });
 

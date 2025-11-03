@@ -9,6 +9,7 @@ describe("generatePatternKey", () => {
       nonScratchSideText: "****",
       isNonScratchSideUnordered: true,
     };
+
     expect(generatePatternKey(pattern)).toBe("s:147u|ns:****u");
   });
 
@@ -19,6 +20,7 @@ describe("generatePatternKey", () => {
       nonScratchSideText: "4567",
       isNonScratchSideUnordered: false,
     };
+
     expect(generatePatternKey(pattern)).toBe("s:123o|ns:4567o");
   });
 });
@@ -32,7 +34,8 @@ describe("parsePatternKey", () => {
       nonScratchSideText: "****",
       isNonScratchSideUnordered: true,
     };
-    expect(parsePatternKey(key)).toEqual(expectedPattern);
+
+    expect(parsePatternKey(key)).toStrictEqual(expectedPattern);
   });
 
   it("順序指定ありのキーからパターンを正しく解析する", () => {
@@ -43,6 +46,7 @@ describe("parsePatternKey", () => {
       nonScratchSideText: "4567",
       isNonScratchSideUnordered: false,
     };
-    expect(parsePatternKey(key)).toEqual(expectedPattern);
+
+    expect(parsePatternKey(key)).toStrictEqual(expectedPattern);
   });
 });
