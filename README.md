@@ -36,8 +36,7 @@ KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレー
   - → よく知られた配置（2461357）以外のチケットの使い道がわからない
 
 本ツールは、いわゆる「当たり配置」になる曲を推薦することで、知識がなくてもチケットの使い道を見つけられるようにします。
-なにが当たり配置なのかの定義は主観が入りますが、「譜面の難所が左右に分かれて簡単になる」を基準に、なるべく多くのプレイヤーに当てはまるようにしています。
-曲ごとの当たり配置定義は、 [Google Spread Sheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pubhtml) で管理しています。
+当たり配置の定義は主観が入りますが、「譜面の難所が左右に分散して簡単になる」を基準に、なるべく多くのプレイヤー向けにしています。
 
 ## 構成
 
@@ -48,8 +47,7 @@ KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレー
 - CI/CD: GitHub Actions
 - 収集: Google Analytics
 
-beatmania IIDXはアーケードゲームなので、ゲームセンターでスマホで使うことをメインに想定して、以下をしています
-
 - レスポンシブ対応
+  - スマホメインで使われることを想定
 - PWA (Service Worker/Workbox)
   - ゲームセンターは通信環境の悪い地下にあることも多いので、オフラインで動くようにキャッシュ戦略を設定

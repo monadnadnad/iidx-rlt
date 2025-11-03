@@ -12,7 +12,6 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "gen-songs": "tsx ./scripts/songs/gen-songs.ts",
-    "storybook": "storybook dev -p 6006",
     "license-check": "npx license-checker --production --markdown > THIRD_PARTY_NOTICES.txt"
   },
   "overrides": {
@@ -41,12 +40,7 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^4.1.0",
     "@eslint/js": "^9.33.0",
-    "@storybook/addon-a11y": "^9.1.2",
-    "@storybook/addon-docs": "^9.1.2",
-    "@storybook/addon-onboarding": "^9.1.2",
-    "@storybook/react-vite": "^9.1.2",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -61,7 +55,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-storybook": "^9.1.2",
     "eslint-plugin-vitest": "^0.5.4",
     "jsdom": "^26.1.0",
     "license-checker": "^25.0.1",
@@ -69,7 +62,6 @@
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "sitemap": "^8.0.0",
-    "storybook": "^9.0.12",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.1",

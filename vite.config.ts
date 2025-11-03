@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
-import { defineConfig } from "vite";
+import { defineConfig, type PluginOption } from "vite";
 import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -13,7 +13,7 @@ export default defineConfig(() => {
       checker({
         typescript: true,
       }),
-      visualizer(),
+      visualizer() as PluginOption,
       VitePWA({
         registerType: "prompt",
         manifest: {
@@ -63,7 +63,7 @@ export default defineConfig(() => {
       setupFiles: "./src/test/setup.ts",
       coverage: {
         include: ["src/**/*.{ts,tsx}"],
-        exclude: ["src/**/*.stories.tsx", "src/types.ts", "src/storage/index.ts"],
+        exclude: ["src/{pages,test}", "src/types.ts", "src/storage/index.ts"],
       },
     },
     ssr: {
