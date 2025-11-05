@@ -3,16 +3,19 @@
   "javascript.preferences.importModuleSpecifier": "relative",
   "[typescript]": {
     "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
       "source.organizeImports": "always"
     }
   },
   "[typescriptreact]": {
     "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
       "source.organizeImports": "always"
     }
   },
   "[javascript]": {
     "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
       "source.organizeImports": "always"
     }
   }

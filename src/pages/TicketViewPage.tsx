@@ -92,6 +92,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
       const eventName = query.filterMode === "recommend" ? "click_textage_link_recommend" : "click_textage_link_all";
       ReactGA.event(eventName, {
         song_title: query.textageSong.title,
+        difficulty: query.textageSong.difficulty,
         lane_text: laneText,
         play_side: playSide,
       });
