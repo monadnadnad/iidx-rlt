@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { jaJP } from "@mui/x-date-pickers/locales";
@@ -10,7 +10,6 @@ import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { LaneTextInput } from "../../../components/ui/LaneTextInput";
 import { Ticket } from "../../../types";
 import { createLaneTextSchema } from "../../../utils/laneText";
 
@@ -55,7 +54,36 @@ export const ManualImportForm = ({ onImport, isLoading }: ManualImportFormProps)
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2} alignItems="flex-start">
           <Stack direction="row" spacing={2} alignItems="flex-start">
-            <LaneTextInput name="laneText" label="チケット" length={7} placeholder="1234567" />
+            <Controller
+              name="laneText"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label="チケット"
+                  placeholder="1234567"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message ?? "例: 1234567"}
+                  slotProps={{
+                    inputLabel: { shrink: true },
+                    input: {
+                      inputProps: {
+                        maxLength: 7,
+                        inputMode: "tel",
+                        style: {
+                          textAlign: "center",
+                          letterSpacing: "0.8em",
+                          fontFamily: "monospace",
+                          fontWeight: "bold",
+                          padding: "0.5em",
+                        },
+                      },
+                    },
+                  }}
+                  sx={{ width: "15em" }}
+                />
+              )}
+            />
             <Button type="submit" variant="contained" disabled={isLoading}>
               追加
             </Button>
