@@ -3,22 +3,19 @@ import { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { describe, expect, it } from "vitest";
 
-import { SearchFormValues } from "../../../schema";
-import { useSettingsStore } from "../../../store/settingsStore";
-import { PlaySide } from "../../../types";
+import { SearchFormValues } from "../hooks/useTicketQuery";
 import { TicketSearchForm } from "./TicketSearchForm";
 
 describe("TicketSearchForm", () => {
-  const FormWrapper: React.FC<PropsWithChildren<{ playSide: PlaySide }>> = ({ children, playSide }) => {
+  const FormWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     const methods = useForm<SearchFormValues>();
-    useSettingsStore.setState({ playSide });
     return <FormProvider {...methods}>{children}</FormProvider>;
   };
 
   it("1P設定で必要な入力欄が正しく表示される", () => {
     render(
-      <FormWrapper playSide="1P">
-        <TicketSearchForm />
+      <FormWrapper>
+        <TicketSearchForm playSide="1P" />
       </FormWrapper>
     );
 
@@ -28,8 +25,8 @@ describe("TicketSearchForm", () => {
 
   it("2P設定で必要な入力欄が正しく表示される", () => {
     render(
-      <FormWrapper playSide="2P">
-        <TicketSearchForm />
+      <FormWrapper>
+        <TicketSearchForm playSide="2P" />
       </FormWrapper>
     );
 

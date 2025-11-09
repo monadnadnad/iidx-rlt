@@ -1,8 +1,19 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
-import { searchFormSchema, SearchFormValues } from "../../../schema";
+import { z } from "zod";
+
 import { FilterMode, SongInfo, TicketQuery, SearchPattern } from "../../../types";
+import { createLaneTextSchema } from "../../../utils/laneText";
+
+export const searchFormSchema = z.object({
+  scratchSideText: createLaneTextSchema(3, { allowWildcard: true, requireFullLength: false }),
+  isScratchSideUnordered: z.boolean(),
+  nonScratchSideText: createLaneTextSchema(4, { allowWildcard: true, requireFullLength: false }),
+  isNonScratchSideUnordered: z.boolean(),
+});
+
+export type SearchFormValues = z.infer<typeof searchFormSchema>;
 
 const defaultSearchPattern: SearchPattern = {
   scratchSideText: "",

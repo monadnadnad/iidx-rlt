@@ -117,7 +117,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <PlaySideToggle value={playSide} onChange={handlePlaySideChange} />
-          <TicketSearchForm />
+          <TicketSearchForm playSide={playSide} />
           <Divider />
           <TextageForm
             allSongs={songs ?? []}
