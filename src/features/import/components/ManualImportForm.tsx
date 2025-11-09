@@ -8,10 +8,18 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { LaneTextInput } from "../../../components/ui/LaneTextInput";
-import { manualImportFormSchema, ManualImportFormValues } from "../../../schema";
 import { Ticket } from "../../../types";
+import { createLaneTextSchema } from "../../../utils/laneText";
+
+export const manualImportFormSchema = z.object({
+  laneText: createLaneTextSchema(7, { allowWildcard: false, requireFullLength: true }),
+  expiration: z.string().optional(),
+});
+
+export type ManualImportFormValues = z.input<typeof manualImportFormSchema>;
 
 interface ManualImportFormProps {
   onImport?: (ticket: Ticket) => void;

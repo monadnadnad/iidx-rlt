@@ -1,5 +1,6 @@
 import { getTheme } from "./theme";
-import type { AtariRule as SchemaAtariRule, SearchPattern as SchemaSearchPattern, Song as SchemaSong } from "./schema";
+import type { Song as SchemaSong } from "./schema/song";
+import type { AtariRule as SchemaAtariRule } from "./schema/atari-rule";
 
 export interface Ticket {
   laneText: string;
@@ -9,7 +10,12 @@ export interface Ticket {
 const _theme = getTheme("light");
 export type HighlightColor = keyof typeof _theme.palette.highlight | undefined;
 
-export type SearchPattern = SchemaSearchPattern;
+export type SearchPattern = {
+  scratchSideText: string;
+  isScratchSideUnordered: boolean;
+  nonScratchSideText: string;
+  isNonScratchSideUnordered: boolean;
+};
 
 export type PlaySide = "1P" | "2P";
 
