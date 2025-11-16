@@ -8,6 +8,9 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(() => {
   return {
     base: "/iidx-rlt/",
+    server: {
+      host: true,
+    },
     plugins: [
       react(),
       checker({

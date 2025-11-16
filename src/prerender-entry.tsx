@@ -1,4 +1,5 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import "fake-indexeddb/auto";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { HelmetProvider, HelmetServerState } from "react-helmet-async";

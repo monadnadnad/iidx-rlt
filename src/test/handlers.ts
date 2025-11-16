@@ -39,11 +39,19 @@ const MOCK_SONGS = [
   },
 ];
 
+const MOCK_SONGS_VERSION = {
+  version: "test-version",
+  count: MOCK_SONGS.length,
+};
+
 export const handlers = [
   http.get("*/iidx-rlt/data/atari-rules.json", () => {
     return HttpResponse.json(MOCK_ATARI_RULES);
   }),
   http.get("*/iidx-rlt/data/songs.json", () => {
     return HttpResponse.json(MOCK_SONGS);
+  }),
+  http.get("*/iidx-rlt/data/songs.version.json", () => {
+    return HttpResponse.json(MOCK_SONGS_VERSION);
   }),
 ];
