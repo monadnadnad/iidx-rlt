@@ -1,5 +1,5 @@
 import { getTheme } from "./theme";
-import type { Song as SchemaSong } from "./schema/song";
+import type { Song } from "./schema/song";
 import type { AtariRule as SchemaAtariRule } from "./schema/atari-rule";
 
 export interface Ticket {
@@ -19,8 +19,6 @@ export type SearchPattern = {
 
 export type PlaySide = "1P" | "2P";
 
-export type SongInfo = Pick<SchemaSong, "id" | "songId" | "title" | "url" | "difficulty" | "level">;
-
 export type AtariRule = SchemaAtariRule;
 
 export interface AppSettings {
@@ -37,7 +35,7 @@ export type FilterMode = "recommend" | "all";
 
 export type TicketQuery = SearchPattern & {
   filterMode: FilterMode;
-  textageSong: SongInfo | null;
+  textageSong: Song | null;
   itemsPerPage: number;
   currentPage: number;
 };

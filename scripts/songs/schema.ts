@@ -49,6 +49,7 @@ export const iidxDataTableChartInfoValueSchema = z.strictObject({
 });
 
 export const iidxDataTableTitleSchema = z.record(z.string(), z.string());
+export const iidxDataTableNormalizedTitleSchema = z.record(z.string(), z.string());
 export const iidxDataTableTextageTagSchema = z.record(z.string(), z.string());
 export const iidxDataTableChartInfoSchema = z.record(z.string(), iidxDataTableChartInfoValueSchema);
 export const iidxDataTableChartInfoWithIdSchema = iidxDataTableChartInfoValueSchema.extend({ id: z.string() });
@@ -66,6 +67,7 @@ export type ChartInfoDependencies = {
   titlesById: Map<string, string>;
   textageTagsById: Map<string, string>;
   songInfoById: Map<string, SongMetadata>;
+  normalizedTitlesById?: Map<string, string>;
   targetDifficulties?: readonly Difficulty[];
   targetLevels?: readonly number[];
 };
@@ -100,10 +102,13 @@ const resolveBpmValue = (value: ChartInfo["bpm"], index: number): BpmSingle | nu
   return candidate ?? null;
 };
 
+const fallbackNormalizeTitle = (value: string) => value.normalize("NFKC");
+
 export const createChartInfoToSongsSchema = ({
   titlesById,
   textageTagsById,
   songInfoById,
+  normalizedTitlesById,
   targetDifficulties = TARGET_DIFFICULTIES,
   targetLevels = TARGET_LEVELS,
 }: ChartInfoDependencies) =>
@@ -123,6 +128,8 @@ export const createChartInfoToSongsSchema = ({
       if (!songInfo) {
         throw new Error(`song-info.json is missing entry for chart id "${chart.id}"`);
       }
+
+      const normalizedTitle = normalizedTitlesById?.get(chart.id) ?? fallbackNormalizeTitle(title);
 
       const songs = targetDifficulties.flatMap((difficulty) => {
         const index = SP_DIFFICULTY_INDEX[difficulty];
@@ -153,6 +160,7 @@ export const createChartInfoToSongsSchema = ({
             id: `${chart.id}-${difficulty}`,
             songId: chart.id,
             title,
+            titleNormalized: normalizedTitle,
             artist: songInfo.artist,
             genre: songInfo.genre,
             version: songInfo.version,

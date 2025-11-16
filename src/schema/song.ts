@@ -6,6 +6,7 @@ export const songSchema = z.object({
   id: z.string(),
   songId: z.string(),
   title: z.string(),
+  titleNormalized: z.string(),
   version: z.number().int().min(-1),
   url: z.url(),
   difficulty: difficultySchema,

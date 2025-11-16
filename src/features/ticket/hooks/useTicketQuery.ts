@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 
-import { FilterMode, SongInfo, TicketQuery, SearchPattern } from "../../../types";
+import { FilterMode, TicketQuery, SearchPattern } from "../../../types";
+import type { Song } from "../../../schema/song";
 import { createLaneTextSchema } from "../../../utils/laneText";
 
 export const searchFormSchema = z.object({
@@ -30,7 +31,7 @@ export const useTicketQuery = () => {
   });
 
   const [filterMode, setFilterMode] = useState<FilterMode>("recommend");
-  const [textageSong, setTextageSong] = useState<SongInfo | null>(null);
+  const [textageSong, setTextageSong] = useState<Song | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -40,7 +41,7 @@ export const useTicketQuery = () => {
     setCurrentPage(1);
   }, []);
 
-  const handleTextageSongChange = useCallback((song: SongInfo | null) => {
+  const handleTextageSongChange = useCallback((song: Song | null) => {
     setTextageSong(song);
     setCurrentPage(1);
   }, []);

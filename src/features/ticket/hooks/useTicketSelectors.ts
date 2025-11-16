@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import { AtariRule, PlaySide, SongInfo, Ticket, TicketQuery } from "../../../types";
+import { AtariRule, PlaySide, Ticket, TicketQuery } from "../../../types";
 import { createAtariMap } from "../../../utils/atari";
 import { filterTickets, matchTicket } from "../../../utils/match";
 
 export const useTicketSelectors = (
   tickets: Ticket[],
-  songs: SongInfo[],
   atariRules: AtariRule[],
   query: TicketQuery,
   playSide: PlaySide
@@ -72,14 +71,8 @@ export const useTicketSelectors = (
     [pageSlice, atariMap, playSide]
   );
 
-  const atariSongs = useMemo(
-    () => songs.filter((song) => (atariMap.getRulesForSong(song.songId, song.difficulty) ?? []).length > 0),
-    [songs, atariMap]
-  );
-
   return {
     atariMap,
-    atariSongs,
     selectedAtariRules,
     paginatedTickets,
     pageCount,

@@ -1,7 +1,8 @@
 import { renderHook } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { useTicketSelectors } from "./useTicketSelectors";
-import { AtariRule, PlaySide, SongInfo, Ticket, TicketQuery } from "../../../types";
+import { AtariRule, PlaySide, Ticket, TicketQuery } from "../../../types";
+import type { Song } from "../../../schema/song";
 
 const mockAtariRule: AtariRule = {
   id: "test",
@@ -20,10 +21,12 @@ const mockAtariRule: AtariRule = {
   ],
 };
 
-const mockSong: SongInfo = {
+const mockSong: Song = {
   id: "song-1-spa",
   songId: "song-1",
   title: "Test",
+  titleNormalized: "Test",
+  version: 10,
   url: "",
   difficulty: "spa",
   level: 12,
@@ -33,7 +36,6 @@ const matchingTicket: Ticket = { laneText: "3214567" };
 const nonMatchingTicket: Ticket = { laneText: "4561237" };
 
 const mockTickets = [matchingTicket, nonMatchingTicket];
-const mockSongs = [mockSong];
 const mockAtariRules = [mockAtariRule];
 const playSide: PlaySide = "1P";
 
@@ -50,9 +52,7 @@ describe("useTicketSelectors", () => {
       isNonScratchSideUnordered: true,
     };
 
-    const { result } = renderHook(() =>
-      useTicketSelectors(mockTickets, mockSongs, mockAtariRules, mockQuery, playSide)
-    );
+    const { result } = renderHook(() => useTicketSelectors(mockTickets, mockAtariRules, mockQuery, playSide));
 
     expect(result.current.paginatedTickets).toHaveLength(1);
     expect(result.current.paginatedTickets[0].laneText).toBe(matchingTicket.laneText);
@@ -70,9 +70,7 @@ describe("useTicketSelectors", () => {
       isNonScratchSideUnordered: true,
     };
 
-    const { result } = renderHook(() =>
-      useTicketSelectors(mockTickets, mockSongs, mockAtariRules, mockQuery, playSide)
-    );
+    const { result } = renderHook(() => useTicketSelectors(mockTickets, mockAtariRules, mockQuery, playSide));
 
     expect(result.current.paginatedTickets).toHaveLength(2);
   });
