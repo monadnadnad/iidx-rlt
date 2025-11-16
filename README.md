@@ -40,20 +40,24 @@ KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレー
 
 ## 構成
 
-- React, TypeScript, Vite
-- Library: MUI, React Hook Form, Zod
-- Lint/Format: ESLint, Prettier
-- Test: Vitest, Testing Library
+- React, TypeScript, Vite, IndexedDB (Dexie)
+- MUI, React Hook Form, Zod
+- ESLint, Prettier
+- Vitest, Testing Library
 - CI/CD: GitHub Actions
 - 収集: Google Analytics
 
 - レスポンシブ対応
   - スマホメインで使われることを想定
-- PWA (Service Worker/Workbox)
-  - ゲームセンターは通信環境の悪い地下にあることも多いので、オフラインで動くようにキャッシュ戦略を設定
+- PWA (Service Worker / Workbox)
+  - ゲームセンターは通信環境の悪い（最近はそうでもない気もする）地下にあることも多く、オフラインで動くようにキャッシュ戦略を設定
 
 ## データソース
 
 譜面URLや楽曲メタデータは
 [Textage.cc](https://textage.cc/) 様に帰属し、
 [IIDX Data Table](https://chinimuruhi.github.io/IIDX-Data-Table/) で公開されている JSON を加工して生成しています。
+
+## 開発
+
+[developer.md](./docs/developer.md)

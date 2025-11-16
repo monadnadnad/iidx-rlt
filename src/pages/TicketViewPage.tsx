@@ -4,9 +4,11 @@ import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router";
 import useSWR from "swr";
+import { useLiveQuery } from "dexie-react-hooks";
 
 import { Page } from "../components/layout/Page";
 import { PlaySideToggle } from "../components/ui/PlaySideToggle";
+import { songsDb } from "../db/songsDb";
 import { AtariInfoSheet } from "../features/ticket/components/AtariInfoSheet";
 import { AtariRuleCard } from "../features/ticket/components/AtariRuleCard";
 import { TextageForm } from "../features/ticket/components/TextageForm";
@@ -35,20 +37,21 @@ const sampleTickets: Ticket[] = [
   { laneText: "1564237", expiration: "2999/12/31" }, // AIR RAID 2P
 ];
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 interface TicketViewPageProps {
   isSample?: boolean;
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const { data: songs, isLoading: isSongDataLoading } = useSWR<SongInfo[]>(
-    `${import.meta.env.BASE_URL}data/songs.json`,
-    fetcher
+  const songsFromDexie = useLiveQuery(() => songsDb.songs.toArray(), [], undefined);
+  const { data: songsFromServer } = useSWR<SongInfo[]>(
+    import.meta.env.SSR ? `${import.meta.env.BASE_URL}data/songs.json` : null,
+    (url: string) => fetch(url).then((res) => res.json())
   );
+  const songs = songsFromDexie ?? songsFromServer;
+  const isSongDataLoading = !isSample && !songs;
   const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
     `${import.meta.env.BASE_URL}data/atari-rules.json`,
-    fetcher
+    (url: string) => fetch(url).then((res) => res.json())
   );
 
   const persistentTickets = useTicketsStore((s) => s.tickets);

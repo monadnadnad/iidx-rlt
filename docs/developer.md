@@ -42,7 +42,7 @@ pnpm dev
 ## テストの実行
 
 ```
-pnpm test
+pnpm vitest run
 ```
 
 ## リンターとフォーマッターの実行
@@ -69,7 +69,7 @@ pnpm format
 リポジトリ直下の `public/data/atari-rules.json` を直接編集して管理します。
 Zod スキーマ `atariRuleSchema` で構造が検証されます。
 
-#### `songs.json` (楽曲マスターデータ):
+#### `songs.json` / `songs.version.json` (楽曲データ):
 
 ```
 pnpm gen-songs

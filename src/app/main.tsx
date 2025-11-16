@@ -4,11 +4,16 @@ import ReactGA from "react-ga4";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router";
 
+import { syncSongsIfNeeded } from "../lib/songsSync";
 import { WebApp } from "./WebApp";
 
 const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
 if (measurementId) {
   ReactGA.initialize(measurementId);
+}
+
+if (!import.meta.env.SSR && typeof window !== "undefined") {
+  void syncSongsIfNeeded();
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

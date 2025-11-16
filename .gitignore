@@ -138,5 +138,6 @@ dist
 # custom
 stats.html
 public/data/songs.json
-docs/ai
+public/data/songs.version.json
+.docs/
 .serena/

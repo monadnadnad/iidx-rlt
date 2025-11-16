@@ -15,7 +15,13 @@ import {
 } from "./schema";
 
 const OUTPUT_RELATIVE_PATH = "public/data/songs.json";
+const VERSION_OUTPUT_RELATIVE_PATH = "public/data/songs.version.json";
 const DATA_SOURCE_URL = "https://chinimuruhi.github.io/IIDX-Data-Table/textage/";
+
+type SongsVersion = {
+  version: string;
+  count: number;
+};
 
 type ResourceKey = "title" | "textage-tag" | "chart-info" | "song-info";
 
@@ -74,12 +80,21 @@ export const generateSongsData = async () => {
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(sortedSongs, null, 2)}\n`, "utf-8");
 
-  return { count: sortedSongs.length, outputPath };
+  const songsVersion: SongsVersion = {
+    version: new Date().toISOString(),
+    count: sortedSongs.length,
+  };
+  const versionOutputPath = resolve(projectRoot, VERSION_OUTPUT_RELATIVE_PATH);
+  await mkdir(dirname(versionOutputPath), { recursive: true });
+  await writeFile(versionOutputPath, `${JSON.stringify(songsVersion, null, 2)}\n`, "utf-8");
+
+  return { count: sortedSongs.length, outputPath, versionOutputPath, version: songsVersion.version };
 };
 
 const main = async () => {
-  const { count, outputPath } = await generateSongsData();
+  const { count, outputPath, versionOutputPath, version } = await generateSongsData();
   console.log(`Generated ${count} songs to ${outputPath}`);
+  console.log(`Wrote version metadata (${version}) to ${versionOutputPath}`);
 };
 
 const isExecutedDirectly = () => {
