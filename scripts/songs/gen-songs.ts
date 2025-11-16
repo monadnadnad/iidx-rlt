@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   createChartInfoToSongsSchema,
   iidxDataTableChartInfoSchema,
+  iidxDataTableNormalizedTitleSchema,
   iidxDataTableSongInfoSchema,
   iidxDataTableTextageTagSchema,
   iidxDataTableTitleSchema,
@@ -23,13 +24,14 @@ type SongsVersion = {
   count: number;
 };
 
-type ResourceKey = "title" | "textage-tag" | "chart-info" | "song-info";
+type ResourceKey = "title" | "textage-tag" | "chart-info" | "song-info" | "normalized-title";
 
 const RESOURCE_FILENAMES: Record<ResourceKey, string> = {
   title: "title.json",
   "textage-tag": "textage-tag.json",
   "chart-info": "chart-info.json",
   "song-info": "song-info.json",
+  "normalized-title": "normalized-title.json",
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,22 +51,25 @@ const fetchJsonResource = async (resource: ResourceKey): Promise<unknown> => {
 };
 
 export const generateSongsData = async () => {
-  const [titlesRaw, textageTagsRaw, chartInfoRaw, songInfoRaw] = await Promise.all([
+  const [titlesRaw, textageTagsRaw, chartInfoRaw, songInfoRaw, normalizedTitlesRaw] = await Promise.all([
     fetchJsonResource("title"),
     fetchJsonResource("textage-tag"),
     fetchJsonResource("chart-info"),
     fetchJsonResource("song-info"),
+    fetchJsonResource("normalized-title"),
   ]);
 
   const titlesMap = new Map(Object.entries(iidxDataTableTitleSchema.parse(titlesRaw)));
   const textageTagsMap = new Map(Object.entries(iidxDataTableTextageTagSchema.parse(textageTagsRaw)));
   const chartInfoRecord = iidxDataTableChartInfoSchema.parse(chartInfoRaw);
   const songInfoMap = new Map(Object.entries(iidxDataTableSongInfoSchema.parse(songInfoRaw)));
+  const normalizedTitlesMap = new Map(Object.entries(iidxDataTableNormalizedTitleSchema.parse(normalizedTitlesRaw)));
 
   const parser = createChartInfoToSongsSchema({
     titlesById: titlesMap,
     textageTagsById: textageTagsMap,
     songInfoById: songInfoMap,
+    normalizedTitlesById: normalizedTitlesMap,
     targetDifficulties: TARGET_DIFFICULTIES,
     targetLevels: TARGET_LEVELS,
   });

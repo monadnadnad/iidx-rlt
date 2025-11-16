@@ -12,6 +12,7 @@ const createParser = (overrides?: {
   textageTagsById?: Map<string, string>;
   targetDifficulties?: readonly Difficulty[];
   targetLevels?: readonly number[];
+  normalizedTitlesById?: Map<string, string>;
 }): ChartInfoParser =>
   createChartInfoToSongsSchema({
     titlesById:
@@ -42,6 +43,16 @@ const createParser = (overrides?: {
       ["5678", { artist: "Missing Title Artist", genre: "Missing Title Genre", version: 25 }],
       ["9999", { artist: "Filtered Artist", genre: "Filtered Genre", version: 24 }],
     ]),
+    normalizedTitlesById:
+      overrides?.normalizedTitlesById ??
+      new Map([
+        ["1234", "ExampleSong"],
+        ["2468", "ArrayBPMSong"],
+        ["4680", "ObjectBPMSong"],
+        ["5791", "ZeroNotesSong"],
+        ["5678", "MissingTitle"],
+        ["9999", "FilteredSong"],
+      ]),
     targetDifficulties: overrides?.targetDifficulties ?? TARGET_DIFFICULTIES,
     targetLevels: overrides?.targetLevels ?? TARGET_LEVELS,
   });
@@ -71,6 +82,7 @@ describe("createChartInfoToSongsSchema", () => {
       id: "1234-sph",
       songId: "1234",
       title: "Example Song",
+      titleNormalized: "ExampleSong",
       version: 29,
       url: "https://textage.cc/score/29/example-tag.html?1HB00",
       difficulty: "sph",
@@ -80,6 +92,7 @@ describe("createChartInfoToSongsSchema", () => {
       id: "1234-spa",
       songId: "1234",
       title: "Example Song",
+      titleNormalized: "ExampleSong",
       version: 29,
       url: "https://textage.cc/score/29/example-tag.html?1AC00",
       difficulty: "spa",
