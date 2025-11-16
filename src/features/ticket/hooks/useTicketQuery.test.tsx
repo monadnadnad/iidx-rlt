@@ -1,12 +1,14 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { useTicketQuery } from "./useTicketQuery";
-import { SongInfo } from "../../../types";
+import type { Song } from "../../../schema/song";
 
-const mockSong: SongInfo = {
+const mockSong: Song = {
   id: "1234-spa",
   songId: "1234",
   title: "A",
+  titleNormalized: "A",
+  version: 7,
   url: "https://textage.cc/score/7/a_amuro.html?1AC00",
   difficulty: "spa",
   level: 12,

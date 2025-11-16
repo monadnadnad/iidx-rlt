@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Paper,
   Stack,
   TextField,
   ToggleButton,
@@ -7,20 +8,29 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { SongInfo } from "../../../types";
+import { useCallback, useState } from "react";
+import type { Song } from "../../../schema/song";
+import { TextageFilterSection, type TextageFilterOption } from "./TextageFilterSection";
+import { useTextageSongOptions, type SongDifficulty, type RecommendedChart } from "../hooks/useTextageSongOptions";
+
+const DIFFICULTY_OPTIONS: { label: string; value: SongDifficulty }[] = [
+  { label: "SPH", value: "sph" },
+  { label: "SPA", value: "spa" },
+  { label: "SPL", value: "spl" },
+];
+
+const LEVEL_OPTIONS = [10, 11, 12] as const;
 
 interface TextageFormProps {
-  allSongs: SongInfo[];
-  atariSongs: SongInfo[];
-  selectedSong: SongInfo | null;
-  onSongSelect?: (_song: SongInfo | null) => void;
+  recommendedCharts: ReadonlyArray<RecommendedChart>;
+  selectedSong: Song | null;
+  onSongSelect?: (_song: Song | null) => void;
   searchMode: "recommend" | "all";
   onModeChange?: (_mode: "recommend" | "all") => void;
 }
 
 export const TextageForm: React.FC<TextageFormProps> = ({
-  allSongs,
-  atariSongs,
+  recommendedCharts,
   selectedSong,
   onSongSelect,
   searchMode,
@@ -28,6 +38,11 @@ export const TextageForm: React.FC<TextageFormProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [inputValue, setInputValue] = useState("");
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Set<SongDifficulty>>(
+    () => new Set(DIFFICULTY_OPTIONS.map((option) => option.value))
+  );
+  const [selectedLevels, setSelectedLevels] = useState<Set<number>>(() => new Set(LEVEL_OPTIONS));
 
   const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: "recommend" | "all" | null) => {
     if (newMode !== null) {
@@ -37,38 +52,107 @@ export const TextageForm: React.FC<TextageFormProps> = ({
     }
   };
 
-  const songs = searchMode === "recommend" ? atariSongs : allSongs;
-  const placeholder = searchMode === "recommend" ? "当たり配置が定義済みの曲を検索" : "曲名で検索 (例: 冥)";
+  const formatSongLabel = useCallback(
+    (song: Song) => `${song.title} [${song.difficulty.toUpperCase().replace("SP", "")}]`,
+    []
+  );
+  const { filteredSongs, placeholder, isLoading } = useTextageSongOptions({
+    recommendedCharts,
+    searchMode,
+    selectedDifficulties,
+    selectedLevels,
+    inputValue,
+    formatSongLabel,
+  });
 
-  const formatSongLabel = (song: SongInfo) => `${song.title} [${song.difficulty.toUpperCase().replace("SP", "")}]`;
+  const handleLevelToggle = (level: number) => {
+    setSelectedLevels((prev) => {
+      const next = new Set(prev);
+      if (next.has(level)) {
+        next.delete(level);
+      } else {
+        next.add(level);
+      }
+      if (selectedSong && !next.has(selectedSong.level)) {
+        onSongSelect?.(null);
+      }
+      return next;
+    });
+  };
+
+  const handleDifficultyToggle = (difficulty: SongDifficulty) => {
+    setSelectedDifficulties((prev) => {
+      const next = new Set(prev);
+      if (next.has(difficulty)) {
+        next.delete(difficulty);
+      } else {
+        next.add(difficulty);
+      }
+      if (selectedSong && !next.has(selectedSong.difficulty as SongDifficulty)) {
+        onSongSelect?.(null);
+      }
+      return next;
+    });
+  };
 
   return (
-    <Stack spacing={2}>
-      <ToggleButtonGroup
-        value={searchMode}
-        exclusive
-        onChange={handleModeChange}
-        aria-label="search mode"
-        size="large"
-        color="primary"
-      >
-        <ToggleButton value="recommend" aria-label="recommend search">
-          おすすめから検索
-        </ToggleButton>
-        <ToggleButton value="all" aria-label="all songs search">
-          全楽曲から検索
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Autocomplete
-        options={songs}
-        getOptionLabel={formatSongLabel}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        value={selectedSong}
-        onChange={(_event, newValue) => onSongSelect?.(newValue)}
-        slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
-        renderInput={(params) => <TextField {...params} label="楽曲を選択" placeholder={placeholder} />}
-        sx={{ maxWidth: "500px" }}
-      />
+    <Stack spacing={3} sx={{ width: "100%", maxWidth: 720, mx: "auto" }}>
+      <Paper variant="outlined" sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+        <ToggleButtonGroup
+          value={searchMode}
+          exclusive
+          onChange={handleModeChange}
+          aria-label="search mode"
+          size={isMobile ? "medium" : "large"}
+          color="primary"
+          sx={{ alignSelf: isMobile ? "stretch" : "flex-start" }}
+        >
+          <ToggleButton value="recommend" aria-label="recommend search">
+            おすすめから検索
+          </ToggleButton>
+          <ToggleButton value="all" aria-label="all songs search">
+            全楽曲から検索
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <Stack direction="row" spacing={2} useFlexGap sx={{ width: "100%", flexWrap: "wrap" }}>
+          <TextageFilterSection
+            title="難易度で絞り込み"
+            options={DIFFICULTY_OPTIONS.map<TextageFilterOption>((option) => ({
+              key: option.value,
+              label: option.label,
+              checked: selectedDifficulties.has(option.value),
+              onToggle: () => handleDifficultyToggle(option.value),
+            }))}
+          />
+          <TextageFilterSection
+            title="レベルで絞り込み"
+            options={LEVEL_OPTIONS.map<TextageFilterOption>((level) => ({
+              key: level,
+              label: `Lv. ${level}`,
+              checked: selectedLevels.has(level),
+              onToggle: () => handleLevelToggle(level),
+            }))}
+          />
+        </Stack>
+        <Autocomplete
+          options={filteredSongs}
+          getOptionLabel={formatSongLabel}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          value={selectedSong}
+          onChange={(_event, newValue) => onSongSelect?.(newValue)}
+          inputValue={inputValue}
+          onInputChange={(_event, value) => setInputValue(value)}
+          filterOptions={(options) => options}
+          loading={isLoading}
+          renderOption={(props, option) => (
+            <li {...props} key={option.id}>
+              {formatSongLabel(option)}
+            </li>
+          )}
+          slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
+          renderInput={(params) => <TextField {...params} label="楽曲を選択" placeholder={placeholder} />}
+        />
+      </Paper>
     </Stack>
   );
 };

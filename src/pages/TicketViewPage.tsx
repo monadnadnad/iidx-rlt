@@ -4,11 +4,9 @@ import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router";
 import useSWR from "swr";
-import { useLiveQuery } from "dexie-react-hooks";
 
 import { Page } from "../components/layout/Page";
 import { PlaySideToggle } from "../components/ui/PlaySideToggle";
-import { songsDb } from "../db/songsDb";
 import { AtariInfoSheet } from "../features/ticket/components/AtariInfoSheet";
 import { AtariRuleCard } from "../features/ticket/components/AtariRuleCard";
 import { TextageForm } from "../features/ticket/components/TextageForm";
@@ -17,9 +15,10 @@ import { TicketResultsSection } from "../features/ticket/components/TicketResult
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { useTicketQuery } from "../features/ticket/hooks/useTicketQuery";
 import { useTicketSelectors } from "../features/ticket/hooks/useTicketSelectors";
+import { type RecommendedChart, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
 import { useSettingsStore } from "../store/settingsStore";
 import { useTicketsStore } from "../store/ticketsStore";
-import { AtariRule, PlaySide, SongInfo, Ticket } from "../types";
+import { AtariRule, PlaySide, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 
 const sampleTickets: Ticket[] = [
@@ -42,13 +41,6 @@ interface TicketViewPageProps {
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const songsFromDexie = useLiveQuery(() => songsDb.songs.toArray(), [], undefined);
-  const { data: songsFromServer } = useSWR<SongInfo[]>(
-    import.meta.env.SSR ? `${import.meta.env.BASE_URL}data/songs.json` : null,
-    (url: string) => fetch(url).then((res) => res.json())
-  );
-  const songs = songsFromDexie ?? songsFromServer;
-  const isSongDataLoading = !isSample && !songs;
   const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
     `${import.meta.env.BASE_URL}data/atari-rules.json`,
     (url: string) => fetch(url).then((res) => res.json())
@@ -63,13 +55,31 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const { query, methods, ...handlers } = useTicketQuery();
 
-  const { atariMap, atariSongs, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
+  const { atariMap, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
     tickets,
-    songs ?? [],
     atariRules ?? [],
     query,
     deferredPlaySide
   );
+
+  const recommendedCharts = useMemo<RecommendedChart[]>(() => {
+    if (!atariRules) return [];
+    const allowedSet = new Set<SongDifficulty>(["sph", "spa", "spl"]);
+    const seen = new Set<string>();
+    return atariRules.reduce<RecommendedChart[]>((acc, rule) => {
+      if (!allowedSet.has(rule.difficulty as SongDifficulty)) {
+        return acc;
+      }
+      const difficulty = rule.difficulty as SongDifficulty;
+      const key = `${rule.songId}-${difficulty}`;
+      if (seen.has(key)) {
+        return acc;
+      }
+      seen.add(key);
+      acc.push({ songId: rule.songId, difficulty });
+      return acc;
+    }, []);
+  }, [atariRules]);
 
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
   const detailTicketRules = useMemo(() => {
@@ -103,7 +113,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     [query.textageSong, query.filterMode, playSide]
   );
 
-  const isLoading = !isSample && (isSongDataLoading || isAtariRulesLoading);
+  const isLoading = !isSample && isAtariRulesLoading;
 
   if (isLoading && !import.meta.env.SSR) {
     return (
@@ -123,8 +133,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           <TicketSearchForm playSide={playSide} />
           <Divider />
           <TextageForm
-            allSongs={songs ?? []}
-            atariSongs={atariSongs}
+            recommendedCharts={recommendedCharts}
             selectedSong={query.textageSong}
             onSongSelect={handlers.handleTextageSongChange}
             searchMode={query.filterMode}

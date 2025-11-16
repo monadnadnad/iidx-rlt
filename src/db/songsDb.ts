@@ -20,6 +20,20 @@ class SongsDB extends Dexie {
       songs: "id, songId, [songId+difficulty]",
       meta: "key",
     });
+
+    this.version(2)
+      .stores({
+        songs: "id, songId, [songId+difficulty], difficulty, level, [difficulty+level], titleNormalized",
+        meta: "key",
+      })
+      .upgrade(async (transaction) => {
+        const songsTable = transaction.table<SongRow, string>("songs");
+        await songsTable
+          .filter((song: SongRow) => song.titleNormalized == null && song.title != null)
+          .modify((song: SongRow) => {
+            song.titleNormalized = song.title;
+          });
+      });
   }
 }
 
