@@ -35,5 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: songs-data
-          path: public/data/songs.json
+          path: |
+            public/data/songs.json
+            public/data/songs.version.json
           retention-days: 90
