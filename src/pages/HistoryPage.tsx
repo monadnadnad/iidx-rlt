@@ -1,7 +1,10 @@
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Box, Card, CardContent, CardHeader, Divider, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { useLiveQuery } from "dexie-react-hooks";
 import { Page } from "../components/layout/Page";
+import { songsDb } from "../db/songsDb";
+import { SONGS_VERSION_META_KEY } from "../lib/songsSync";
 
 export interface UpdateHistoryEntry {
   id: string;
@@ -12,6 +15,17 @@ export interface UpdateHistoryEntry {
 }
 
 export const updateHistory = [
+  {
+    id: "song-filter-update",
+    releasedAt: "2025-11-16",
+    title: "曲選択欄の調整",
+    summary: "検索フィルタの追加と、曲タイトルによる検索の精度を改善しました。",
+    details: [
+      "Lvと難易度を条件として追加",
+      "更新履歴に曲データ取得日時の表示を追加",
+      "まだ使ってくれてる人向けに面白い機能が提供できなくて申し訳ない",
+    ],
+  },
   {
     id: "site-migration",
     releasedAt: "2025-09-27",
@@ -101,12 +115,29 @@ export const UpdateHistoryCard: React.FC<UpdateHistoryCardProps> = ({ entry }) =
 };
 
 export const HistoryPage: React.FC = () => {
+  const songsVersionMeta = useLiveQuery(async () => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
+    return songsDb.meta.get(SONGS_VERSION_META_KEY);
+  }, []);
+  const songsFetchedLabel =
+    songsVersionMeta?.value && dayjs(songsVersionMeta.value).isValid()
+      ? dayjs(songsVersionMeta.value).format("YYYY/MM/DD HH:mm")
+      : "";
+
   return (
     <Page title="更新履歴" description="主要なアップデートをまとめたページ">
       <Stack spacing={3} sx={{ px: 2, py: 4 }}>
         <Typography variant="h5" component="h1" gutterBottom>
           更新履歴
         </Typography>
+        {songsFetchedLabel && (
+          <Typography variant="body2" color="text.secondary">
+            曲データ取得日時: {songsFetchedLabel}
+          </Typography>
+        )}
         <Stack spacing={2} component="section">
           {updateHistory.map((entry) => (
             <UpdateHistoryCard key={entry.id} entry={entry} />

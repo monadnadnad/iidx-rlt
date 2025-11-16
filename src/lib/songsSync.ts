@@ -3,7 +3,7 @@ import { z } from "zod";
 import { songsDb } from "../db/songsDb";
 import { songsSchema } from "../schema/song";
 
-const SONGS_VERSION_META_KEY = "songsVersion";
+export const SONGS_VERSION_META_KEY = "songsVersion";
 
 const withBaseUrl = (relativePath: string) => {
   const base = import.meta.env.BASE_URL ?? "/";
