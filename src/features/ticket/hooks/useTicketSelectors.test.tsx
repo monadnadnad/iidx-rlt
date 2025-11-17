@@ -74,4 +74,22 @@ describe("useTicketSelectors", () => {
 
     expect(result.current.paginatedTickets).toHaveLength(2);
   });
+
+  it("配置検索欄のパターンでチケットが正しく絞り込まれること", () => {
+    const mockQuery: TicketQuery = {
+      filterMode: "recommend",
+      textageSong: null,
+      currentPage: 1,
+      itemsPerPage: 50,
+      scratchSideText: "321",
+      isScratchSideUnordered: true,
+      nonScratchSideText: "4567",
+      isNonScratchSideUnordered: false,
+    };
+
+    const { result } = renderHook(() => useTicketSelectors(mockTickets, mockAtariRules, mockQuery, playSide));
+
+    expect(result.current.paginatedTickets).toHaveLength(1);
+    expect(result.current.paginatedTickets[0].laneText).toBe(matchingTicket.laneText);
+  });
 });
