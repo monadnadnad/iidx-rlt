@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router";
 
 import { GitHubLink } from "../../components/links/GitHubLink";
 import { XLink } from "../../components/links/XLink";
-import { AppNavItem } from "../../types";
+import { AppNavItem } from "./types";
 
 interface AppDrawerProps {
   navItems: AppNavItem[];

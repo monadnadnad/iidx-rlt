@@ -1,7 +1,9 @@
 import { useMemo } from "react";
-import { AtariRule, PlaySide, Ticket, TicketQuery } from "../../../types";
+
+import { AtariRule, PlaySide, Ticket } from "../../../types";
 import { createAtariMap } from "../../../utils/atari";
 import { filterTickets, matchTicket } from "../../../utils/match";
+import { TicketQuery } from "./useTicketQuery";
 
 export const useTicketSelectors = (
   tickets: Ticket[],

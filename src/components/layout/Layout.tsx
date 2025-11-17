@@ -7,12 +7,11 @@ import React, { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 
 import { useSnackbar } from "../../contexts/SnackbarContext";
-import { AppNavItem } from "../../types";
-import { AppSnackbar } from "../ui/AppSnackbar";
-import { ReloadPrompt } from "../ui/ReloadPrompt";
+import { AppSnackbar, ReloadPrompt } from "../ui";
 import { AppBottomNavigation } from "./AppBottomNavigation";
 import { AppDrawer } from "./AppDrawer";
 import { AppHeader } from "./AppHeader";
+import { AppNavItem } from "./types";
 
 const navItems: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },

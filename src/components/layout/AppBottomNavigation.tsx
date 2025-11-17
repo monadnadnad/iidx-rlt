@@ -1,6 +1,6 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { Link } from "react-router";
-import { AppNavItem } from "../../types";
+import { AppNavItem } from "./types";
 
 interface AppBottomNavigationProps {
   navItems: AppNavItem[];
