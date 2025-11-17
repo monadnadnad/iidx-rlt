@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { useTicketSelectors } from "./useTicketSelectors";
-import { AtariRule, PlaySide, Ticket, TicketQuery } from "../../../types";
+import { describe, expect, it } from "vitest";
 import type { Song } from "../../../schema/song";
+import { AtariRule, PlaySide, Ticket } from "../../../types";
+import { useTicketSelectors } from "./useTicketSelectors";
 
 const mockAtariRule: AtariRule = {
   id: "test",
@@ -41,37 +41,70 @@ const playSide: PlaySide = "1P";
 
 describe("useTicketSelectors", () => {
   it("recommendモードで曲が選択された時、当たり定義にマッチするチケットのみに絞り込まれること", () => {
-    const mockQuery: TicketQuery = {
-      filterMode: "recommend",
-      textageSong: mockSong,
-      currentPage: 1,
-      itemsPerPage: 50,
-      scratchSideText: "***",
-      isScratchSideUnordered: true,
-      nonScratchSideText: "****",
-      isNonScratchSideUnordered: true,
-    };
-
-    const { result } = renderHook(() => useTicketSelectors(mockTickets, mockAtariRules, mockQuery, playSide));
+    const { result } = renderHook(() =>
+      useTicketSelectors(
+        mockTickets,
+        mockAtariRules,
+        {
+          filterMode: "recommend",
+          textageSong: mockSong,
+          currentPage: 1,
+          itemsPerPage: 50,
+          scratchSideText: "***",
+          isScratchSideUnordered: true,
+          nonScratchSideText: "****",
+          isNonScratchSideUnordered: true,
+        },
+        playSide
+      )
+    );
 
     expect(result.current.paginatedTickets).toHaveLength(1);
     expect(result.current.paginatedTickets[0].laneText).toBe(matchingTicket.laneText);
   });
 
   it("allモードでは、当たり定義による絞り込みが行われないこと", () => {
-    const mockQuery: TicketQuery = {
-      filterMode: "all",
-      textageSong: mockSong,
-      currentPage: 1,
-      itemsPerPage: 50,
-      scratchSideText: "***",
-      isScratchSideUnordered: true,
-      nonScratchSideText: "****",
-      isNonScratchSideUnordered: true,
-    };
-
-    const { result } = renderHook(() => useTicketSelectors(mockTickets, mockAtariRules, mockQuery, playSide));
+    const { result } = renderHook(() =>
+      useTicketSelectors(
+        mockTickets,
+        mockAtariRules,
+        {
+          filterMode: "all",
+          textageSong: mockSong,
+          currentPage: 1,
+          itemsPerPage: 50,
+          scratchSideText: "***",
+          isScratchSideUnordered: true,
+          nonScratchSideText: "****",
+          isNonScratchSideUnordered: true,
+        },
+        playSide
+      )
+    );
 
     expect(result.current.paginatedTickets).toHaveLength(2);
+  });
+
+  it("配置検索欄のパターンでチケットが正しく絞り込まれること", () => {
+    const { result } = renderHook(() =>
+      useTicketSelectors(
+        mockTickets,
+        mockAtariRules,
+        {
+          filterMode: "recommend",
+          textageSong: null,
+          currentPage: 1,
+          itemsPerPage: 50,
+          scratchSideText: "321",
+          isScratchSideUnordered: true,
+          nonScratchSideText: "4567",
+          isNonScratchSideUnordered: false,
+        },
+        playSide
+      )
+    );
+
+    expect(result.current.paginatedTickets).toHaveLength(1);
+    expect(result.current.paginatedTickets[0].laneText).toBe(matchingTicket.laneText);
   });
 });
