@@ -33,31 +33,26 @@ export const AboutPage = () => {
         <Typography>
           KONAMI の音楽ゲーム beatmania IIDX のランダムレーンチケットの活用を目的とした非公式サイトです。
         </Typography>
-        <Box component="details" sx={{ mt: 2 }}>
-          <Box component="summary" sx={{ cursor: "pointer" }}>
-            ランダムレーンチケットとは
-          </Box>
-          <Typography sx={{ mt: 1, pl: 2 }}>
-            通常、プレイごとに譜面が変わるRANDOMオプションに対し、譜面をチケット記載の配置に固定できる課金アイテムです。
-            <Link
-              href="https://p.eagate.573.jp/game/2dx/33/howto/lightning_model/random_lane.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              IIDX公式のヘルプページ
-            </Link>
-            で詳細が確認できます。
-          </Typography>
-        </Box>
+        <Typography sx={{ mt: 1 }}>
+          ランダムレーンチケットは、毎回譜面が変わるRANDOMオプションに対し、チケット記載の配置でプレイできる課金アイテムです。
+          <Link
+            href="https://p.eagate.573.jp/game/2dx/33/howto/lightning_model/random_lane.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            IIDX公式のヘルプページ
+          </Link>
+          で詳細が確認できます。
+        </Typography>
         <Divider sx={{ my: 4 }} />
         <Typography variant="h5" component="h2" gutterBottom>
           こんな人向け
         </Typography>
         <List>
           {[
-            "グッズキャンペーンのためにチケットを大量に購入したが、どの曲で使えばいいのか分からない",
-            "チケットを絞り込んで、あの曲で当たり配置になるものがあるか確認したい",
-            "このチケットを使うとあの曲の譜面はどうなるのか、をプレイ前に確認したい",
+            "グッズキャンペーンのためにチケットを大量購入したけど、どの曲で使えばいいか分からない",
+            "大量のチケットを配置条件で絞り込みたい",
+            "チケットを使ったときの譜面を予め Textage （外部サイト）で確認したい",
           ].map((text, idx) => (
             <ListItem key={idx} disableGutters>
               <ListItemIcon sx={{ minWidth: 40 }}>

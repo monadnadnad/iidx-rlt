@@ -28,6 +28,9 @@ export const getTheme = (mode: PaletteMode) =>
         bronze: "#CD7F32",
       },
     },
+    typography: {
+      fontFamily: ['"Noto Sans JP"', '"Segoe UI"', '"Helvetica Neue"', "Arial", "sans-serif"].join(","),
+    },
     components: {
       MuiTextField: {
         defaultProps: {
