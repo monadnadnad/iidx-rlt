@@ -65,6 +65,7 @@ export const useTicketQuery = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const formValues = methods.watch();
   const query: TicketQuery = {
     ...formValues,

@@ -20,10 +20,7 @@ export const updateHistory = [
     releasedAt: "2025-11-16",
     title: "曲選択欄の調整",
     summary: "検索フィルタの追加と、曲タイトルによる検索の精度を改善しました。",
-    details: [
-      "Lvと難易度を条件として追加",
-      "更新履歴に曲データ取得日時の表示を追加",
-    ],
+    details: ["Lvと難易度を条件として追加", "更新履歴に曲データ取得日時の表示を追加"],
   },
   {
     id: "site-migration",
