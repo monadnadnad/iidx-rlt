@@ -20,7 +20,6 @@ export type AppSnackbarProps = SnackbarPassthrough & {
   action?: AlertProps["action"];
   alertProps?: Omit<AlertProps, "severity" | "onClose" | "action">;
   anchorOrigin?: SnackbarOrigin;
-  offsetBottom?: boolean;
 };
 
 export const AppSnackbar: React.FC<AppSnackbarProps> = ({

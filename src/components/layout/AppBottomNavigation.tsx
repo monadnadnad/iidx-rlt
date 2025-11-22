@@ -10,7 +10,14 @@ interface AppBottomNavigationProps {
 export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navItems, tabIndex }) => {
   return (
     <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: (theme) => theme.zIndex.appBar }}
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: (theme) => theme.zIndex.appBar,
+        pb: "env(safe-area-inset-bottom, 0px)",
+      }}
       elevation={3}
     >
       <BottomNavigation showLabels={false} value={tabIndex}>

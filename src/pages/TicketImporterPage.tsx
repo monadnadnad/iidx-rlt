@@ -160,7 +160,7 @@ export const TicketImporterPage: React.FC = () => {
               <JsonImportForm
                 jsonText={jsonText}
                 onTextChange={setJsonText}
-                onImportClick={() => importTickets(jsonText)}
+                onImportClick={() => void importTickets(jsonText)}
                 isLoading={state.status === "loading"}
               />
             </StepContent>
