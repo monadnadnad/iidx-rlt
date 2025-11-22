@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useSnackbar } from "../contexts/SnackbarContext";
+import { useSnackbarStore } from "../store/snackbarStore";
 
 export const useClipboard = () => {
-  const { showSnackbar } = useSnackbar();
+  const showSnackbar = useSnackbarStore((s) => s.show);
 
   const copyToClipboard = useCallback(
     async (text: string) => {
@@ -10,7 +10,8 @@ export const useClipboard = () => {
         await navigator.clipboard.writeText(text);
         showSnackbar("クリップボードにコピーしました", "success");
       } catch (e) {
-        showSnackbar(`コピーに失敗しました: ${e as string}`, "error");
+        const message = e instanceof Error ? e.message : String(e);
+        showSnackbar(`コピーに失敗しました: ${message}`, "error");
       }
     },
     [showSnackbar]

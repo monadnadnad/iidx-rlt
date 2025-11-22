@@ -3,10 +3,8 @@ import { useClipboard } from "./useClipboard";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockShowSnackbar = vi.fn();
-vi.mock("../contexts/SnackbarContext", () => ({
-  useSnackbar: () => ({
-    showSnackbar: mockShowSnackbar,
-  }),
+vi.mock("../store/snackbarStore", () => ({
+  useSnackbarStore: () => mockShowSnackbar,
 }));
 
 describe("useClipboard", () => {
@@ -44,6 +42,6 @@ describe("useClipboard", () => {
       await result.current.copyToClipboard("test");
     });
 
-    expect(mockShowSnackbar).toHaveBeenCalledWith(`コピーに失敗しました: ${error.toString()}`, "error");
+    expect(mockShowSnackbar).toHaveBeenCalledWith(`コピーに失敗しました: ${error.message}`, "error");
   });
 });

@@ -3,10 +3,10 @@ import InfoIcon from "@mui/icons-material/Info";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 
-import { useSnackbar } from "../../contexts/SnackbarContext";
+import { useSnackbarStore } from "../../store/snackbarStore";
 import { AppSnackbar, ReloadPrompt } from "../ui";
 import { AppBottomNavigation } from "./AppBottomNavigation";
 import { AppDrawer } from "./AppDrawer";
@@ -26,7 +26,10 @@ export const Layout: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname === "/" ? "/tickets" : location.pathname;
   const tabIndex = navItems.findIndex((item) => item.path === currentPath);
-  const { open, message, severity, closeSnackbar } = useSnackbar();
+  const open = useSnackbarStore((s) => s.open);
+  const message = useSnackbarStore((s) => s.message);
+  const severity = useSnackbarStore((s) => s.severity);
+  const closeSnackbar = useSnackbarStore((s) => s.close);
 
   useEffect(() => {
     window.scrollTo(0, 0);
