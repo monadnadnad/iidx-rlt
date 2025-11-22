@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { songsDb } from "../db/songsDb";
-import { songsSchema } from "../schema/song";
+import { appDb } from "../../db/appDb";
+import { songsSchema } from "../../schema/song";
 
 export const SONGS_VERSION_META_KEY = "songsVersion";
 
@@ -40,7 +40,7 @@ export const syncSongsIfNeeded = async (): Promise<void> => {
       );
     }
 
-    const existingVersion = await songsDb.meta.get(SONGS_VERSION_META_KEY);
+    const existingVersion = await appDb.meta.get(SONGS_VERSION_META_KEY);
     const shouldSync = versionPayload != null ? existingVersion?.value !== versionPayload.version : true;
     if (!shouldSync) {
       return;
@@ -49,10 +49,10 @@ export const syncSongsIfNeeded = async (): Promise<void> => {
     const nextSongs = songsSchema.parse(await fetchJson("data/songs.json"));
     const nextVersionValue = versionPayload?.version ?? existingVersion?.value ?? `manual-${Date.now()}`;
 
-    await songsDb.transaction("rw", songsDb.songs, songsDb.meta, async () => {
-      await songsDb.songs.clear();
-      await songsDb.songs.bulkAdd(nextSongs);
-      await songsDb.meta.put({ key: SONGS_VERSION_META_KEY, value: nextVersionValue });
+    await appDb.transaction("rw", appDb.songs, appDb.meta, async () => {
+      await appDb.songs.clear();
+      await appDb.songs.bulkAdd(nextSongs);
+      await appDb.meta.put({ key: SONGS_VERSION_META_KEY, value: nextVersionValue });
     });
   } catch (error) {
     console.error("[songsSync] Failed to synchronize songs data", error);

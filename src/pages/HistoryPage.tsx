@@ -3,8 +3,8 @@ import { Box, Card, CardContent, CardHeader, Divider, Stack, Typography } from "
 import dayjs from "dayjs";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Page } from "../components/layout/Page";
-import { songsDb } from "../db/songsDb";
-import { SONGS_VERSION_META_KEY } from "../lib/songsSync";
+import { appDb } from "../db/appDb";
+import { SONGS_VERSION_META_KEY } from "../features/songs/syncSongs";
 
 export interface UpdateHistoryEntry {
   id: string;
@@ -116,7 +116,7 @@ export const HistoryPage: React.FC = () => {
       return null;
     }
 
-    return songsDb.meta.get(SONGS_VERSION_META_KEY);
+    return appDb.meta.get(SONGS_VERSION_META_KEY);
   }, []);
   const songsFetchedLabel =
     songsVersionMeta?.value && dayjs(songsVersionMeta.value).isValid()

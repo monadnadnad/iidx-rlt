@@ -9,7 +9,7 @@ export interface MetaRow {
   value: string;
 }
 
-class SongsDB extends Dexie {
+class AppDB extends Dexie {
   songs!: Table<SongRow, string>;
   meta!: Table<MetaRow, string>;
 
@@ -37,4 +37,4 @@ class SongsDB extends Dexie {
   }
 }
 
-export const songsDb = new SongsDB();
+export const appDb = new AppDB();

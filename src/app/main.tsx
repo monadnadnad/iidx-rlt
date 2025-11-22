@@ -4,7 +4,7 @@ import ReactGA from "react-ga4";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router";
 
-import { syncSongsIfNeeded } from "../lib/songsSync";
+import { syncSongsIfNeeded } from "../features/songs/syncSongs";
 import { WebApp } from "./WebApp";
 
 const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;

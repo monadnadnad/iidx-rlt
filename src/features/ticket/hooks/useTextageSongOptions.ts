@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { Song } from "../../../schema/song";
-import { songsDb } from "../../../db/songsDb";
+import { appDb } from "../../../db/appDb";
 
 type SearchMode = "recommend" | "all";
 
@@ -48,7 +48,7 @@ const querySongs = async (
     if (recommendedIds.length === 0) {
       return [] as Song[];
     }
-    return songsDb.songs
+    return appDb.songs
       .where("id")
       .anyOf(recommendedIds)
       .filter((song) => difficultyValues.includes(song.difficulty as SongDifficulty))
@@ -60,7 +60,7 @@ const querySongs = async (
     return [] as Song[];
   }
 
-  let collection = songsDb.songs.where("[difficulty+level]").anyOf(pairs);
+  let collection = appDb.songs.where("[difficulty+level]").anyOf(pairs);
   if (normalizedQuery) {
     const query = normalizedQuery;
     collection = collection.filter((song) => normalizeText(song.titleNormalized ?? song.title).includes(query));
