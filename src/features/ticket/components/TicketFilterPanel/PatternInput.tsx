@@ -2,14 +2,14 @@ import { Box, Checkbox, FormControl, FormControlLabel, TextField } from "@mui/ma
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { SearchFormValues } from "../hooks/useTicketQuery";
-import { PlaySide } from "../../../types";
+import { SearchFormValues } from "../../types";
+import { PlaySide } from "../../../../types";
 
-type TicketSearchFormProps = {
+type PatternInputProps = {
   playSide: PlaySide;
 };
 
-export const TicketSearchForm: React.FC<TicketSearchFormProps> = ({ playSide }) => {
+export const PatternInput: React.FC<PatternInputProps> = ({ playSide }) => {
   const is1P = playSide === "1P";
   const { control, register } = useFormContext<SearchFormValues>();
 

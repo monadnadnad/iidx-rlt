@@ -1,23 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Link } from "react-router";
 import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
-import { PlaySideToggle } from "../components/ui/PlaySideToggle";
-import {
-  AtariInfoSheet,
-  AtariRuleCard,
-  TextageForm,
-  TicketList,
-  TicketResultsSection,
-  TicketSearchForm,
-} from "../features/ticket/components";
+import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
+import { usePagination, useTicketFilter } from "../features/ticket/hooks";
 import { type RecommendedChart, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
-import { useTicketQuery } from "../features/ticket/hooks/useTicketQuery";
-import { useTicketSelectors } from "../features/ticket/hooks/useTicketSelectors";
+import { FilterMode, SearchFormValues, searchFormSchema } from "../features/ticket/types";
+import type { Song } from "../schema/song";
 import { useSettingsStore } from "../store/settingsStore";
 import { useTicketsStore } from "../store/ticketsStore";
 import { AtariRule, PlaySide, Ticket } from "../types";
@@ -55,14 +49,19 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const deferredPlaySide = useDeferredValue(playSide);
   const updatePlaySide = useSettingsStore((s) => s.updatePlaySide);
 
-  const { query, methods, ...handlers } = useTicketQuery();
+  const methods = useForm<SearchFormValues>({
+    resolver: zodResolver(searchFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      scratchSideText: "",
+      isScratchSideUnordered: true,
+      nonScratchSideText: "",
+      isNonScratchSideUnordered: true,
+    },
+  });
 
-  const { atariMap, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
-    tickets,
-    atariRules ?? [],
-    query,
-    deferredPlaySide
-  );
+  const [filterMode, setFilterMode] = useState<FilterMode>("recommend");
+  const [textageSong, setTextageSong] = useState<Song | null>(null);
 
   const recommendedCharts = useMemo<RecommendedChart[]>(() => {
     if (!atariRules) return [];
@@ -83,6 +82,44 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     }, []);
   }, [atariRules]);
 
+  const formValues = useWatch<SearchFormValues>({ control: methods.control }) ?? methods.getValues();
+  const normalizedPattern = useMemo(() => {
+    const {
+      scratchSideText = "",
+      isScratchSideUnordered = true,
+      nonScratchSideText = "",
+      isNonScratchSideUnordered = true,
+    } = formValues || {};
+
+    return {
+      scratchSideText: scratchSideText.padEnd(3, "*"),
+      isScratchSideUnordered,
+      nonScratchSideText: nonScratchSideText.padEnd(4, "*"),
+      isNonScratchSideUnordered,
+    };
+  }, [formValues]);
+
+  const { filteredTickets, selectedAtariRules, atariMap } = useTicketFilter({
+    tickets,
+    pattern: { ...normalizedPattern, filterMode, textageSong },
+    playSide: deferredPlaySide,
+    atariRules: atariRules ?? [],
+  });
+
+  const { paginatedData, currentPage, pageCount, totalCount, itemsPerPage, setItemsPerPage, setPage } = usePagination(
+    filteredTickets,
+    { initialItemsPerPage: 50 }
+  );
+
+  const paginatedTickets = useMemo(
+    () =>
+      paginatedData.map((ticket) => ({
+        ...ticket,
+        highlightColor: atariMap.getColorForTicket(ticket, playSide),
+      })),
+    [paginatedData, atariMap, playSide]
+  );
+
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
   const detailTicketRules = useMemo(() => {
     if (!detailTicket) return [];
@@ -95,25 +132,44 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const getTextageUrl = useCallback(
     (ticket: Ticket) => {
-      if (!query.textageSong) return undefined;
-      return makeTextageUrl(query.textageSong.url, playSide, ticket.laneText);
+      if (!textageSong) return undefined;
+      return makeTextageUrl(textageSong.url, playSide, ticket.laneText);
     },
-    [query.textageSong, playSide]
+    [textageSong, playSide]
   );
 
   const handleTextageFollow = useCallback(
     (laneText: string) => {
-      if (!query.textageSong) return;
-      const eventName = query.filterMode === "recommend" ? "click_textage_link_recommend" : "click_textage_link_all";
+      if (!textageSong) return;
+      const eventName = filterMode === "recommend" ? "click_textage_link_recommend" : "click_textage_link_all";
       ReactGA.event(eventName, {
-        song_title: query.textageSong.title,
-        difficulty: query.textageSong.difficulty,
+        song_title: textageSong.title,
+        difficulty: textageSong.difficulty,
         lane_text: laneText,
         play_side: playSide,
       });
     },
-    [query.textageSong, query.filterMode, playSide]
+    [textageSong, filterMode, playSide]
   );
+
+  const handleFilterModeChange = (mode: FilterMode) => {
+    setFilterMode(mode);
+    setTextageSong(null);
+    setPage(1);
+  };
+
+  const handleSongSelect = (song: Song | null) => {
+    setTextageSong(song);
+    setPage(1);
+  };
+
+  const handleItemsPerPageChange = (_: React.MouseEvent<HTMLElement>, perPage: number | null) => {
+    setItemsPerPage(perPage);
+  };
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+  };
 
   const isLoading = !isSample && isAtariRulesLoading;
 
@@ -131,15 +187,14 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     <Page title="チケット一覧・当たり配置候補">
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <PlaySideToggle value={playSide} onChange={handlePlaySideChange} />
-          <TicketSearchForm playSide={playSide} />
-          <Divider />
-          <TextageForm
+          <TicketFilterPanel
+            playSide={playSide}
+            onPlaySideChange={handlePlaySideChange}
+            filterMode={filterMode}
+            onFilterModeChange={handleFilterModeChange}
+            selectedSong={textageSong}
+            onSongSelect={handleSongSelect}
             recommendedCharts={recommendedCharts}
-            selectedSong={query.textageSong}
-            onSongSelect={handlers.handleTextageSongChange}
-            searchMode={query.filterMode}
-            onModeChange={handlers.handleFilterModeChange}
           />
           <AtariRuleCard rules={selectedAtariRules} playSide={playSide} />
           <Divider />
@@ -156,22 +211,19 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
               </Box>
             </Stack>
           ) : (
-            <TicketResultsSection
+            <TicketDataTable
+              tickets={paginatedTickets}
               totalCount={totalCount}
-              currentPage={query.currentPage}
+              currentPage={currentPage}
               pageCount={pageCount}
-              itemsPerPage={query.itemsPerPage}
-              onPageChange={(_, page) => handlers.handlePageChange(page)}
-              onItemsPerPageChange={(_, perPage) => handlers.handleItemsPerPageChange(perPage)}
-            >
-              <TicketList
-                tickets={paginatedTickets}
-                onRowSelect={(ticket) => setDetailTicket(ticket)}
-                selectedTicket={detailTicket}
-                getTextageUrl={getTextageUrl}
-                onTextageFollow={handleTextageFollow}
-              />
-            </TicketResultsSection>
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              onRowSelect={(ticket) => setDetailTicket(ticket)}
+              selectedTicket={detailTicket}
+              getTextageUrl={getTextageUrl}
+              onTextageFollow={handleTextageFollow}
+            />
           )}
         </Stack>
         {detailTicket && detailTicketRules.length > 0 && (

@@ -1,20 +1,25 @@
 import { render, screen } from "@testing-library/react";
-import { TicketList } from "./TicketList";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-vi.mock("./TicketRow", () => ({
-  TicketRow: ({
+import { TableView } from "./TableView";
+
+vi.mock("./RowItem", () => ({
+  RowItem: ({
     ticket,
     onSelect,
   }: {
     ticket: { laneText: string };
     onSelect?: (ticket: { laneText: string }) => void;
-  }) => <div onClick={() => onSelect?.(ticket)}>{ticket.laneText}</div>,
+  }) => (
+    <div role="listitem" onClick={() => onSelect?.(ticket)}>
+      {ticket.laneText}
+    </div>
+  ),
 }));
 
-describe("TicketList", () => {
+describe("TableView", () => {
   it("チケットが無い場合は何も表示しない", () => {
-    const { container } = render(<TicketList tickets={[]} />);
+    const { container } = render(<TableView tickets={[]} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -22,9 +27,9 @@ describe("TicketList", () => {
   it("チケットがある場合は一覧を表示する", () => {
     const tickets = [{ laneText: "1234567" }, { laneText: "7654321" }];
 
-    render(<TicketList tickets={tickets} />);
+    render(<TableView tickets={tickets} />);
 
-    expect(screen.getByRole("list")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
     expect(screen.getByText("1234567")).toBeInTheDocument();
     expect(screen.getByText("7654321")).toBeInTheDocument();
   });
@@ -33,7 +38,7 @@ describe("TicketList", () => {
     const onRowSelect = vi.fn();
     const tickets = [{ laneText: "1234567" }];
 
-    render(<TicketList tickets={tickets} onRowSelect={onRowSelect} />);
+    render(<TableView tickets={tickets} onRowSelect={onRowSelect} />);
 
     screen.getByText("1234567").click();
 

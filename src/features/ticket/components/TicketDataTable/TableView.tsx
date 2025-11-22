@@ -1,18 +1,18 @@
 import { List } from "@mui/material";
 import React from "react";
 
-import { HighlightColor, Ticket } from "../../../types";
-import { TicketRow } from "./TicketRow";
+import { HighlightColor, Ticket } from "../../../../types";
+import { RowItem } from "./RowItem";
 
-interface TicketListProps {
+type TableViewProps = {
   tickets: (Ticket & { highlightColor?: HighlightColor })[];
   onRowSelect?: (ticket: Ticket) => void;
   selectedTicket?: Ticket | null;
   getTextageUrl?: (ticket: Ticket) => string | undefined;
   onTextageFollow?: (laneText: string) => void;
-}
+};
 
-const TicketListComponent: React.FC<TicketListProps> = ({
+const TableViewComponent: React.FC<TableViewProps> = ({
   tickets,
   onRowSelect,
   selectedTicket,
@@ -40,7 +40,7 @@ const TicketListComponent: React.FC<TicketListProps> = ({
       }}
     >
       {tickets.map((ticket, index) => (
-        <TicketRow
+        <RowItem
           key={`${ticket.laneText}-${index}`}
           ticket={ticket}
           selected={selectedTicket === ticket}
@@ -53,4 +53,4 @@ const TicketListComponent: React.FC<TicketListProps> = ({
   );
 };
 
-export const TicketList = React.memo(TicketListComponent);
+export const TableView = React.memo(TableViewComponent);

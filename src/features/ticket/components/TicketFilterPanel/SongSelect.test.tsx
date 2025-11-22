@@ -1,18 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { Song } from "../../../schema/song";
-import type { SongDifficulty } from "../hooks/useTextageSongOptions";
-import { useTextageSongOptions } from "../hooks/useTextageSongOptions";
-import { TextageForm } from "./TextageForm";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("../hooks/useTextageSongOptions", () => {
-  return {
-    useTextageSongOptions: vi.fn(),
-  };
-});
+import type { Song } from "../../../../schema/song";
+import type { SongDifficulty } from "../../hooks/useTextageSongOptions";
+import { useTextageSongOptions } from "../../hooks/useTextageSongOptions";
+import { SongSelect } from "./SongSelect";
 
-describe("TextageForm", () => {
+vi.mock("../../hooks/useTextageSongOptions", () => ({
+  useTextageSongOptions: vi.fn(),
+}));
+
+describe("SongSelect", () => {
   const song: Song = {
     id: "1234-spa",
     songId: "1234",
@@ -37,7 +36,7 @@ describe("TextageForm", () => {
     const user = userEvent.setup();
     const onSongSelect = vi.fn();
     render(
-      <TextageForm
+      <SongSelect
         recommendedCharts={[{ songId: song.songId, difficulty: song.difficulty as SongDifficulty }]}
         selectedSong={null}
         onSongSelect={onSongSelect}
