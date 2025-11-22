@@ -2,12 +2,12 @@ import LaunchIcon from "@mui/icons-material/Launch";
 import { Link, Typography } from "@mui/material";
 import { MouseEventHandler } from "react";
 
-interface TextageLinkProps {
+type TextageLinkProps = {
   href?: string;
   onFollow?: () => void;
-}
+};
 
-export const TextageLink = ({ href, onFollow }: TextageLinkProps) => {
+export const TextageLink: React.FC<TextageLinkProps> = ({ href, onFollow }) => {
   const handleClick: MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.stopPropagation();
     onFollow?.();

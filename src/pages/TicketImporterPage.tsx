@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import ReactGA from "react-ga4";
 
 import { Page } from "../components/layout/Page";
-import { useSnackbar } from "../contexts/SnackbarContext";
+import { useSnackbarStore } from "../store/snackbarStore";
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
 import { ManualImportForm } from "../features/import/components/ManualImportForm";
 import { useImporter } from "../features/import/hooks/useImporter";
@@ -55,7 +55,7 @@ export const TicketImporterPage: React.FC = () => {
   const setTickets = useTicketsStore((s) => s.setTickets);
   const addTicket = useTicketsStore((s) => s.addTicket);
 
-  const { showSnackbar } = useSnackbar();
+  const showSnackbar = useSnackbarStore((s) => s.show);
 
   const { copyToClipboard } = useClipboard();
 
@@ -118,11 +118,7 @@ export const TicketImporterPage: React.FC = () => {
               <Typography>IIDX公式サイトで以下のブックマークレットを実行してください</Typography>
               <Box sx={{ mt: 1, border: 1, borderColor: "divider", borderRadius: 1, overflow: "hidden" }}>
                 <Box sx={{ px: 1, py: 0.5, borderBottomColor: "divider", borderBottom: 1, borderColor: "divider" }}>
-                  <Button
-                    size="small"
-                    startIcon={<ContentCopyIcon />}
-                    onClick={() => void copyToClipboard(bookmarkletCode)}
-                  >
+                  <Button size="small" startIcon={<ContentCopyIcon />} onClick={() => copyToClipboard(bookmarkletCode)}>
                     コピー
                   </Button>
                 </Box>

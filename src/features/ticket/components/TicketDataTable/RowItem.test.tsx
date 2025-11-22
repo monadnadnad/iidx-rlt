@@ -2,45 +2,45 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { Ticket } from "types";
-import { TicketRow } from "./TicketRow";
+import { Ticket } from "../../../../types";
+import { RowItem } from "./RowItem";
 
 const mockTicket: Ticket = { laneText: "1234567", expiration: "2999/12/31" };
 
-describe("TicketRow", () => {
-  it("チケット情報が表示されること", () => {
-    render(<TicketRow ticket={mockTicket} />);
+describe("RowItem", () => {
+  it("チケット情報が表示される", () => {
+    render(<RowItem ticket={mockTicket} />);
 
     expect(screen.getByText(mockTicket.laneText)).toBeInTheDocument();
     expect(screen.getByText(`有効期限: ${mockTicket.expiration}`)).toBeInTheDocument();
   });
 
-  it("textageUrlが指定されていない場合はリンクが表示されないこと", () => {
-    render(<TicketRow ticket={mockTicket} />);
+  it("textageUrlがない場合リンクは非表示", () => {
+    render(<RowItem ticket={mockTicket} />);
 
     expect(screen.queryByRole("link", { name: "Textageで確認" })).toBeNull();
   });
 
-  it("textageUrlが指定された場合にリンクが表示されること", () => {
-    render(<TicketRow ticket={mockTicket} textageUrl="https://example.com" />);
+  it("textageUrlがある場合リンクを表示", () => {
+    render(<RowItem ticket={mockTicket} textageUrl="https://example.com" />);
 
     expect(screen.getByRole("link", { name: "Textageで確認" })).toHaveAttribute("href", "https://example.com");
   });
 
-  it("リンクのクリックでonTextageFollowが呼び出されること", async () => {
+  it("リンククリックでonTextageFollowが呼ばれる", async () => {
     const user = userEvent.setup();
     const onTextageFollow = vi.fn();
-    render(<TicketRow ticket={mockTicket} textageUrl="https://example.com" onTextageFollow={onTextageFollow} />);
+    render(<RowItem ticket={mockTicket} textageUrl="https://example.com" onTextageFollow={onTextageFollow} />);
 
     await user.click(screen.getByRole("link", { name: "Textageで確認" }));
 
     expect(onTextageFollow).toHaveBeenCalledWith(mockTicket.laneText);
   });
 
-  it("行をクリックするとonSelectが呼び出されること", async () => {
+  it("行クリックでonSelectが呼ばれる", async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
-    render(<TicketRow ticket={mockTicket} onSelect={onSelect} />);
+    render(<RowItem ticket={mockTicket} onSelect={onSelect} />);
 
     await user.click(screen.getByText(mockTicket.laneText));
 

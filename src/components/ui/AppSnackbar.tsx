@@ -1,39 +1,57 @@
-import { Alert, AlertColor, Snackbar, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Alert,
+  AlertColor,
+  AlertProps,
+  Snackbar,
+  SnackbarOrigin,
+  SnackbarProps,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React from "react";
 
-interface AppSnackbarProps {
+type SnackbarPassthrough = Omit<SnackbarProps, "open" | "onClose" | "anchorOrigin" | "message">;
+
+export type AppSnackbarProps = SnackbarPassthrough & {
   open: boolean;
   onClose: () => void;
-  message: string;
-  severity: AlertColor;
-  autoHideDuration?: number;
-}
+  message?: React.ReactNode;
+  severity?: AlertColor;
+  action?: AlertProps["action"];
+  alertProps?: Omit<AlertProps, "severity" | "onClose" | "action">;
+  anchorOrigin?: SnackbarOrigin;
+};
 
 export const AppSnackbar: React.FC<AppSnackbarProps> = ({
   open,
   onClose,
   message,
-  severity,
+  severity = "info",
+  action,
+  alertProps,
+  anchorOrigin = { vertical: "bottom", horizontal: "left" },
   autoHideDuration = 2000,
+  sx,
+  children,
+  ...snackbarProps
 }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleClose = () => {
-    onClose();
-  };
-
   return (
     <Snackbar
       open={open}
+      onClose={onClose}
+      anchorOrigin={anchorOrigin}
       autoHideDuration={autoHideDuration}
-      onClose={handleClose}
-      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       sx={{
         ...(isSm && { bottom: `calc(${theme.spacing(9)} + env(safe-area-inset-bottom))` }),
+        ...sx,
       }}
+      {...snackbarProps}
     >
-      <Alert severity={severity} onClose={handleClose}>
-        {message}
+      <Alert severity={severity} onClose={onClose} action={action} {...alertProps}>
+        {children ?? message}
       </Alert>
     </Snackbar>
   );

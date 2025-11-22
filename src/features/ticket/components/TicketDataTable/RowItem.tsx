@@ -1,9 +1,10 @@
-import { Box, ListItem, ListItemButton, Typography } from "@mui/material";
+import { ListItem, ListItemButton, Typography } from "@mui/material";
 
-import { HighlightColor, Ticket } from "../../../types";
+import { HighlightColor, Ticket } from "../../../../types";
+import { AtariStatus } from "./AtariStatus";
 import { TextageLink } from "./TextageLink";
 
-type TicketRowProps = {
+type RowItemProps = {
   ticket: Ticket & { highlightColor?: HighlightColor };
   selected?: boolean;
   onSelect?: (ticket: Ticket) => void;
@@ -11,7 +12,7 @@ type TicketRowProps = {
   onTextageFollow?: (laneText: string) => void;
 };
 
-export const TicketRow: React.FC<TicketRowProps> = ({
+export const RowItem: React.FC<RowItemProps> = ({
   ticket,
   selected = false,
   onSelect,
@@ -29,7 +30,7 @@ export const TicketRow: React.FC<TicketRowProps> = ({
         alignItems="center"
         sx={{ gap: 2 }}
       >
-        <HighlightAccent color={ticket.highlightColor} />
+        <AtariStatus color={ticket.highlightColor} />
         <Typography variant="body1" noWrap>
           {ticket.laneText}
         </Typography>
@@ -49,16 +50,3 @@ export const TicketRow: React.FC<TicketRowProps> = ({
     </ListItem>
   );
 };
-
-const HighlightAccent: React.FC<{ color?: HighlightColor }> = ({ color }) => (
-  <Box
-    component="span"
-    sx={{
-      width: 6,
-      height: 28,
-      borderRadius: 3,
-      backgroundColor: color ? `highlight.${color}` : "transparent",
-      flexShrink: 0,
-    }}
-  />
-);

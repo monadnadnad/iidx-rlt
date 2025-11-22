@@ -9,9 +9,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { useCallback, useState } from "react";
-import type { Song } from "../../../schema/song";
-import { TextageFilterSection, type TextageFilterOption } from "./TextageFilterSection";
-import { useTextageSongOptions, type SongDifficulty, type RecommendedChart } from "../hooks/useTextageSongOptions";
+
+import type { Song } from "../../../../schema/song";
+import { FilterMode } from "../../types";
+import { TextageFilterSection, type TextageFilterOption } from "../TextageFilterSection";
+import { useTextageSongOptions, type RecommendedChart, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 
 const DIFFICULTY_OPTIONS: { label: string; value: SongDifficulty }[] = [
   { label: "SPH", value: "sph" },
@@ -21,15 +23,15 @@ const DIFFICULTY_OPTIONS: { label: string; value: SongDifficulty }[] = [
 
 const LEVEL_OPTIONS = [10, 11, 12] as const;
 
-interface TextageFormProps {
+type SongSelectProps = {
   recommendedCharts: ReadonlyArray<RecommendedChart>;
   selectedSong: Song | null;
   onSongSelect?: (_song: Song | null) => void;
-  searchMode: "recommend" | "all";
-  onModeChange?: (_mode: "recommend" | "all") => void;
-}
+  searchMode: FilterMode;
+  onModeChange?: (_mode: FilterMode) => void;
+};
 
-export const TextageForm: React.FC<TextageFormProps> = ({
+export const SongSelect: React.FC<SongSelectProps> = ({
   recommendedCharts,
   selectedSong,
   onSongSelect,
@@ -44,10 +46,9 @@ export const TextageForm: React.FC<TextageFormProps> = ({
   );
   const [selectedLevels, setSelectedLevels] = useState<Set<number>>(() => new Set(LEVEL_OPTIONS));
 
-  const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: "recommend" | "all" | null) => {
+  const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: FilterMode | null) => {
     if (newMode !== null) {
       onModeChange?.(newMode);
-      // モード切り替え時に選択をクリア
       onSongSelect?.(null);
     }
   };
@@ -56,6 +57,7 @@ export const TextageForm: React.FC<TextageFormProps> = ({
     (song: Song) => `${song.title} [${song.difficulty.toUpperCase().replace("SP", "")}]`,
     []
   );
+
   const { filteredSongs, placeholder, isLoading } = useTextageSongOptions({
     recommendedCharts,
     searchMode,
