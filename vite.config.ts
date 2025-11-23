@@ -47,9 +47,10 @@ export default defineConfig(() => {
           runtimeCaching: [
             {
               urlPattern: ({ url }) => url.pathname.startsWith("/iidx-rlt/data/"),
-              handler: "StaleWhileRevalidate",
+              handler: "NetworkFirst",
               options: {
                 cacheName: "data-cache",
+                networkTimeoutSeconds: 5,
                 expiration: {
                   maxEntries: 10,
                   maxAgeSeconds: 60 * 60 * 24 * 7,
