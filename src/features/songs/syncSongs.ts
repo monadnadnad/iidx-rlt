@@ -11,8 +11,11 @@ const withBaseUrl = (relativePath: string) => {
   return `${base}${normalizedPath}`;
 };
 
-const fetchJson = async (relativePath: string) => {
-  const response = await fetch(withBaseUrl(relativePath));
+const fetchJson = async (relativePath: string, init?: RequestInit) => {
+  const response = await fetch(withBaseUrl(relativePath), {
+    cache: "no-store",
+    ...init,
+  });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${relativePath}: ${response.status}`);
   }
@@ -29,32 +32,30 @@ export const syncSongsIfNeeded = async (): Promise<void> => {
     return;
   }
 
+  let versionPayload: z.infer<typeof songsVersionSchema>;
   try {
-    let versionPayload: { version: string } | null = null;
-    try {
-      versionPayload = songsVersionSchema.parse(await fetchJson("data/songs.version.json"));
-    } catch (versionError) {
-      console.warn(
-        "[songsSync] Failed to fetch songs.version.json, falling back to direct songs.json load",
-        versionError
-      );
-    }
-
-    const existingVersion = await appDb.meta.get(SONGS_VERSION_META_KEY);
-    const shouldSync = versionPayload != null ? existingVersion?.value !== versionPayload.version : true;
-    if (!shouldSync) {
-      return;
-    }
-
-    const nextSongs = songsSchema.parse(await fetchJson("data/songs.json"));
-    const nextVersionValue = versionPayload?.version ?? existingVersion?.value ?? `manual-${Date.now()}`;
-
-    await appDb.transaction("rw", appDb.songs, appDb.meta, async () => {
-      await appDb.songs.clear();
-      await appDb.songs.bulkAdd(nextSongs);
-      await appDb.meta.put({ key: SONGS_VERSION_META_KEY, value: nextVersionValue });
-    });
-  } catch (error) {
-    console.error("[songsSync] Failed to synchronize songs data", error);
+    versionPayload = songsVersionSchema.parse(await fetchJson("data/songs.version.json"));
+  } catch {
+    // オフラインやネットワークエラー時は現行データをそのまま使う
+    return;
   }
+  const existingVersion = await appDb.meta.get(SONGS_VERSION_META_KEY);
+  const shouldSync = existingVersion?.value !== versionPayload.version;
+  if (!shouldSync) {
+    return;
+  }
+
+  let nextSongs: z.infer<typeof songsSchema>;
+  try {
+    nextSongs = songsSchema.parse(await fetchJson("data/songs.json"));
+  } catch {
+    // 新バージョンが検知されても取得に失敗した場合は現行データを維持する
+    return;
+  }
+
+  await appDb.transaction("rw", appDb.songs, appDb.meta, async () => {
+    await appDb.songs.clear();
+    await appDb.songs.bulkAdd(nextSongs);
+    await appDb.meta.put({ key: SONGS_VERSION_META_KEY, value: versionPayload.version });
+  });
 };
