@@ -36,8 +36,7 @@ export const Layout: React.FC = () => {
     <Box
       sx={{
         display: "flex",
-        height: "100dvh",
-        minHeight: "100vh",
+        minHeight: "100dvh",
       }}
     >
       {!isMobile && <AppDrawer navItems={navItems} tabIndex={tabIndex} />}
