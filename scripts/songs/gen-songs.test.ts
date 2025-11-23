@@ -146,13 +146,13 @@ describe("createChartInfoToSongsSchema", () => {
       },
     };
 
-    const result: Song[] = parser.parse(chartInfo);
+    const result = parser.parse(chartInfo);
 
     expect(result).toHaveLength(1);
 
-    const song = result.at(0);
+    const song = result[0];
 
-    expect(song?.difficulty).toBe("spa");
+    expect(song.difficulty).toBe("spa");
   });
 
   it("BPMオブジェクトで難易度ごとの値を使う", () => {

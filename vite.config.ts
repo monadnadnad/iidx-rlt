@@ -42,7 +42,7 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
-          globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+          globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
           navigateFallbackDenylist: [/^\/iidx-rlt\/sitemap\.xml$/, /^\/iidx-rlt\/robots\.txt$/],
           runtimeCaching: [
             {
