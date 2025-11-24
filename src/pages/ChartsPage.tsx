@@ -1,131 +1,87 @@
-import { Box, Chip, CircularProgress, List, ListItem, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { useLiveQuery } from "dexie-react-hooks";
-import React from "react";
+import { Box, CircularProgress, Stack } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { Pager } from "../components/ui";
-import { appDb } from "../db/appDb";
+import { ChartDetailSheet } from "../features/songs/components/ChartDetailSheet";
+import { SongsList } from "../features/songs/components/SongsList";
+import { SongsSearchPanel } from "../features/songs/components/SongsSearchPanel";
+import { useSongsQuery, type SongsSearchState } from "../features/songs/hooks/useSongsQuery";
 import { usePager } from "../hooks/usePager";
+import { createAtariMap } from "../utils/atari";
+import { createInitialSongSearchState } from "../utils/songSearch";
+import type { AtariRule } from "../types";
 import type { Song } from "../schema/song";
 
-const targetDifficulties: Array<Song["difficulty"]> = ["sph", "spa", "spl"];
-
-const difficultyLabel: Record<Song["difficulty"], string> = {
-  spb: "SPB",
-  spn: "SPN",
-  sph: "SPH",
-  spa: "SPA",
-  spl: "SPL",
-};
-
-const formatDifficulty = (difficulty: Song["difficulty"], level: number) =>
-  `${difficultyLabel[difficulty]} / ☆${level}`;
-
-const sortCharts = (a: Song, b: Song) => {
-  const titleA = a.titleNormalized ?? a.title;
-  const titleB = b.titleNormalized ?? b.title;
-  return (
-    titleA.localeCompare(titleB, "ja") ||
-    targetDifficulties.indexOf(a.difficulty) - targetDifficulties.indexOf(b.difficulty)
-  );
-};
-
 export const ChartsPage: React.FC = () => {
-  const theme = useTheme();
-  const difficultyColor: Record<Song["difficulty"], string> = {
-    spb: theme.palette.info.main,
-    spn: theme.palette.info.main,
-    sph: theme.palette.difficulty.hyper,
-    spa: theme.palette.difficulty.another,
-    spl: theme.palette.difficulty.leggendaria,
-  };
+  const [searchState, setSearchState] = useState<SongsSearchState>(createInitialSongSearchState);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
+    `${import.meta.env.BASE_URL}data/atari-rules.json`,
+    (url: string) => fetch(url).then((res) => res.json())
+  );
 
-  const charts = useLiveQuery(async () => {
-    if (typeof window === "undefined") {
-      return [] as Song[];
-    }
-    const entries = await appDb.songs.where("difficulty").anyOf(targetDifficulties).toArray();
-    return entries.sort(sortCharts);
-  }, []);
+  const atariMap = useMemo(() => (atariRules ? createAtariMap(atariRules) : null), [atariRules]);
 
-  const isLoading = charts === undefined;
+  const hasAtariRuleForSong = useMemo(() => {
+    if (!atariMap) return undefined;
+    return (song: Song) => {
+      const rules = atariMap.getRulesForSong(song.songId, song.difficulty);
+      return !!rules && rules.length > 0;
+    };
+  }, [atariMap]);
+
+  const { songs, isLoading } = useSongsQuery({ searchState, hasAtariRuleForSong });
+
+  const selectedRules = useMemo(() => {
+    if (!selectedSong || !atariMap) return [] as AtariRule[];
+    return atariMap.getRulesForSong(selectedSong.songId, selectedSong.difficulty) ?? [];
+  }, [selectedSong, atariMap]);
+
   const {
-    paginated: paginatedCharts,
+    paginated: paginatedSongs,
     totalCount,
     page: currentPage,
     pageCount,
     perPage: itemsPerPage,
     handlePageChange,
     handlePerPageChange,
-  } = usePager(charts ?? []);
+  } = usePager(songs);
 
   return (
     <Page title="楽曲一覧" description="譜面と当たり配置定義の一覧">
-      {isLoading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" flexGrow={1}>
-          <CircularProgress />
+      <Stack spacing={2} sx={{ flexGrow: 1, alignItems: "center" }}>
+        <Box sx={{ width: "100%", maxWidth: 960 }}>
+          <SongsSearchPanel
+            value={searchState}
+            onChange={setSearchState}
+            disableAtariFilter={!atariMap || isAtariRulesLoading}
+          />
         </Box>
-      ) : (
-        <Pager
-          totalCount={totalCount}
-          page={currentPage}
-          pageCount={pageCount}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          onItemsPerPageChange={handlePerPageChange}
-          maxWidth={960}
-        >
-          <Box sx={{ px: 1.5 }}>
-            <Box sx={{ overflowX: "auto" }}>
-              <List
-                disablePadding
-                sx={{
-                  border: 1,
-                  borderColor: "divider",
-                  borderRadius: 1.5,
-                  overflow: "hidden",
-                }}
-              >
-                {paginatedCharts.map((chart, idx) => (
-                  <ListItem
-                    key={chart.id}
-                    sx={{
-                      px: 1.5,
-                      py: 1.1,
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 1.5,
-                      borderBottom: idx === paginatedCharts.length - 1 ? "none" : 1,
-                      borderColor: "divider",
-                    }}
-                  >
-                    <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-                      <Typography variant="body1" fontWeight={600} sx={{ wordBreak: "break-word" }}>
-                        {chart.title}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        収録バージョン: {chart.version >= 0 ? `IIDX ${chart.version}` : "不明"}
-                      </Typography>
-                    </Box>
-                    <Chip
-                      label={formatDifficulty(chart.difficulty, chart.level)}
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        flexShrink: 0,
-                        fontWeight: 600,
-                        borderColor: difficultyColor[chart.difficulty],
-                        color: difficultyColor[chart.difficulty],
-                      }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+
+        {isLoading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" flexGrow={1}>
+            <CircularProgress />
           </Box>
-        </Pager>
-      )}
+        ) : (
+          <Pager
+            totalCount={totalCount}
+            page={currentPage}
+            pageCount={pageCount}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handlePerPageChange}
+            maxWidth={960}
+          >
+            <SongsList songs={paginatedSongs} onSelect={setSelectedSong} />
+          </Pager>
+        )}
+
+        {selectedSong && (
+          <ChartDetailSheet chart={selectedSong} rules={selectedRules} onClose={() => setSelectedSong(null)} />
+        )}
+      </Stack>
     </Page>
   );
 };

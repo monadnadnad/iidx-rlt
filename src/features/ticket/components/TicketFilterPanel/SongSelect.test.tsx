@@ -18,6 +18,7 @@ describe("SongSelect", () => {
     title: "A",
     titleNormalized: "A",
     version: 7,
+    versionName: "7th style",
     url: "https://textage.cc/score/7/a_amuro.html?1AC00",
     difficulty: "spa",
     level: 12,

@@ -10,17 +10,16 @@ import {
 import { useCallback, useState } from "react";
 
 import type { Song } from "../../../../schema/song";
+import { SONG_FILTER_LEVEL_OPTIONS, toggleSetValue } from "../../../../utils/songSearch";
 import { useTextageSongOptions, type RecommendedChart, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 import { FilterMode } from "../../types";
 import { TextageFilterSection, type TextageFilterOption } from "../TextageFilterSection";
 
-const DIFFICULTY_OPTIONS: { label: string; value: SongDifficulty }[] = [
+const DIFFICULTY_OPTIONS: ReadonlyArray<{ label: string; value: SongDifficulty }> = [
   { label: "SPH", value: "sph" },
   { label: "SPA", value: "spa" },
   { label: "SPL", value: "spl" },
 ];
-
-const LEVEL_OPTIONS = [10, 11, 12] as const;
 
 type SongSelectProps = {
   recommendedCharts: ReadonlyArray<RecommendedChart>;
@@ -43,7 +42,7 @@ export const SongSelect: React.FC<SongSelectProps> = ({
   const [selectedDifficulties, setSelectedDifficulties] = useState<Set<SongDifficulty>>(
     () => new Set(DIFFICULTY_OPTIONS.map((option) => option.value))
   );
-  const [selectedLevels, setSelectedLevels] = useState<Set<number>>(() => new Set(LEVEL_OPTIONS));
+  const [selectedLevels, setSelectedLevels] = useState<Set<number>>(() => new Set(SONG_FILTER_LEVEL_OPTIONS));
 
   const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: FilterMode | null) => {
     if (newMode !== null) {
@@ -68,12 +67,7 @@ export const SongSelect: React.FC<SongSelectProps> = ({
 
   const handleLevelToggle = (level: number) => {
     setSelectedLevels((prev) => {
-      const next = new Set(prev);
-      if (next.has(level)) {
-        next.delete(level);
-      } else {
-        next.add(level);
-      }
+      const next = toggleSetValue(prev, level);
       if (selectedSong && !next.has(selectedSong.level)) {
         onSongSelect?.(null);
       }
@@ -83,12 +77,7 @@ export const SongSelect: React.FC<SongSelectProps> = ({
 
   const handleDifficultyToggle = (difficulty: SongDifficulty) => {
     setSelectedDifficulties((prev) => {
-      const next = new Set(prev);
-      if (next.has(difficulty)) {
-        next.delete(difficulty);
-      } else {
-        next.add(difficulty);
-      }
+      const next = toggleSetValue(prev, difficulty);
       if (selectedSong && !next.has(selectedSong.difficulty as SongDifficulty)) {
         onSongSelect?.(null);
       }
@@ -126,7 +115,7 @@ export const SongSelect: React.FC<SongSelectProps> = ({
         />
         <TextageFilterSection
           title="レベルで絞り込み"
-          options={LEVEL_OPTIONS.map<TextageFilterOption>((level) => ({
+          options={SONG_FILTER_LEVEL_OPTIONS.map<TextageFilterOption>((level) => ({
             key: level,
             label: `Lv. ${level}`,
             checked: selectedLevels.has(level),
