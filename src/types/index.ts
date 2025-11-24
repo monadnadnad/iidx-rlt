@@ -1,13 +1,12 @@
-import { getTheme } from "./theme";
-import type { AtariRule as SchemaAtariRule } from "./schema/atari-rule";
+import type { Palette } from "@mui/material/styles";
+import type { AtariRule as SchemaAtariRule } from "../schema/atari-rule";
 
 export interface Ticket {
   laneText: string;
   expiration?: string;
 }
 
-const _theme = getTheme("light");
-export type HighlightColor = keyof typeof _theme.palette.highlight | undefined;
+export type HighlightColor = keyof Palette["highlight"] | undefined;
 
 export type SearchPattern = {
   scratchSideText: string;
