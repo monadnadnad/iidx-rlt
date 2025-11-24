@@ -7,6 +7,11 @@ declare module "@mui/material/styles" {
       silver: string;
       bronze: string;
     };
+    difficulty: {
+      hyper: string;
+      another: string;
+      leggendaria: string;
+    };
   }
 
   interface PaletteOptions {
@@ -14,6 +19,11 @@ declare module "@mui/material/styles" {
       gold?: string;
       silver?: string;
       bronze?: string;
+    };
+    difficulty?: {
+      hyper?: string;
+      another?: string;
+      leggendaria?: string;
     };
   }
 }
@@ -26,6 +36,11 @@ export const getTheme = (mode: PaletteMode) =>
         gold: "#FFD700",
         silver: "#C0C0C0",
         bronze: "#CD7F32",
+      },
+      difficulty: {
+        hyper: "#f2b800",
+        another: "#d32f2f",
+        leggendaria: "#8e24aa",
       },
     },
     typography: {

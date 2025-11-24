@@ -1,6 +1,7 @@
-import { Box, Pagination, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
 
+import { Pager } from "../../../../components/ui";
 import { HighlightColor, Ticket } from "../../../../types";
 import { TableView } from "./TableView";
 
@@ -31,52 +32,26 @@ export const TicketDataTable: React.FC<TicketDataTableProps> = ({
   getTextageUrl,
   onTextageFollow,
 }) => {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, totalCount);
+  if (totalCount === 0) {
+    return <Typography>検索条件に一致するチケットはありません。</Typography>;
+  }
 
   return (
-    <>
-      {totalCount === 0 ? (
-        <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
-      ) : (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              gap: 2,
-              mb: 1,
-              minHeight: "32px",
-            }}
-          >
-            <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 0 }}>
-              {`${totalCount}件中 ${startIndex + 1}～${endIndex}件`}
-            </Typography>
-            <ToggleButtonGroup
-              value={itemsPerPage}
-              exclusive
-              onChange={onItemsPerPageChange}
-              size="small"
-              color="primary"
-              aria-label="表示件数"
-            >
-              <ToggleButton value={50}>50</ToggleButton>
-              <ToggleButton value={100}>100</ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-          <TableView
-            tickets={tickets}
-            onRowSelect={onRowSelect}
-            selectedTicket={selectedTicket}
-            getTextageUrl={getTextageUrl}
-            onTextageFollow={onTextageFollow}
-          />
-          {pageCount > 1 && (
-            <Pagination count={pageCount} page={currentPage} onChange={onPageChange} sx={{ alignSelf: "center" }} />
-          )}
-        </>
-      )}
-    </>
+    <Pager
+      totalCount={totalCount}
+      page={currentPage}
+      pageCount={pageCount}
+      itemsPerPage={itemsPerPage}
+      onPageChange={onPageChange}
+      onItemsPerPageChange={onItemsPerPageChange}
+    >
+      <TableView
+        tickets={tickets}
+        onRowSelect={onRowSelect}
+        selectedTicket={selectedTicket}
+        getTextageUrl={getTextageUrl}
+        onTextageFollow={onTextageFollow}
+      />
+    </Pager>
   );
 };
