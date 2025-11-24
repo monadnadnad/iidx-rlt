@@ -1,11 +1,11 @@
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import {
-  Autocomplete,
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
+  MenuItem,
   Stack,
   Switch,
   TextField,
@@ -36,8 +36,8 @@ export const SongsSearchPanel: React.FC<SongsSearchPanelProps> = ({ value, onCha
     onChange({ ...value, title: event.target.value });
   };
 
-  const handleVersionChange = (_: unknown, newValue: string | null) => {
-    onChange({ ...value, version: newValue ?? "" });
+  const handleVersionChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange({ ...value, version: event.target.value });
   };
 
   const handleDifficultyToggle = (difficulty: Song["difficulty"]) => {
@@ -67,15 +67,21 @@ export const SongsSearchPanel: React.FC<SongsSearchPanelProps> = ({ value, onCha
           onChange={handleTitleChange}
           fullWidth
         />
-        <Autocomplete
+        <TextField
+          select
           size="small"
-          options={versionOptions}
+          label="収録バージョン"
           value={value.version}
           onChange={handleVersionChange}
-          renderInput={(params) => <TextField {...params} label="収録バージョン" />}
-          clearOnEscape
           fullWidth
-        />
+        >
+          <MenuItem value="">すべて</MenuItem>
+          {versionOptions.map((version) => (
+            <MenuItem key={version} value={version}>
+              {version}
+            </MenuItem>
+          ))}
+        </TextField>
       </Box>
 
       <Box display="grid" gridTemplateColumns="repeat(2, minmax(0, 1fr))" gap={1} alignItems="start">

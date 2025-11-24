@@ -14,8 +14,10 @@ const MAIN_DIFFICULTIES = ["sph", "spa", "spl"] as const;
 
 export const DEFAULT_CHART_DIFFICULTIES: Array<Song["difficulty"]> = [...MAIN_DIFFICULTIES];
 
-export const SONG_FILTER_DIFFICULTY_OPTIONS: ReadonlyArray<{ value: Song["difficulty"]; label: string }> =
-  MAIN_DIFFICULTIES.map((value) => ({ value, label: DIFFICULTY_LABEL[value] }));
+export const SONG_FILTER_DIFFICULTY_OPTIONS = MAIN_DIFFICULTIES.map((value) => ({
+  value,
+  label: DIFFICULTY_LABEL[value],
+}));
 
 export const SONG_FILTER_LEVEL_OPTIONS: ReadonlyArray<number> = [10, 11, 12] as const;
 

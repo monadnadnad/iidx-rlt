@@ -45,9 +45,15 @@ export const SongsPage: React.FC = () => {
     page: currentPage,
     pageCount,
     perPage: itemsPerPage,
+    setPage,
     handlePageChange,
     handlePerPageChange,
   } = usePager(songs);
+
+  const handleSearchChange = (nextState: SongsSearchState) => {
+    setSearchState(nextState);
+    setPage(1);
+  };
 
   return (
     <Page title="楽曲一覧" description="譜面と当たり配置定義の一覧">
@@ -55,7 +61,7 @@ export const SongsPage: React.FC = () => {
         <Box sx={{ width: "100%", maxWidth: 960 }}>
           <SongsSearchPanel
             value={searchState}
-            onChange={setSearchState}
+            onChange={handleSearchChange}
             disableAtariFilter={!atariMap || isAtariRulesLoading}
           />
         </Box>
