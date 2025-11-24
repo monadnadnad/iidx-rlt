@@ -36,10 +36,10 @@ export const SongsList: React.FC<SongsListProps> = ({ songs, onSelect }) => {
           },
         }}
       >
-        {songs.map((chart) => (
-          <ListItem key={chart.id} disablePadding>
+        {songs.map((song) => (
+          <ListItem key={song.id} disablePadding>
             <ListItemButton
-              onClick={() => onSelect?.(chart)}
+              onClick={() => onSelect?.(song)}
               sx={{
                 px: 1.5,
                 py: 1,
@@ -50,21 +50,21 @@ export const SongsList: React.FC<SongsListProps> = ({ songs, onSelect }) => {
             >
               <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                 <Typography variant="body1" fontWeight={500} sx={{ wordBreak: "break-word" }}>
-                  {chart.title}
+                  {song.title}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {chart.versionName}
+                  {song.versionName}
                 </Typography>
               </Box>
               <Chip
-                label={formatDifficulty(chart.difficulty, chart.level)}
+                label={formatDifficulty(song.difficulty, song.level)}
                 size="small"
                 variant="outlined"
                 sx={{
                   flexShrink: 0,
                   fontWeight: 600,
-                  borderColor: difficultyColor[chart.difficulty],
-                  color: difficultyColor[chart.difficulty],
+                  borderColor: difficultyColor[song.difficulty],
+                  color: difficultyColor[song.difficulty],
                 }}
               />
             </ListItemButton>

@@ -23,10 +23,10 @@ import { useSettingsStore } from "../../../store/settingsStore";
 import type { AtariRule, PlaySide, SearchPattern } from "../../../types";
 import { createLaneTextSchema } from "../../../utils/laneText";
 import { DIFFICULTY_LABEL } from "../../../utils/songSearch";
-import { useChartMemo } from "../../memo/useChartMemo";
+import { useSongMemo } from "../../memo/useSongMemo";
 
-type ChartDetailSheetProps = {
-  chart: Song;
+type SongDetailSheetProps = {
+  song: Song;
   rules: AtariRule[];
   onClose: () => void;
 };
@@ -94,10 +94,10 @@ const LaneTextForm: React.FC<LaneTextFormProps> = ({ onSubmit }) => {
   );
 };
 
-export const ChartDetailSheet: React.FC<ChartDetailSheetProps> = ({ chart, rules, onClose }) => {
-  const { memos, saveMemo, deleteMemo } = useChartMemo({
-    songId: chart.songId,
-    difficulty: chart.difficulty,
+export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, onClose }) => {
+  const { memos, saveMemo, deleteMemo } = useSongMemo({
+    songId: song.songId,
+    difficulty: song.difficulty,
   });
   const playSide = useSettingsStore((s) => s.playSide);
 
@@ -111,10 +111,10 @@ export const ChartDetailSheet: React.FC<ChartDetailSheetProps> = ({ chart, rules
     <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
       <Stack>
         <Typography variant="h6" component="span">
-          {chart.title}
+          {song.title}
         </Typography>
         <Box component="span" sx={{ color: "text.secondary", fontSize: "0.8rem" }}>
-          {chart.versionName} / {DIFFICULTY_LABEL[chart.difficulty]} ☆{chart.level}
+          {song.versionName} / {DIFFICULTY_LABEL[song.difficulty]} ☆{song.level}
         </Box>
       </Stack>
       <IconButton onClick={onClose} aria-label="閉じる" sx={{ justifySelf: "flex-end", ml: "auto" }}>
@@ -153,7 +153,7 @@ export const ChartDetailSheet: React.FC<ChartDetailSheetProps> = ({ chart, rules
           <Typography variant="subtitle1" gutterBottom>
             配置メモ
           </Typography>
-          <LaneTextForm key={chart.id} onSubmit={saveMemo} />
+          <LaneTextForm key={song.id} onSubmit={saveMemo} />
           {memos.length > 0 && (
             <List dense>
               {memos.map((m) => (

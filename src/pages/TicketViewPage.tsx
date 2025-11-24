@@ -9,7 +9,7 @@ import useSWR from "swr";
 import { Page } from "../components/layout/Page";
 import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
 import { useTicketFilter } from "../features/ticket/hooks";
-import { type RecommendedChart, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
+import { type RecommendedSong, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
 import { FilterMode, SearchFormValues, searchFormSchema } from "../features/ticket/types";
 import { usePager } from "../hooks/usePager";
 import type { Song } from "../schema/song";
@@ -64,11 +64,11 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const [filterMode, setFilterMode] = useState<FilterMode>("recommend");
   const [textageSong, setTextageSong] = useState<Song | null>(null);
 
-  const recommendedCharts = useMemo<RecommendedChart[]>(() => {
+  const recommendedSongs = useMemo<RecommendedSong[]>(() => {
     if (!atariRules) return [];
     const allowedSet = new Set<SongDifficulty>(["sph", "spa", "spl"]);
     const seen = new Set<string>();
-    return atariRules.reduce<RecommendedChart[]>((acc, rule) => {
+    return atariRules.reduce<RecommendedSong[]>((acc, rule) => {
       if (!allowedSet.has(rule.difficulty as SongDifficulty)) {
         return acc;
       }
@@ -193,7 +193,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             onFilterModeChange={handleFilterModeChange}
             selectedSong={textageSong}
             onSongSelect={handleSongSelect}
-            recommendedCharts={recommendedCharts}
+            recommendedSongs={recommendedSongs}
           />
           <AtariRuleCard rules={selectedAtariRules} playSide={playSide} />
           <Divider />

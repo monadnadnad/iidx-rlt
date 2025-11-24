@@ -18,7 +18,7 @@ import { AppNavItem } from "./types";
 const MAIN_NAV_ITEMS: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
   { path: "/tickets", label: "チケット一覧", icon: <ListAltIcon /> },
-  { path: "/charts", label: "譜面一覧", icon: <LibraryMusicIcon /> },
+  { path: "/songs", label: "譜面一覧", icon: <LibraryMusicIcon /> },
 ];
 
 const MORE_NAV_ITEM: AppNavItem = { path: "/more", label: "その他", icon: <MoreHorizIcon /> };

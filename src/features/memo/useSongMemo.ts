@@ -5,12 +5,12 @@ import { appDb } from "../../db/appDb";
 import type { Memo } from "../../schema/memo";
 import type { Song } from "../../schema/song";
 
-type UseChartMemoParams = {
+type UseSongMemoParams = {
   songId: string;
   difficulty: Song["difficulty"];
 };
 
-export const useChartMemo = ({ songId, difficulty }: UseChartMemoParams) => {
+export const useSongMemo = ({ songId, difficulty }: UseSongMemoParams) => {
   const memos = useLiveQuery(async () => {
     if (!songId || !difficulty || typeof window === "undefined") {
       return [] as Memo[];

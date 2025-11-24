@@ -38,7 +38,7 @@ describe("SongSelect", () => {
     const onSongSelect = vi.fn();
     render(
       <SongSelect
-        recommendedCharts={[{ songId: song.songId, difficulty: song.difficulty as SongDifficulty }]}
+        recommendedSongs={[{ songId: song.songId, difficulty: song.difficulty as SongDifficulty }]}
         selectedSong={null}
         onSongSelect={onSongSelect}
         searchMode="recommend"

@@ -8,13 +8,13 @@ type SearchMode = "recommend" | "all";
 
 export type SongDifficulty = Extract<Song["difficulty"], "sph" | "spa" | "spl">;
 
-export interface RecommendedChart {
+export interface RecommendedSong {
   songId: string;
   difficulty: SongDifficulty;
 }
 
 interface UseTextageSongOptionsParams {
-  recommendedCharts: ReadonlyArray<RecommendedChart>;
+  recommendedSongs: ReadonlyArray<RecommendedSong>;
   searchMode: SearchMode;
   selectedDifficulties: Set<SongDifficulty>;
   selectedLevels: Set<number>;
@@ -58,7 +58,7 @@ const querySongs = async (
 };
 
 export const useTextageSongOptions = ({
-  recommendedCharts,
+  recommendedSongs,
   searchMode,
   selectedDifficulties,
   selectedLevels,
@@ -72,8 +72,8 @@ export const useTextageSongOptions = ({
   const difficultyValues = useMemo(() => Array.from(selectedDifficulties), [selectedDifficulties]);
   const levelValues = useMemo(() => Array.from(selectedLevels), [selectedLevels]);
   const recommendedIds = useMemo(
-    () => recommendedCharts.map((chart) => `${chart.songId}-${chart.difficulty}`),
-    [recommendedCharts]
+    () => recommendedSongs.map((song) => `${song.songId}-${song.difficulty}`),
+    [recommendedSongs]
   );
 
   const queriedSongs = useLiveQuery(async () => {

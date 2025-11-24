@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { Pager } from "../components/ui";
-import { ChartDetailSheet } from "../features/songs/components/ChartDetailSheet";
+import { SongDetailSheet } from "../features/songs/components/SongDetailSheet";
 import { SongsList } from "../features/songs/components/SongsList";
 import { SongsSearchPanel } from "../features/songs/components/SongsSearchPanel";
 import { useSongsQuery, type SongsSearchState } from "../features/songs/hooks/useSongsQuery";
@@ -14,7 +14,7 @@ import { createInitialSongSearchState } from "../utils/songSearch";
 import type { AtariRule } from "../types";
 import type { Song } from "../schema/song";
 
-export const ChartsPage: React.FC = () => {
+export const SongsPage: React.FC = () => {
   const [searchState, setSearchState] = useState<SongsSearchState>(createInitialSongSearchState);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
@@ -79,7 +79,7 @@ export const ChartsPage: React.FC = () => {
         )}
 
         {selectedSong && (
-          <ChartDetailSheet chart={selectedSong} rules={selectedRules} onClose={() => setSelectedSong(null)} />
+          <SongDetailSheet song={selectedSong} rules={selectedRules} onClose={() => setSelectedSong(null)} />
         )}
       </Stack>
     </Page>

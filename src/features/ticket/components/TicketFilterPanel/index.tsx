@@ -7,7 +7,7 @@ import { FilterMode } from "../../types";
 import { PatternInput } from "./PatternInput";
 import { PlaySideSwitch } from "./PlaySideSwitch";
 import { SongSelect } from "./SongSelect";
-import type { RecommendedChart } from "../../hooks/useTextageSongOptions";
+import type { RecommendedSong } from "../../hooks/useTextageSongOptions";
 
 type TicketFilterPanelProps = {
   playSide: PlaySide;
@@ -16,7 +16,7 @@ type TicketFilterPanelProps = {
   onFilterModeChange: (mode: FilterMode) => void;
   selectedSong: Song | null;
   onSongSelect: (song: Song | null) => void;
-  recommendedCharts: ReadonlyArray<RecommendedChart>;
+  recommendedSongs: ReadonlyArray<RecommendedSong>;
 };
 
 export const TicketFilterPanel: React.FC<TicketFilterPanelProps> = ({
@@ -26,14 +26,14 @@ export const TicketFilterPanel: React.FC<TicketFilterPanelProps> = ({
   onFilterModeChange,
   selectedSong,
   onSongSelect,
-  recommendedCharts,
+  recommendedSongs,
 }) => (
   <Stack spacing={2} sx={{ width: "100%" }}>
     <PlaySideSwitch value={playSide} onChange={onPlaySideChange} />
     <PatternInput playSide={playSide} />
     <Divider />
     <SongSelect
-      recommendedCharts={recommendedCharts}
+      recommendedSongs={recommendedSongs}
       selectedSong={selectedSong}
       onSongSelect={onSongSelect}
       searchMode={filterMode}

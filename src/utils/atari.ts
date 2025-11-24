@@ -8,9 +8,9 @@ const SILVER_QUALITY_THRESHOLD = 2;
 const SILVER_QUANTITY_THRESHOLD = 3;
 
 type RulesByPatternKey = Map<string, AtariRule[]>;
-type RulesByChart = Map<string, AtariRule[]>;
+type RulesBySong = Map<string, AtariRule[]>;
 
-const createChartKey = (songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]) => `${songId}#${difficulty}`;
+const createSongKey = (songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]) => `${songId}#${difficulty}`;
 
 interface IAtariMap {
   // チケット全体に対して計算してもいいが、当たりパターン自体少ないのでルールを全探索する
@@ -47,15 +47,15 @@ const createRulesByPatternKey = (allRules: AtariRule[]): RulesByPatternKey => {
   return rulesByPatternKey;
 };
 
-const createRulesByChart = (allRules: AtariRule[]): RulesByChart => {
-  const rulesByChart = new Map<string, AtariRule[]>();
+const createRulesBySong = (allRules: AtariRule[]): RulesBySong => {
+  const rulesBySong = new Map<string, AtariRule[]>();
   for (const rule of allRules) {
-    const key = createChartKey(rule.songId, rule.difficulty);
-    const rules = rulesByChart.get(key) ?? [];
+    const key = createSongKey(rule.songId, rule.difficulty);
+    const rules = rulesBySong.get(key) ?? [];
     rules.push(rule);
-    rulesByChart.set(key, rules);
+    rulesBySong.set(key, rules);
   }
-  return rulesByChart;
+  return rulesBySong;
 };
 
 const getRulesForTicket = (
@@ -76,14 +76,14 @@ const getRulesForTicket = (
 
 export const createAtariMap = (atariRules: AtariRule[]): IAtariMap => {
   const rulesByPatternKey = createRulesByPatternKey(atariRules);
-  const rulesByChart = createRulesByChart(atariRules);
+  const rulesBySong = createRulesBySong(atariRules);
 
   return {
     getRulesForTicket: (ticket: Ticket, playSide: PlaySide): AtariRule[] | undefined => {
       return getRulesForTicket(ticket, playSide, rulesByPatternKey);
     },
     getRulesForSong: (songId: AtariRule["songId"], difficulty: AtariRule["difficulty"]): AtariRule[] | undefined => {
-      return rulesByChart.get(createChartKey(songId, difficulty));
+      return rulesBySong.get(createSongKey(songId, difficulty));
     },
     getColorForTicket: (ticket: Ticket, playSide: PlaySide): HighlightColor => {
       const rules = getRulesForTicket(ticket, playSide, rulesByPatternKey);

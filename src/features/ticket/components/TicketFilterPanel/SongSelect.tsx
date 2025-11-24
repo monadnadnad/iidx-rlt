@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 
 import type { Song } from "../../../../schema/song";
 import { SONG_FILTER_LEVEL_OPTIONS, toggleSetValue } from "../../../../utils/songSearch";
-import { useTextageSongOptions, type RecommendedChart, type SongDifficulty } from "../../hooks/useTextageSongOptions";
+import { useTextageSongOptions, type RecommendedSong, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 import { FilterMode } from "../../types";
 import { TextageFilterSection, type TextageFilterOption } from "../TextageFilterSection";
 
@@ -22,7 +22,7 @@ const DIFFICULTY_OPTIONS: ReadonlyArray<{ label: string; value: SongDifficulty }
 ];
 
 type SongSelectProps = {
-  recommendedCharts: ReadonlyArray<RecommendedChart>;
+  recommendedSongs: ReadonlyArray<RecommendedSong>;
   selectedSong: Song | null;
   onSongSelect?: (_song: Song | null) => void;
   searchMode: FilterMode;
@@ -30,7 +30,7 @@ type SongSelectProps = {
 };
 
 export const SongSelect: React.FC<SongSelectProps> = ({
-  recommendedCharts,
+  recommendedSongs,
   selectedSong,
   onSongSelect,
   searchMode,
@@ -57,7 +57,7 @@ export const SongSelect: React.FC<SongSelectProps> = ({
   );
 
   const { filteredSongs, placeholder, isLoading } = useTextageSongOptions({
-    recommendedCharts,
+    recommendedSongs,
     searchMode,
     selectedDifficulties,
     selectedLevels,
