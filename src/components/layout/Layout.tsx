@@ -2,7 +2,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import InfoIcon from "@mui/icons-material/Info";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 
@@ -42,8 +42,9 @@ export const Layout: React.FC = () => {
       {!isMobile && <AppDrawer navItems={navItems} tabIndex={tabIndex} />}
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <AppHeader />
-        <Box
+        <Container
           component="main"
+          maxWidth="md"
           sx={{
             flexGrow: 1,
             p: 2,
@@ -51,7 +52,7 @@ export const Layout: React.FC = () => {
           }}
         >
           <Outlet />
-        </Box>
+        </Container>
       </Box>
       {isMobile && <AppBottomNavigation navItems={navItems} tabIndex={tabIndex} />}
       <AppSnackbar open={open} onClose={closeSnackbar} message={message} severity={severity} />

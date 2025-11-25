@@ -1,6 +1,5 @@
 import {
   Autocomplete,
-  Paper,
   Stack,
   TextField,
   ToggleButton,
@@ -11,9 +10,9 @@ import {
 import { useCallback, useState } from "react";
 
 import type { Song } from "../../../../schema/song";
+import { useTextageSongOptions, type RecommendedChart, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 import { FilterMode } from "../../types";
 import { TextageFilterSection, type TextageFilterOption } from "../TextageFilterSection";
-import { useTextageSongOptions, type RecommendedChart, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 
 const DIFFICULTY_OPTIONS: { label: string; value: SongDifficulty }[] = [
   { label: "SPH", value: "sph" },
@@ -98,63 +97,61 @@ export const SongSelect: React.FC<SongSelectProps> = ({
   };
 
   return (
-    <Stack spacing={3} sx={{ width: "100%", maxWidth: 720, mx: "auto" }}>
-      <Paper variant="outlined" sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
-        <ToggleButtonGroup
-          value={searchMode}
-          exclusive
-          onChange={handleModeChange}
-          aria-label="search mode"
-          size={isMobile ? "medium" : "large"}
-          color="primary"
-          sx={{ alignSelf: isMobile ? "stretch" : "flex-start" }}
-        >
-          <ToggleButton value="recommend" aria-label="recommend search">
-            おすすめから検索
-          </ToggleButton>
-          <ToggleButton value="all" aria-label="all songs search">
-            全楽曲から検索
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <Stack direction="row" spacing={2} useFlexGap sx={{ width: "100%", flexWrap: "wrap" }}>
-          <TextageFilterSection
-            title="難易度で絞り込み"
-            options={DIFFICULTY_OPTIONS.map<TextageFilterOption>((option) => ({
-              key: option.value,
-              label: option.label,
-              checked: selectedDifficulties.has(option.value),
-              onToggle: () => handleDifficultyToggle(option.value),
-            }))}
-          />
-          <TextageFilterSection
-            title="レベルで絞り込み"
-            options={LEVEL_OPTIONS.map<TextageFilterOption>((level) => ({
-              key: level,
-              label: `Lv. ${level}`,
-              checked: selectedLevels.has(level),
-              onToggle: () => handleLevelToggle(level),
-            }))}
-          />
-        </Stack>
-        <Autocomplete
-          options={filteredSongs}
-          getOptionLabel={formatSongLabel}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          value={selectedSong}
-          onChange={(_event, newValue) => onSongSelect?.(newValue)}
-          inputValue={inputValue}
-          onInputChange={(_event, value) => setInputValue(value)}
-          filterOptions={(options) => options}
-          loading={isLoading}
-          renderOption={(props, option) => (
-            <li {...props} key={option.id}>
-              {formatSongLabel(option)}
-            </li>
-          )}
-          slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
-          renderInput={(params) => <TextField {...params} label="楽曲を選択" placeholder={placeholder} />}
+    <Stack spacing={3}>
+      <ToggleButtonGroup
+        value={searchMode}
+        exclusive
+        onChange={handleModeChange}
+        aria-label="search mode"
+        size={isMobile ? "medium" : "large"}
+        color="primary"
+        sx={{ alignSelf: isMobile ? "stretch" : "flex-start" }}
+      >
+        <ToggleButton value="recommend" aria-label="recommend search">
+          おすすめから検索
+        </ToggleButton>
+        <ToggleButton value="all" aria-label="all songs search">
+          全楽曲から検索
+        </ToggleButton>
+      </ToggleButtonGroup>
+      <Stack direction="row" spacing={2} useFlexGap sx={{ width: "100%", flexWrap: "wrap" }}>
+        <TextageFilterSection
+          title="難易度で絞り込み"
+          options={DIFFICULTY_OPTIONS.map<TextageFilterOption>((option) => ({
+            key: option.value,
+            label: option.label,
+            checked: selectedDifficulties.has(option.value),
+            onToggle: () => handleDifficultyToggle(option.value),
+          }))}
         />
-      </Paper>
+        <TextageFilterSection
+          title="レベルで絞り込み"
+          options={LEVEL_OPTIONS.map<TextageFilterOption>((level) => ({
+            key: level,
+            label: `Lv. ${level}`,
+            checked: selectedLevels.has(level),
+            onToggle: () => handleLevelToggle(level),
+          }))}
+        />
+      </Stack>
+      <Autocomplete
+        options={filteredSongs}
+        getOptionLabel={formatSongLabel}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        value={selectedSong}
+        onChange={(_event, newValue) => onSongSelect?.(newValue)}
+        inputValue={inputValue}
+        onInputChange={(_event, value) => setInputValue(value)}
+        filterOptions={(options) => options}
+        loading={isLoading}
+        renderOption={(props, option) => (
+          <li {...props} key={option.id}>
+            {formatSongLabel(option)}
+          </li>
+        )}
+        slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
+        renderInput={(params) => <TextField {...params} label="楽曲を選択" placeholder={placeholder} />}
+      />
     </Stack>
   );
 };
