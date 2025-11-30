@@ -2,7 +2,7 @@ import { Box, Divider, Drawer, Paper, useTheme, useMediaQuery } from "@mui/mater
 
 interface FloatingSheetProps {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   title?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -18,7 +18,18 @@ export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, tit
   }
 
   const sheetContent = (
-    <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
+    <Box
+      sx={{
+        p: 2,
+        pb: `calc(${theme.spacing(2)} + env(safe-area-inset-bottom, 0px))`,
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        minHeight: 0,
+        maxHeight: "100%",
+        overflowY: "auto",
+      }}
+    >
       {title && (
         <>
           {title}
@@ -43,6 +54,10 @@ export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, tit
               overflowY: "auto",
               borderTopLeftRadius: 12,
               borderTopRightRadius: 12,
+              left: "env(safe-area-inset-left, 0px)",
+              right: "env(safe-area-inset-right, 0px)",
+              width: "auto",
+              maxWidth: `calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))`,
             },
           },
         }}
@@ -61,6 +76,10 @@ export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, tit
         right: theme.spacing(4),
         zIndex: theme.zIndex.modal,
         width: theme.spacing(50),
+        maxHeight: "60vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
         borderRadius: 3,
         boxShadow: theme.shadows[3],
       })}

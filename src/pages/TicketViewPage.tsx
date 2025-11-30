@@ -8,9 +8,10 @@ import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
-import { usePagination, useTicketFilter } from "../features/ticket/hooks";
-import { type RecommendedChart, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
+import { useTicketFilter } from "../features/ticket/hooks";
+import { type RecommendedSong, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
 import { FilterMode, SearchFormValues, searchFormSchema } from "../features/ticket/types";
+import { usePager } from "../hooks/usePager";
 import type { Song } from "../schema/song";
 import { useSettingsStore } from "../store/settingsStore";
 import { useTicketsStore } from "../store/ticketsStore";
@@ -63,11 +64,11 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const [filterMode, setFilterMode] = useState<FilterMode>("recommend");
   const [textageSong, setTextageSong] = useState<Song | null>(null);
 
-  const recommendedCharts = useMemo<RecommendedChart[]>(() => {
+  const recommendedSongs = useMemo<RecommendedSong[]>(() => {
     if (!atariRules) return [];
     const allowedSet = new Set<SongDifficulty>(["sph", "spa", "spl"]);
     const seen = new Set<string>();
-    return atariRules.reduce<RecommendedChart[]>((acc, rule) => {
+    return atariRules.reduce<RecommendedSong[]>((acc, rule) => {
       if (!allowedSet.has(rule.difficulty as SongDifficulty)) {
         return acc;
       }
@@ -106,18 +107,24 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     atariRules: atariRules ?? [],
   });
 
-  const { paginatedData, currentPage, pageCount, totalCount, itemsPerPage, setItemsPerPage, setPage } = usePagination(
-    filteredTickets,
-    { initialItemsPerPage: 50 }
-  );
+  const pager = usePager(filteredTickets);
+  const {
+    paginated,
+    page: currentPage,
+    pageCount,
+    totalCount,
+    perPage: itemsPerPage,
+    handlePerPageChange,
+    handlePageChange,
+  } = pager;
 
-  const paginatedTickets = useMemo(
+  const coloredTickets = useMemo(
     () =>
-      paginatedData.map((ticket) => ({
+      paginated.map((ticket) => ({
         ...ticket,
         highlightColor: atariMap.getColorForTicket(ticket, playSide),
       })),
-    [paginatedData, atariMap, playSide]
+    [paginated, atariMap, playSide]
   );
 
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
@@ -155,20 +162,12 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const handleFilterModeChange = (mode: FilterMode) => {
     setFilterMode(mode);
     setTextageSong(null);
-    setPage(1);
+    handlePageChange(null, 1);
   };
 
   const handleSongSelect = (song: Song | null) => {
     setTextageSong(song);
-    setPage(1);
-  };
-
-  const handleItemsPerPageChange = (_: React.MouseEvent<HTMLElement>, perPage: number | null) => {
-    setItemsPerPage(perPage);
-  };
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
-    setPage(page);
+    handlePageChange(null, 1);
   };
 
   const isLoading = !isSample && isAtariRulesLoading;
@@ -194,7 +193,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             onFilterModeChange={handleFilterModeChange}
             selectedSong={textageSong}
             onSongSelect={handleSongSelect}
-            recommendedCharts={recommendedCharts}
+            recommendedSongs={recommendedSongs}
           />
           <AtariRuleCard rules={selectedAtariRules} playSide={playSide} />
           <Divider />
@@ -212,13 +211,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             </Stack>
           ) : (
             <TicketDataTable
-              tickets={paginatedTickets}
+              tickets={coloredTickets}
               totalCount={totalCount}
               currentPage={currentPage}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}
               onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
+              onItemsPerPageChange={handlePerPageChange}
               onRowSelect={(ticket) => setDetailTicket(ticket)}
               selectedTicket={detailTicket}
               getTextageUrl={getTextageUrl}

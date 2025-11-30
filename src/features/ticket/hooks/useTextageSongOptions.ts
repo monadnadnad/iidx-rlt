@@ -2,36 +2,25 @@ import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { Song } from "../../../schema/song";
 import { appDb } from "../../../db/appDb";
+import { buildDifficultyLevelPairs, normalizeSongText } from "../../../utils/songSearch";
 
 type SearchMode = "recommend" | "all";
 
 export type SongDifficulty = Extract<Song["difficulty"], "sph" | "spa" | "spl">;
 
-export interface RecommendedChart {
+export interface RecommendedSong {
   songId: string;
   difficulty: SongDifficulty;
 }
 
-const normalizeText = (value: string) => value.replace(/\s+/g, "").normalize("NFKC").toLowerCase();
-
 interface UseTextageSongOptionsParams {
-  recommendedCharts: ReadonlyArray<RecommendedChart>;
+  recommendedSongs: ReadonlyArray<RecommendedSong>;
   searchMode: SearchMode;
   selectedDifficulties: Set<SongDifficulty>;
   selectedLevels: Set<number>;
   inputValue: string;
   formatSongLabel: (song: Song) => string;
 }
-
-const buildDifficultyLevelPairs = (difficulties: SongDifficulty[], levels: number[]) => {
-  const pairs: [SongDifficulty, number][] = [];
-  for (const difficulty of difficulties) {
-    for (const level of levels) {
-      pairs.push([difficulty, level]);
-    }
-  }
-  return pairs;
-};
 
 const querySongs = async (
   searchMode: SearchMode,
@@ -63,13 +52,13 @@ const querySongs = async (
   let collection = appDb.songs.where("[difficulty+level]").anyOf(pairs);
   if (normalizedQuery) {
     const query = normalizedQuery;
-    collection = collection.filter((song) => normalizeText(song.titleNormalized ?? song.title).includes(query));
+    collection = collection.filter((song) => normalizeSongText(song.titleNormalized ?? song.title).includes(query));
   }
   return collection.toArray();
 };
 
 export const useTextageSongOptions = ({
-  recommendedCharts,
+  recommendedSongs,
   searchMode,
   selectedDifficulties,
   selectedLevels,
@@ -79,12 +68,12 @@ export const useTextageSongOptions = ({
   const isRecommendMode = searchMode === "recommend";
   const placeholder = isRecommendMode ? "当たり配置が定義済みの曲を検索" : "曲名で検索 (例: 冥)";
 
-  const normalizedQuery = useMemo(() => normalizeText(inputValue), [inputValue]);
+  const normalizedQuery = useMemo(() => normalizeSongText(inputValue), [inputValue]);
   const difficultyValues = useMemo(() => Array.from(selectedDifficulties), [selectedDifficulties]);
   const levelValues = useMemo(() => Array.from(selectedLevels), [selectedLevels]);
   const recommendedIds = useMemo(
-    () => recommendedCharts.map((chart) => `${chart.songId}-${chart.difficulty}`),
-    [recommendedCharts]
+    () => recommendedSongs.map((song) => `${song.songId}-${song.difficulty}`),
+    [recommendedSongs]
   );
 
   const queriedSongs = useLiveQuery(async () => {
@@ -106,7 +95,7 @@ export const useTextageSongOptions = ({
         acc.push({ song, score: 0 });
         return acc;
       }
-      const normalizedTitle = normalizeText(song.titleNormalized ?? song.title);
+      const normalizedTitle = normalizeSongText(song.titleNormalized ?? song.title);
       if (!normalizedTitle.includes(normalizedQuery)) {
         return acc;
       }

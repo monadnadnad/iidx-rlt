@@ -28,6 +28,7 @@ const mockSong: Song = {
   title: "Test",
   titleNormalized: "Test",
   version: 10,
+  versionName: "10th style",
   url: "",
   difficulty: "spa",
   level: 12,

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { Song } from "../../src/schema/song";
 import { Difficulty, songsSchema } from "../../src/schema/song";
+import { resolveVersionName } from "../../src/utils/version";
 import { createTextageUrl } from "./textage";
 
 export const TARGET_LEVELS = [10, 11, 12] as const;
@@ -53,6 +54,7 @@ export const iidxDataTableNormalizedTitleSchema = z.record(z.string(), z.string(
 export const iidxDataTableTextageTagSchema = z.record(z.string(), z.string());
 export const iidxDataTableChartInfoSchema = z.record(z.string(), iidxDataTableChartInfoValueSchema);
 export const iidxDataTableChartInfoWithIdSchema = iidxDataTableChartInfoValueSchema.extend({ id: z.string() });
+export const versionNamesSchema = z.array(z.string());
 
 const songMetadataSchema = z.strictObject({
   artist: z.string(),
@@ -68,6 +70,7 @@ export type ChartInfoDependencies = {
   textageTagsById: Map<string, string>;
   songInfoById: Map<string, SongMetadata>;
   normalizedTitlesById?: Map<string, string>;
+  versionNames: readonly string[];
   targetDifficulties?: readonly Difficulty[];
   targetLevels?: readonly number[];
 };
@@ -109,6 +112,7 @@ export const createChartInfoToSongsSchema = ({
   textageTagsById,
   songInfoById,
   normalizedTitlesById,
+  versionNames,
   targetDifficulties = TARGET_DIFFICULTIES,
   targetLevels = TARGET_LEVELS,
 }: ChartInfoDependencies) =>
@@ -128,6 +132,8 @@ export const createChartInfoToSongsSchema = ({
       if (!songInfo) {
         throw new Error(`song-info.json is missing entry for chart id "${chart.id}"`);
       }
+
+      const versionName = resolveVersionName(songInfo.version, versionNames);
 
       const normalizedTitle = normalizedTitlesById?.get(chart.id) ?? fallbackNormalizeTitle(title);
 
@@ -164,6 +170,7 @@ export const createChartInfoToSongsSchema = ({
             artist: songInfo.artist,
             genre: songInfo.genre,
             version: songInfo.version,
+            versionName,
             url,
             difficulty,
             level,

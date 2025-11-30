@@ -16,6 +16,16 @@ export interface UpdateHistoryEntry {
 
 export const updateHistory = [
   {
+    id: "feat-memo-init",
+    releasedAt: "2025-12-01",
+    title: "曲一覧と配置メモ機能を追加",
+    summary: "楽曲一覧ページを追加しました。また、各譜面に対して配置メモを追加できる機能を試験的に公開します。",
+    details: [
+      "メモは曲一覧ページの譜面詳細から追加できます",
+      "想定用途は、事前に定義されたルールにはない知見を貯めておくことと、Xへの共有です",
+    ],
+  },
+  {
     id: "song-filter-update",
     releasedAt: "2025-11-16",
     title: "曲選択欄の調整",

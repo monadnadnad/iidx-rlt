@@ -4,10 +4,17 @@ import { AppNavItem } from "./types";
 
 interface AppBottomNavigationProps {
   navItems: AppNavItem[];
+  moreItem: AppNavItem;
   tabIndex: number;
+  onOpenMore: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navItems, tabIndex }) => {
+export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({
+  navItems,
+  moreItem,
+  tabIndex,
+  onOpenMore,
+}) => {
   return (
     <Paper
       sx={{
@@ -38,6 +45,21 @@ export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navIte
             }}
           />
         ))}
+        <BottomNavigationAction
+          key={moreItem.path}
+          label={moreItem.label}
+          icon={moreItem.icon}
+          component="button"
+          onClick={onOpenMore}
+          sx={{
+            "& .MuiBottomNavigationAction-label": {
+              fontSize: "0.5rem",
+            },
+            "&.Mui-selected .MuiBottomNavigationAction-label": {
+              fontSize: "0.5rem",
+            },
+          }}
+        />
       </BottomNavigation>
     </Paper>
   );

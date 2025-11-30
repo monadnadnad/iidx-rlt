@@ -1,23 +1,5 @@
 import { createTheme, PaletteMode } from "@mui/material";
 
-declare module "@mui/material/styles" {
-  interface Palette {
-    highlight: {
-      gold: string;
-      silver: string;
-      bronze: string;
-    };
-  }
-
-  interface PaletteOptions {
-    highlight?: {
-      gold?: string;
-      silver?: string;
-      bronze?: string;
-    };
-  }
-}
-
 export const getTheme = (mode: PaletteMode) =>
   createTheme({
     palette: {
@@ -26,6 +8,11 @@ export const getTheme = (mode: PaletteMode) =>
         gold: "#FFD700",
         silver: "#C0C0C0",
         bronze: "#CD7F32",
+      },
+      difficulty: {
+        hyper: "#f2b800",
+        another: "#d32f2f",
+        leggendaria: "#8e24aa",
       },
     },
     typography: {

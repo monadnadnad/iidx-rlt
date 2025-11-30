@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { Song } from "../../src/schema/song";
 import { Difficulty } from "../../src/schema/song";
+import { VERSION_NAMES, resolveVersionName } from "../../src/utils/version";
 
 import { TARGET_DIFFICULTIES, TARGET_LEVELS, createChartInfoToSongsSchema, type ChartInfo } from "./schema";
 
@@ -13,6 +14,7 @@ const createParser = (overrides?: {
   targetDifficulties?: readonly Difficulty[];
   targetLevels?: readonly number[];
   normalizedTitlesById?: Map<string, string>;
+  versionNames?: readonly string[];
 }): ChartInfoParser =>
   createChartInfoToSongsSchema({
     titlesById:
@@ -53,6 +55,7 @@ const createParser = (overrides?: {
         ["5678", "MissingTitle"],
         ["9999", "FilteredSong"],
       ]),
+    versionNames: overrides?.versionNames ?? VERSION_NAMES,
     targetDifficulties: overrides?.targetDifficulties ?? TARGET_DIFFICULTIES,
     targetLevels: overrides?.targetLevels ?? TARGET_LEVELS,
   });
@@ -84,6 +87,7 @@ describe("createChartInfoToSongsSchema", () => {
       title: "Example Song",
       titleNormalized: "ExampleSong",
       version: 29,
+      versionName: resolveVersionName(29, VERSION_NAMES),
       url: "https://textage.cc/score/29/example-tag.html?1HB00",
       difficulty: "sph",
       level: 11,
@@ -94,6 +98,7 @@ describe("createChartInfoToSongsSchema", () => {
       title: "Example Song",
       titleNormalized: "ExampleSong",
       version: 29,
+      versionName: resolveVersionName(29, VERSION_NAMES),
       url: "https://textage.cc/score/29/example-tag.html?1AC00",
       difficulty: "spa",
       level: 12,
