@@ -10,6 +10,7 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
 import { HistoryPage } from "../pages/HistoryPage";
+import { MemosPage } from "../pages/MemosPage";
 import { getTheme } from "../theme";
 
 export const WebApp: React.FC = () => {
@@ -24,6 +25,7 @@ export const WebApp: React.FC = () => {
           <Route path="about" element={<AboutPage />} />
           <Route path="songs" element={<SongsPage />} />
           <Route path="import" element={<TicketImporterPage />} />
+          <Route path="memos" element={<MemosPage />} />
           <Route path="sample" element={<TicketViewPage isSample={true} />} />
           <Route path="tickets" element={<TicketViewPage />} />
           <Route path="updates" element={<HistoryPage />} />

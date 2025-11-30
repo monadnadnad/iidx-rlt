@@ -55,6 +55,13 @@ class AppDB extends Dexie {
           });
       });
 
+    this.version(4).stores({
+      songs:
+        "id, songId, [songId+difficulty], difficulty, level, [difficulty+level], titleNormalized, version, versionName",
+      memos: "[songId+difficulty+laneText], songId, [songId+difficulty], laneText, updatedAt",
+      meta: "key",
+    });
+
     this.table<SongRow, string>("songs").hook("creating", (_primKey, obj) => {
       if (!obj.titleNormalized && obj.title) {
         obj.titleNormalized = obj.title;

@@ -6,8 +6,8 @@ import type { Memo } from "../../schema/memo";
 import type { Song } from "../../schema/song";
 
 type UseSongMemoParams = {
-  songId: string;
-  difficulty: Song["difficulty"];
+  readonly songId: string;
+  readonly difficulty: Song["difficulty"];
 };
 
 export const useSongMemo = ({ songId, difficulty }: UseSongMemoParams) => {
@@ -22,9 +22,7 @@ export const useSongMemo = ({ songId, difficulty }: UseSongMemoParams) => {
     async (laneText: string) => {
       const trimmed = laneText.trim();
 
-      if (!trimmed) {
-        return;
-      }
+      if (!trimmed) return;
 
       const next: Memo = {
         songId,

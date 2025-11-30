@@ -2,7 +2,7 @@ import { Box, Divider, Drawer, Paper, useTheme, useMediaQuery } from "@mui/mater
 
 interface FloatingSheetProps {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   title?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -24,7 +24,10 @@ export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, tit
         pb: `calc(${theme.spacing(2)} + env(safe-area-inset-bottom, 0px))`,
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        flex: 1,
+        minHeight: 0,
+        maxHeight: "100%",
+        overflowY: "auto",
       }}
     >
       {title && (
@@ -73,6 +76,10 @@ export const FloatingSheet: React.FC<FloatingSheetProps> = ({ open, onClose, tit
         right: theme.spacing(4),
         zIndex: theme.zIndex.modal,
         width: theme.spacing(50),
+        maxHeight: "60vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
         borderRadius: 3,
         boxShadow: theme.shadows[3],
       })}
