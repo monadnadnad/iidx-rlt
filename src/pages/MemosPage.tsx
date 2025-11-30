@@ -1,10 +1,11 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Button, Card, CardActions, CardContent, IconButton, Stack, Typography } from "@mui/material";
+import ReactGA from "react-ga4";
 
 import { Page } from "../components/layout/Page";
 import { appDb } from "../db/appDb";
-import { useMemos } from "../features/memo/useMemos";
+import { useMemos, type MemoWithSong } from "../features/memo/useMemos";
 import { useSettingsStore } from "../store/settingsStore";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 import { DIFFICULTY_LABEL } from "../utils/songSearch";
@@ -12,6 +13,15 @@ import { DIFFICULTY_LABEL } from "../utils/songSearch";
 export const MemosPage: React.FC = () => {
   const memos = useMemos();
   const playSide = useSettingsStore((s) => s.playSide);
+
+  const handleTextageClick = (memo: MemoWithSong) => {
+    ReactGA.event("click_textage_link_from_memos_page", {
+      song_id: memo.songId,
+      song_title: memo.song?.title,
+      difficulty: memo.difficulty,
+      lane_text: memo.laneText,
+    });
+  };
 
   const deleteMemo = async (laneText: string, songId: string, difficulty: "spb" | "spn" | "sph" | "spa" | "spl") =>
     appDb.memos.delete([songId, difficulty, laneText]);
@@ -45,6 +55,7 @@ export const MemosPage: React.FC = () => {
                       href={makeTextageUrl(m.song.url, playSide, m.laneText)}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={() => handleTextageClick(m)}
                       startIcon={<LaunchIcon />}
                     >
                       Textage

@@ -1,5 +1,6 @@
-import { useCallback } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import { useCallback } from "react";
+import ReactGA from "react-ga4";
 
 import { appDb } from "../../db/appDb";
 import type { Memo } from "../../schema/memo";
@@ -8,9 +9,10 @@ import type { Song } from "../../schema/song";
 type UseSongMemoParams = {
   readonly songId: string;
   readonly difficulty: Song["difficulty"];
+  readonly songTitle?: string;
 };
 
-export const useSongMemo = ({ songId, difficulty }: UseSongMemoParams) => {
+export const useSongMemo = ({ songId, difficulty, songTitle }: UseSongMemoParams) => {
   const memos = useLiveQuery(async () => {
     if (!songId || !difficulty || typeof window === "undefined") {
       return [] as Memo[];
@@ -32,8 +34,15 @@ export const useSongMemo = ({ songId, difficulty }: UseSongMemoParams) => {
       };
 
       await appDb.memos.put(next);
+
+      ReactGA.event("save_memo", {
+        song_id: songId,
+        song_title: songTitle,
+        difficulty,
+        lane_text: trimmed,
+      });
     },
-    [songId, difficulty]
+    [songId, difficulty, songTitle]
   );
 
   const deleteMemo = useCallback(

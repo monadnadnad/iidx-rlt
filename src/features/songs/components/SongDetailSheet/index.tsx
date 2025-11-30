@@ -5,6 +5,7 @@ import LocalActivityOutlinedIcon from "@mui/icons-material/LocalActivityOutlined
 import ShareIcon from "@mui/icons-material/Share";
 import { Box, IconButton, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
+import ReactGA from "react-ga4";
 
 import { FloatingSheet } from "../../../../components/ui/FloatingSheet";
 import type { Song } from "../../../../schema/song";
@@ -25,7 +26,11 @@ type SongDetailSheetProps = {
 };
 
 export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, onClose }) => {
-  const { memos, saveMemo, deleteMemo } = useSongMemo({ songId: song.songId, difficulty: song.difficulty });
+  const { memos, saveMemo, deleteMemo } = useSongMemo({
+    songId: song.songId,
+    difficulty: song.difficulty,
+    songTitle: song.title,
+  });
   const playSide = useSettingsStore((s) => s.playSide);
   const tickets = useTicketsStore((s) => s.tickets);
 
@@ -42,6 +47,18 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
     [song.url, playSide]
   );
 
+  const handleTextageClick = useCallback(
+    (laneText: string) => {
+      ReactGA.event("click_textage_link_from_song_detail", {
+        song_id: song.songId,
+        song_title: song.title,
+        difficulty: song.difficulty,
+        lane_text: laneText,
+      });
+    },
+    [song.songId, song.title, song.difficulty]
+  );
+
   const makeTweetUrl = useCallback(
     (laneText: string) => {
       const previewUrl = makePreviewUrl(laneText);
@@ -50,6 +67,18 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
       return `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     },
     [makePreviewUrl, song.title, song.difficulty]
+  );
+
+  const handleShareClick = useCallback(
+    (laneText: string) => {
+      ReactGA.event("click_share_button_from_song_detail", {
+        song_id: song.songId,
+        song_title: song.title,
+        difficulty: song.difficulty,
+        lane_text: laneText,
+      });
+    },
+    [song.songId, song.title, song.difficulty]
   );
 
   const sheetTitle = (
@@ -93,6 +122,7 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
                           href={makePreviewUrl(memo.laneText)}
                           target="_blank"
                           rel="noreferrer"
+                          onClick={() => handleTextageClick(memo.laneText)}
                         >
                           <LaunchIcon fontSize="small" />
                         </IconButton>
@@ -104,6 +134,7 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
                           href={makeTweetUrl(memo.laneText)}
                           target="_blank"
                           rel="noreferrer"
+                          onClick={() => handleShareClick(memo.laneText)}
                         >
                           <ShareIcon fontSize="small" />
                         </IconButton>
