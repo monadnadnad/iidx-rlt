@@ -1,13 +1,14 @@
 import { useMemo } from "react";
 
-import type { AtariRule, PlaySide, Ticket } from "../../../types";
+import type { Song } from "../../../schema/song";
+import type { AtariRule, PlaySide, SearchPattern, Ticket } from "../../../types";
 import { createAtariMap } from "../../../utils/atari";
 import { filterTickets, matchTicket } from "../../../utils/match";
-import type { TicketFilterState } from "../types";
+import type { FilterMode } from "../filterMode";
 
 interface UseTicketFilterParams {
   tickets: Ticket[];
-  pattern: TicketFilterState;
+  pattern: SearchPattern & { filterMode: FilterMode; textageSong: Song | null };
   playSide: PlaySide;
   atariRules: AtariRule[];
 }

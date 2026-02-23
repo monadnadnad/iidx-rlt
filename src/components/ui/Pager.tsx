@@ -9,6 +9,7 @@ type PagerProps = {
   onPageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
   onItemsPerPageChange: (event: React.MouseEvent<HTMLElement>, next: number | null) => void;
   itemsPerPageOptions?: number[];
+  headerControls?: React.ReactNode;
   children?: React.ReactNode;
   maxWidth?: number | string;
 };
@@ -23,6 +24,7 @@ export const Pager: React.FC<PagerProps> = ({
   onPageChange,
   onItemsPerPageChange,
   itemsPerPageOptions = defaultItemsPerPageOptions,
+  headerControls,
   children,
   maxWidth,
 }) => {
@@ -46,22 +48,25 @@ export const Pager: React.FC<PagerProps> = ({
           <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 0 }}>
             {hasRange ? `${totalCount}件中 ${start}～${end}件` : `${totalCount}件`}
           </Typography>
-          {showToggle && (
-            <ToggleButtonGroup
-              value={itemsPerPage}
-              exclusive
-              onChange={onItemsPerPageChange}
-              size="small"
-              color="primary"
-              aria-label="表示件数"
-            >
-              {itemsPerPageOptions.map((option) => (
-                <ToggleButton key={option} value={option}>
-                  {option}
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
-          )}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {headerControls}
+            {showToggle && (
+              <ToggleButtonGroup
+                value={itemsPerPage}
+                exclusive
+                onChange={onItemsPerPageChange}
+                size="small"
+                color="primary"
+                aria-label="表示件数"
+              >
+                {itemsPerPageOptions.map((option) => (
+                  <ToggleButton key={option} value={option}>
+                    {option}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            )}
+          </Box>
         </Box>
 
         {children}

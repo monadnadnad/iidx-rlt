@@ -7,15 +7,20 @@ import { Link } from "react-router";
 import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
+import { Pager } from "../components/ui";
 import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
+import { GroupedTableView } from "../features/ticket/components/TicketDataTable/GroupedTableView";
+import { TicketListModeSwitch } from "../features/ticket/components/TicketFilterPanel/TicketListModeSwitch";
+import type { FilterMode } from "../features/ticket/filterMode";
 import { useTicketFilter } from "../features/ticket/hooks";
 import { type RecommendedSong, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
-import { FilterMode, SearchFormValues, searchFormSchema } from "../features/ticket/types";
+import { searchFormSchema, type SearchFormValues } from "../features/ticket/searchForm";
+import { groupTicketsByLaneText } from "../features/ticket/utils/groupTicketsByLaneText";
 import { usePager } from "../hooks/usePager";
 import type { Song } from "../schema/song";
 import { useSettingsStore } from "../store/settingsStore";
 import { useTicketsStore } from "../store/ticketsStore";
-import { AtariRule, PlaySide, Ticket } from "../types";
+import type { AtariRule, PlaySide, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 
 const sampleTickets: Ticket[] = [
@@ -47,8 +52,10 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const tickets = isSample ? sampleTickets : persistentTickets;
 
   const playSide = useSettingsStore((s) => s.playSide);
+  const isGroupedTicketListEnabled = useSettingsStore((s) => s.isGroupedTicketListEnabled);
   const deferredPlaySide = useDeferredValue(playSide);
   const updatePlaySide = useSettingsStore((s) => s.updatePlaySide);
+  const updateGroupedTicketListEnabled = useSettingsStore((s) => s.updateGroupedTicketListEnabled);
 
   const methods = useForm<SearchFormValues>({
     resolver: zodResolver(searchFormSchema),
@@ -107,24 +114,26 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     atariRules: atariRules ?? [],
   });
 
-  const pager = usePager(filteredTickets);
-  const {
-    paginated,
-    page: currentPage,
-    pageCount,
-    totalCount,
-    perPage: itemsPerPage,
-    handlePerPageChange,
-    handlePageChange,
-  } = pager;
+  const groupedTickets = useMemo(() => groupTicketsByLaneText(filteredTickets), [filteredTickets]);
+  const rawPager = usePager(filteredTickets);
+  const groupedPager = usePager(groupedTickets);
 
-  const coloredTickets = useMemo(
+  const coloredRawTickets = useMemo(
     () =>
-      paginated.map((ticket) => ({
+      rawPager.paginated.map((ticket) => ({
         ...ticket,
         highlightColor: atariMap.getColorForTicket(ticket, playSide),
       })),
-    [paginated, atariMap, playSide]
+    [rawPager.paginated, atariMap, playSide]
+  );
+
+  const coloredGroupedRows = useMemo(
+    () =>
+      groupedPager.paginated.map((row) => ({
+        ...row,
+        highlightColor: atariMap.getColorForTicket({ laneText: row.laneText }, playSide),
+      })),
+    [groupedPager.paginated, atariMap, playSide]
   );
 
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
@@ -137,10 +146,24 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     updatePlaySide(newPlaySide);
   };
 
+  const handleGroupedTicketListEnabledChange = (enabled: boolean) => {
+    updateGroupedTicketListEnabled(enabled);
+    rawPager.setPage(1);
+    groupedPager.setPage(1);
+  };
+
   const getTextageUrl = useCallback(
     (ticket: Ticket) => {
       if (!textageSong) return undefined;
       return makeTextageUrl(textageSong.url, playSide, ticket.laneText);
+    },
+    [textageSong, playSide]
+  );
+
+  const getGroupedTextageUrl = useCallback(
+    (laneText: string) => {
+      if (!textageSong) return undefined;
+      return makeTextageUrl(textageSong.url, playSide, laneText);
     },
     [textageSong, playSide]
   );
@@ -162,12 +185,14 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const handleFilterModeChange = (mode: FilterMode) => {
     setFilterMode(mode);
     setTextageSong(null);
-    handlePageChange(null, 1);
+    rawPager.setPage(1);
+    groupedPager.setPage(1);
   };
 
   const handleSongSelect = (song: Song | null) => {
     setTextageSong(song);
-    handlePageChange(null, 1);
+    rawPager.setPage(1);
+    groupedPager.setPage(1);
   };
 
   const isLoading = !isSample && isAtariRulesLoading;
@@ -209,15 +234,48 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
                 </Button>
               </Box>
             </Stack>
+          ) : isGroupedTicketListEnabled ? (
+            groupedPager.totalCount === 0 ? (
+              <Typography>検索条件に一致するチケットはありません。</Typography>
+            ) : (
+              <Pager
+                totalCount={groupedPager.totalCount}
+                page={groupedPager.page}
+                pageCount={groupedPager.pageCount}
+                itemsPerPage={groupedPager.perPage}
+                headerControls={
+                  <TicketListModeSwitch
+                    checked={isGroupedTicketListEnabled}
+                    onChange={handleGroupedTicketListEnabledChange}
+                  />
+                }
+                onPageChange={groupedPager.handlePageChange}
+                onItemsPerPageChange={groupedPager.handlePerPageChange}
+              >
+                <GroupedTableView
+                  rows={coloredGroupedRows}
+                  selectedLaneText={detailTicket?.laneText}
+                  onLaneTextSelect={(laneText) => setDetailTicket({ laneText })}
+                  getTextageUrl={getGroupedTextageUrl}
+                  onTextageFollow={handleTextageFollow}
+                />
+              </Pager>
+            )
           ) : (
             <TicketDataTable
-              tickets={coloredTickets}
-              totalCount={totalCount}
-              currentPage={currentPage}
-              pageCount={pageCount}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handlePerPageChange}
+              tickets={coloredRawTickets}
+              totalCount={rawPager.totalCount}
+              currentPage={rawPager.page}
+              pageCount={rawPager.pageCount}
+              itemsPerPage={rawPager.perPage}
+              pagerHeaderControls={
+                <TicketListModeSwitch
+                  checked={isGroupedTicketListEnabled}
+                  onChange={handleGroupedTicketListEnabledChange}
+                />
+              }
+              onPageChange={rawPager.handlePageChange}
+              onItemsPerPageChange={rawPager.handlePerPageChange}
               onRowSelect={(ticket) => setDetailTicket(ticket)}
               selectedTicket={detailTicket}
               getTextageUrl={getTextageUrl}

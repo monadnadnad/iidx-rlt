@@ -11,6 +11,7 @@ type TicketDataTableProps = {
   currentPage: number;
   pageCount: number;
   itemsPerPage: number;
+  pagerHeaderControls?: React.ReactNode;
   onPageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
   onItemsPerPageChange: (event: React.MouseEvent<HTMLElement>, newItemsPerPage: number | null) => void;
   onRowSelect?: (ticket: Ticket) => void;
@@ -25,6 +26,7 @@ export const TicketDataTable: React.FC<TicketDataTableProps> = ({
   currentPage,
   pageCount,
   itemsPerPage,
+  pagerHeaderControls,
   onPageChange,
   onItemsPerPageChange,
   onRowSelect,
@@ -42,6 +44,7 @@ export const TicketDataTable: React.FC<TicketDataTableProps> = ({
       page={currentPage}
       pageCount={pageCount}
       itemsPerPage={itemsPerPage}
+      headerControls={pagerHeaderControls}
       onPageChange={onPageChange}
       onItemsPerPageChange={onItemsPerPageChange}
     >

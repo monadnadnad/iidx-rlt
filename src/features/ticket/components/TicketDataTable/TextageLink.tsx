@@ -27,7 +27,7 @@ export const TextageLink: React.FC<TextageLinkProps> = ({ href, onFollow }) => {
       aria-label="Textageで確認"
     >
       <LaunchIcon fontSize="inherit" />
-      <Typography component="span" variant="inherit">
+      <Typography component="span" variant="inherit" sx={{ display: { xs: "none", sm: "inline" } }}>
         Textage
       </Typography>
     </Link>

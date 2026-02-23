@@ -2,8 +2,8 @@ import { Divider, Stack } from "@mui/material";
 import React from "react";
 
 import type { Song } from "../../../../schema/song";
-import { PlaySide } from "../../../../types";
-import { FilterMode } from "../../types";
+import type { PlaySide } from "../../../../types";
+import type { FilterMode } from "../../filterMode";
 import { PatternInput } from "./PatternInput";
 import { PlaySideSwitch } from "./PlaySideSwitch";
 import { SongSelect } from "./SongSelect";

@@ -1,7 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React from "react";
 
-import { PlaySide } from "../../../../types";
+import type { PlaySide } from "../../../../types";
 
 type PlaySideSwitchProps = {
   value: PlaySide;

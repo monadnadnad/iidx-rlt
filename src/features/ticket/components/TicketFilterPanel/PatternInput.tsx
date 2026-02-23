@@ -2,8 +2,8 @@ import { Box, Checkbox, FormControl, FormControlLabel, TextField } from "@mui/ma
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { SearchFormValues } from "../../types";
-import { PlaySide } from "../../../../types";
+import type { PlaySide } from "../../../../types";
+import type { SearchFormValues } from "../../searchForm";
 
 type PatternInputProps = {
   playSide: PlaySide;
