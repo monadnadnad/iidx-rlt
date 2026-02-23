@@ -10,5 +10,13 @@ export const TicketListModeSwitch: React.FC<TicketListModeSwitchProps> = ({ chec
   <FormControlLabel
     control={<Switch size="small" checked={checked} onChange={(_event, nextChecked) => onChange(nextChecked)} />}
     label="重複をまとめる"
+    sx={{
+      m: 0,
+      ".MuiFormControlLabel-label": {
+        fontSize: "0.875rem",
+        color: "text.secondary",
+        whiteSpace: "nowrap",
+      },
+    }}
   />
 );

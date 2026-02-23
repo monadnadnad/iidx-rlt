@@ -31,18 +31,30 @@ export const GroupedRowItem: React.FC<GroupedRowItemProps> = ({
         aria-selected={selected}
         sx={{
           display: "grid",
-          gridTemplateColumns: "max-content max-content minmax(0, 1fr) max-content",
-          columnGap: 2,
+          gridTemplateColumns: "max-content minmax(0, 1fr) max-content",
+          gridTemplateRows: "auto auto",
+          columnGap: { xs: 1.25, sm: 2 },
+          rowGap: 0.25,
           alignItems: "center",
+          py: 1.5,
         }}
       >
-        <AtariStatus color={highlightColor} />
+        <AtariStatus
+          color={highlightColor}
+          sx={{
+            gridRow: "1 / 3",
+          }}
+        />
         <Typography
           variant="body1"
           sx={{
+            gridColumn: 2,
+            gridRow: 1,
             minWidth: "7ch",
             flexShrink: 0,
             fontVariantNumeric: "tabular-nums",
+            fontSize: "1.1rem",
+            lineHeight: 1.3,
           }}
           noWrap
         >
@@ -53,15 +65,18 @@ export const GroupedRowItem: React.FC<GroupedRowItemProps> = ({
           data-testid="grouped-ticket-count"
           data-count={count}
           sx={{
+            gridColumn: "2 / -1",
+            gridRow: 2,
             minWidth: 0,
             color: "text.secondary",
             fontSize: "0.75rem",
             fontVariantNumeric: "tabular-nums",
-            justifySelf: "end",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
           noWrap
         >
-          x {count}枚
+          件数: {count}枚
         </Typography>
         <TextageLink href={textageUrl} onFollow={() => onTextageFollow?.(laneText)} />
       </ListItemButton>

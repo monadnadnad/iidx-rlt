@@ -39,16 +39,30 @@ export const Pager: React.FC<PagerProps> = ({
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 2,
             flexWrap: "wrap",
+            alignItems: "center",
+            gap: 1,
           }}
         >
-          <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 0 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              flexGrow: 1,
+            }}
+          >
             {hasRange ? `${totalCount}件中 ${start}～${end}件` : `${totalCount}件`}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <Box
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 1,
+              flexWrap: "nowrap",
+              marginLeft: "auto",
+              flexShrink: 0,
+            }}
+          >
             {headerControls}
             {showToggle && (
               <ToggleButtonGroup
@@ -58,6 +72,7 @@ export const Pager: React.FC<PagerProps> = ({
                 size="small"
                 color="primary"
                 aria-label="表示件数"
+                sx={{ flexShrink: 0 }}
               >
                 {itemsPerPageOptions.map((option) => (
                   <ToggleButton key={option} value={option}>

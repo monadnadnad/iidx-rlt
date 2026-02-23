@@ -26,9 +26,9 @@ describe("RowItem", () => {
     expect(screen.getByRole("link", { name: "Textageで確認" })).toHaveAttribute("href", "https://example.com");
   });
 
-  it("expiration がない場合は有効期限を表示しない", () => {
+  it("expiration がない場合はプレースホルダーを表示する", () => {
     render(<RowItem ticket={{ laneText: "7654321" }} />);
 
-    expect(screen.queryByText(/有効期限:/)).toBeNull();
+    expect(screen.getByText("有効期限: -")).toBeInTheDocument();
   });
 });

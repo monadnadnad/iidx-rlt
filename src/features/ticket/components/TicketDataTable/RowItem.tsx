@@ -19,7 +19,7 @@ export const RowItem: React.FC<RowItemProps> = ({
   textageUrl,
   onTextageFollow,
 }) => {
-  const expiration = ticket.expiration ?? "";
+  const expirationLabel = `有効期限: ${ticket.expiration ?? "-"}`;
 
   return (
     <ListItem disablePadding>
@@ -29,45 +29,50 @@ export const RowItem: React.FC<RowItemProps> = ({
         aria-selected={selected}
         sx={{
           display: "grid",
-          gridTemplateColumns: {
-            xs: "max-content minmax(0, 1fr) max-content",
-            sm: "max-content max-content minmax(0, 1fr) max-content",
-          },
+          gridTemplateColumns: "max-content minmax(0, 1fr) max-content",
+          gridTemplateRows: "auto auto",
           columnGap: { xs: 1.25, sm: 2 },
-          rowGap: { xs: 0.25, sm: 0 },
+          rowGap: 0.25,
           alignItems: "center",
+          py: 1.5,
         }}
       >
-        <AtariStatus color={ticket.highlightColor} />
+        <AtariStatus
+          color={ticket.highlightColor}
+          sx={{
+            gridRow: "1 / 3",
+          }}
+        />
         <Typography
           variant="body1"
           sx={{
             gridColumn: 2,
+            gridRow: 1,
             minWidth: "7ch",
             flexShrink: 0,
             fontVariantNumeric: "tabular-nums",
+            fontSize: "1.1rem",
+            lineHeight: 1.3,
           }}
           noWrap
         >
           {ticket.laneText}
         </Typography>
-        {expiration && (
-          <Typography
-            component="span"
-            sx={{
-              gridColumn: { xs: "2 / 4", sm: 3 },
-              gridRow: { xs: 2, sm: 1 },
-              minWidth: 0,
-              color: "text.secondary",
-              fontSize: "0.75rem",
-              overflow: { xs: "visible", sm: "hidden" },
-              textOverflow: { xs: "clip", sm: "ellipsis" },
-              whiteSpace: { xs: "normal", sm: "nowrap" },
-            }}
-          >
-            {`有効期限: ${expiration}`}
-          </Typography>
-        )}
+        <Typography
+          component="span"
+          sx={{
+            gridColumn: "2 / -1",
+            gridRow: 2,
+            minWidth: 0,
+            color: "text.secondary",
+            fontSize: "0.75rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {expirationLabel}
+        </Typography>
         <TextageLink href={textageUrl} onFollow={() => onTextageFollow?.(ticket.laneText)} />
       </ListItemButton>
     </ListItem>
