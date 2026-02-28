@@ -40,9 +40,10 @@ const sampleTickets: Ticket[] = [
 
 interface TicketViewPageProps {
   isSample?: boolean;
+  pageTitle?: string;
 }
 
-export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
+export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false, pageTitle }) => {
   const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
     `${import.meta.env.BASE_URL}data/atari-rules.json`,
     (url: string) => fetch(url).then((res) => res.json())
@@ -199,7 +200,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   if (isLoading && !import.meta.env.SSR) {
     return (
-      <Page title="チケット一覧・当たり支援 - RLT Manager">
+      <Page title={pageTitle}>
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           <CircularProgress />
         </Box>
@@ -208,7 +209,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   }
 
   return (
-    <Page title="チケット一覧・当たり配置候補">
+    <Page title={pageTitle}>
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <TicketFilterPanel

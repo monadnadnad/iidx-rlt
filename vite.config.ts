@@ -56,9 +56,6 @@ export default defineConfig(() => {
         exclude: ["src/{pages,test}", "src/types.ts", "src/storage/index.ts"],
       },
     },
-    ssr: {
-      noExternal: ["react-helmet-async"],
-    },
     build: {
       outDir: "dist",
       ssrManifest: true,

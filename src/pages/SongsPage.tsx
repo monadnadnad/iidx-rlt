@@ -56,7 +56,7 @@ export const SongsPage: React.FC = () => {
   };
 
   return (
-    <Page title="楽曲一覧" description="譜面と当たり配置定義の一覧">
+    <Page title="楽曲一覧">
       <Stack spacing={2} sx={{ flexGrow: 1, alignItems: "center" }}>
         <Box sx={{ width: "100%", maxWidth: 960 }}>
           <SongsSearchPanel

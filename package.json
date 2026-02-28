@@ -3,8 +3,7 @@
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsc && vite build && pnpm prerender && tsx scripts/generateSitemap.ts",
-    "prerender": "vite build --ssr src/prerender-entry.tsx --outDir dist-ssr && tsx scripts/prerender.ts",
+    "build": "tsc && vite build && tsx scripts/generateSitemap.ts",
     "preview": "vite preview",
     "dev": "vite",
     "lint": "eslint src scripts",
@@ -13,12 +12,6 @@
     "gen-songs": "tsx ./scripts/songs/gen-songs.ts",
     "gen-random-tickets": "tsx ./scripts/gen-random-tickets.ts",
     "license-check": "npx license-checker --production --markdown > THIRD_PARTY_NOTICES.txt"
-  },
-  "overrides": {
-    "react-helmet-async": {
-      "react": "^19.0.0",
-      "react-dom": "^19.0.0"
-    }
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -33,7 +26,6 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-ga4": "^2.1.0",
-    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.71.2",
     "react-router": "^7.13.1",
     "swr": "^2.4.1",
@@ -42,7 +34,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -54,7 +46,7 @@
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/eslint-plugin": "^1.6.9",
-    "eslint": "^10.0.2",
+    "eslint": "^9.39.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",

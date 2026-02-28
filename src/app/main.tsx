@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ReactGA from "react-ga4";
-import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router";
 
 import { syncSongsIfNeeded } from "../features/songs/syncSongs";
@@ -18,10 +17,8 @@ if (!import.meta.env.SSR && typeof window !== "undefined") {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
-        <WebApp />
-      </BrowserRouter>
-    </HelmetProvider>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <WebApp />
+    </BrowserRouter>
   </React.StrictMode>
 );

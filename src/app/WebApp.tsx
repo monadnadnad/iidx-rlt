@@ -26,8 +26,8 @@ export const WebApp: React.FC = () => {
           <Route path="songs" element={<SongsPage />} />
           <Route path="import" element={<TicketImporterPage />} />
           <Route path="memos" element={<MemosPage />} />
-          <Route path="sample" element={<TicketViewPage isSample={true} />} />
-          <Route path="tickets" element={<TicketViewPage />} />
+          <Route path="sample" element={<TicketViewPage isSample={true} pageTitle="チケット一覧・当たり配置候補" />} />
+          <Route path="tickets" element={<TicketViewPage pageTitle="チケット一覧・当たり配置候補" />} />
           <Route path="updates" element={<HistoryPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

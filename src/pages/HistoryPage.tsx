@@ -134,7 +134,7 @@ export const HistoryPage: React.FC = () => {
       : "";
 
   return (
-    <Page title="更新履歴" description="主要なアップデートをまとめたページ">
+    <Page title="更新履歴">
       <Stack spacing={3} sx={{ px: 2, py: 4 }}>
         <Typography variant="h5" component="h1" gutterBottom>
           更新履歴
