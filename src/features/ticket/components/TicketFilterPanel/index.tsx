@@ -3,7 +3,7 @@ import React from "react";
 
 import type { Song } from "../../../../schema/song";
 import type { PlaySide } from "../../../../types";
-import type { FilterMode } from "../../filterMode";
+import type { FilterMode } from "../../model/search";
 import { PatternInput } from "./PatternInput";
 import { PlaySideSwitch } from "./PlaySideSwitch";
 import { SongSelect } from "./SongSelect";

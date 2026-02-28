@@ -1,21 +1,28 @@
 import { useMemo } from "react";
 
 import type { Song } from "../../../schema/song";
-import type { AtariRule, PlaySide, SearchPattern, Ticket } from "../../../types";
+import type { AtariRule, PlaySide, Ticket } from "../../../types";
 import { createAtariMap } from "../../../utils/atari";
 import { filterTickets, matchTicket } from "../../../utils/match";
-import type { FilterMode } from "../filterMode";
+import type { FilterMode, TicketSearchQuery } from "../model/search";
 
 interface UseTicketFilterParams {
   tickets: Ticket[];
-  pattern: SearchPattern & { filterMode: FilterMode; textageSong: Song | null };
+  searchQuery: TicketSearchQuery;
+  filterMode: FilterMode;
+  textageSong: Song | null;
   playSide: PlaySide;
   atariRules: AtariRule[];
 }
 
-export const useTicketFilter = ({ tickets, pattern, playSide, atariRules }: UseTicketFilterParams) => {
-  const { filterMode, textageSong, ...searchPattern } = pattern;
-
+export const useTicketFilter = ({
+  tickets,
+  searchQuery,
+  filterMode,
+  textageSong,
+  playSide,
+  atariRules,
+}: UseTicketFilterParams) => {
   const atariMap = useMemo(() => createAtariMap(atariRules), [atariRules]);
 
   const selectedAtariRules = useMemo(() => {
@@ -24,7 +31,7 @@ export const useTicketFilter = ({ tickets, pattern, playSide, atariRules }: UseT
   }, [atariMap, textageSong]);
 
   const filteredTickets = useMemo(() => {
-    const searched = filterTickets(tickets, searchPattern, playSide);
+    const searched = filterTickets(tickets, searchQuery, playSide);
 
     const applyAtariFilter = filterMode === "recommend" && textageSong;
     if (!applyAtariFilter) return searched;
@@ -32,7 +39,7 @@ export const useTicketFilter = ({ tickets, pattern, playSide, atariRules }: UseT
     return searched.filter((ticket) =>
       selectedAtariRules.some((rule) => rule.patterns.some((pattern) => matchTicket(ticket, pattern, playSide)))
     );
-  }, [tickets, playSide, searchPattern, filterMode, textageSong, selectedAtariRules]);
+  }, [tickets, playSide, searchQuery, filterMode, textageSong, selectedAtariRules]);
 
   return { filteredTickets, selectedAtariRules, atariMap };
 };

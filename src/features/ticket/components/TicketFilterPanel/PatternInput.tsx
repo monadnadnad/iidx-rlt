@@ -3,7 +3,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import type { PlaySide } from "../../../../types";
-import type { SearchFormValues } from "../../searchForm";
+import type { SearchFormValues } from "../../model/search";
 
 type PatternInputProps = {
   playSide: PlaySide;

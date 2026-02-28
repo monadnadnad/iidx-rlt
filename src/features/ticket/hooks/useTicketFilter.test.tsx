@@ -55,11 +55,9 @@ describe("useTicketFilter", () => {
         tickets: mockTickets,
         atariRules: mockAtariRules,
         playSide,
-        pattern: {
-          ...basePattern,
-          filterMode: "recommend",
-          textageSong: mockSong,
-        },
+        searchQuery: basePattern,
+        filterMode: "recommend",
+        textageSong: mockSong,
       })
     );
 
@@ -73,11 +71,9 @@ describe("useTicketFilter", () => {
         tickets: mockTickets,
         atariRules: mockAtariRules,
         playSide,
-        pattern: {
-          ...basePattern,
-          filterMode: "all",
-          textageSong: mockSong,
-        },
+        searchQuery: basePattern,
+        filterMode: "all",
+        textageSong: mockSong,
       })
     );
 
@@ -90,14 +86,14 @@ describe("useTicketFilter", () => {
         tickets: mockTickets,
         atariRules: mockAtariRules,
         playSide,
-        pattern: {
+        searchQuery: {
           scratchSideText: "321",
           isScratchSideUnordered: true,
           nonScratchSideText: "4567",
           isNonScratchSideUnordered: false,
-          filterMode: "recommend",
-          textageSong: null,
         },
+        filterMode: "recommend",
+        textageSong: null,
       })
     );
 

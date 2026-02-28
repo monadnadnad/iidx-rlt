@@ -8,14 +8,21 @@ import { Link } from "react-router";
 import { Page } from "../components/layout/Page";
 import { Pager } from "../components/ui";
 import { useAtariRulesQuery } from "../features/shared/data/useAtariRulesQuery";
-import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
+import { AtariInfoSheet } from "../features/ticket/components/AtariInfoSheet";
+import { AtariRuleCard } from "../features/ticket/components/AtariRuleCard";
 import { GroupedTableView } from "../features/ticket/components/TicketDataTable/GroupedTableView";
+import { TicketDataTable } from "../features/ticket/components/TicketDataTable";
+import { TicketFilterPanel } from "../features/ticket/components/TicketFilterPanel";
 import { TicketListModeSwitch } from "../features/ticket/components/TicketFilterPanel/TicketListModeSwitch";
-import type { FilterMode } from "../features/ticket/filterMode";
-import { useTicketFilter } from "../features/ticket/hooks";
+import { useTicketFilter } from "../features/ticket/hooks/useTicketFilter";
 import { type RecommendedSong, type SongDifficulty } from "../features/ticket/hooks/useTextageSongOptions";
-import { searchFormSchema, type SearchFormValues } from "../features/ticket/searchForm";
-import { groupTicketsByLaneText } from "../features/ticket/utils/groupTicketsByLaneText";
+import { groupTicketsByLaneText } from "../features/ticket/model/ticketGrouping";
+import {
+  type FilterMode,
+  normalizeTicketSearchForm,
+  searchFormSchema,
+  type SearchFormValues,
+} from "../features/ticket/model/search";
 import { usePager } from "../hooks/usePager";
 import type { Song } from "../schema/song";
 import { useSettingsStore } from "../store/settingsStore";
@@ -88,25 +95,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   }, [atariRules]);
 
   const formValues = useWatch<SearchFormValues>({ control: methods.control }) ?? methods.getValues();
-  const normalizedPattern = useMemo(() => {
-    const {
-      scratchSideText = "",
-      isScratchSideUnordered = true,
-      nonScratchSideText = "",
-      isNonScratchSideUnordered = true,
-    } = formValues || {};
-
-    return {
-      scratchSideText: scratchSideText.padEnd(3, "*"),
-      isScratchSideUnordered,
-      nonScratchSideText: nonScratchSideText.padEnd(4, "*"),
-      isNonScratchSideUnordered,
-    };
-  }, [formValues]);
+  const normalizedQuery = useMemo(() => normalizeTicketSearchForm(formValues), [formValues]);
 
   const { filteredTickets, selectedAtariRules, atariMap } = useTicketFilter({
     tickets,
-    pattern: { ...normalizedPattern, filterMode, textageSong },
+    searchQuery: normalizedQuery,
+    filterMode,
+    textageSong,
     playSide: deferredPlaySide,
     atariRules,
   });

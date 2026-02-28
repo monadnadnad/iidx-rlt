@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Song } from "../../../../schema/song";
 import type { SongDifficulty } from "../../hooks/useTextageSongOptions";
@@ -26,11 +26,27 @@ describe("SongSelect", () => {
   const mockedHook = vi.mocked(useTextageSongOptions);
 
   beforeEach(() => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+      x: 0,
+      y: 0,
+      top: 0,
+      left: 0,
+      right: 320,
+      bottom: 40,
+      width: 320,
+      height: 40,
+      toJSON: () => ({}),
+    });
+
     mockedHook.mockReturnValue({
       filteredSongs: [song],
       placeholder: "曲名で検索",
       isLoading: false,
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("曲を選択できる", async () => {

@@ -5,11 +5,6 @@ export type GroupedTicketRow = {
   count: number;
 };
 
-/**
- * Group tickets by laneText.
- *
- * Sorting policy: laneText ascending (stable/predictable).
- */
 export const groupTicketsByLaneText = (tickets: readonly Ticket[]): GroupedTicketRow[] => {
   const counts = new Map<string, number>();
   for (const ticket of tickets) {

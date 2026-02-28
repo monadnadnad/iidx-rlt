@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 
 import type { Song } from "../../../../schema/song";
 import { SONG_FILTER_LEVEL_OPTIONS, toggleSetValue } from "../../../../utils/songSearch";
-import type { FilterMode } from "../../filterMode";
+import type { FilterMode } from "../../model/search";
 import { useTextageSongOptions, type RecommendedSong, type SongDifficulty } from "../../hooks/useTextageSongOptions";
 import { TextageFilterSection, type TextageFilterOption } from "../TextageFilterSection";
 

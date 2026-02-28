@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { describe, expect, it } from "vitest";
 
-import type { SearchFormValues } from "../../searchForm";
+import type { SearchFormValues } from "../../model/search";
 import { PatternInput } from "./PatternInput";
 
 describe("PatternInput", () => {
