@@ -4,10 +4,10 @@ import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Link } from "react-router";
-import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { Pager } from "../components/ui";
+import { useAtariRulesQuery } from "../features/shared/data/useAtariRulesQuery";
 import { AtariInfoSheet, AtariRuleCard, TicketDataTable, TicketFilterPanel } from "../features/ticket/components";
 import { GroupedTableView } from "../features/ticket/components/TicketDataTable/GroupedTableView";
 import { TicketListModeSwitch } from "../features/ticket/components/TicketFilterPanel/TicketListModeSwitch";
@@ -20,7 +20,7 @@ import { usePager } from "../hooks/usePager";
 import type { Song } from "../schema/song";
 import { useSettingsStore } from "../store/settingsStore";
 import { useTicketsStore } from "../store/ticketsStore";
-import type { AtariRule, PlaySide, Ticket } from "../types";
+import type { PlaySide, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 
 const sampleTickets: Ticket[] = [
@@ -44,10 +44,7 @@ interface TicketViewPageProps {
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false, pageTitle }) => {
-  const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
-    `${import.meta.env.BASE_URL}data/atari-rules.json`,
-    (url: string) => fetch(url).then((res) => res.json())
-  );
+  const { atariRules, isLoading: isAtariRulesLoading } = useAtariRulesQuery();
 
   const persistentTickets = useTicketsStore((s) => s.tickets);
   const tickets = isSample ? sampleTickets : persistentTickets;
@@ -73,7 +70,6 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const [textageSong, setTextageSong] = useState<Song | null>(null);
 
   const recommendedSongs = useMemo<RecommendedSong[]>(() => {
-    if (!atariRules) return [];
     const allowedSet = new Set<SongDifficulty>(["sph", "spa", "spl"]);
     const seen = new Set<string>();
     return atariRules.reduce<RecommendedSong[]>((acc, rule) => {
@@ -112,7 +108,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     tickets,
     pattern: { ...normalizedPattern, filterMode, textageSong },
     playSide: deferredPlaySide,
-    atariRules: atariRules ?? [],
+    atariRules,
   });
 
   const groupedTickets = useMemo(() => groupTicketsByLaneText(filteredTickets), [filteredTickets]);

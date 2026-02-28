@@ -1,8 +1,8 @@
 import { Box, CircularProgress, Stack } from "@mui/material";
 import React, { useMemo, useState } from "react";
-import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
+import { useAtariRulesQuery } from "../features/shared/data/useAtariRulesQuery";
 import { Pager } from "../components/ui";
 import { SongDetailSheet } from "../features/songs/components/SongDetailSheet";
 import { SongsList } from "../features/songs/components/SongsList";
@@ -17,12 +17,9 @@ import type { Song } from "../schema/song";
 export const SongsPage: React.FC = () => {
   const [searchState, setSearchState] = useState<SongsSearchState>(createInitialSongSearchState);
   const [selectedChart, setSelectedChart] = useState<Song | null>(null);
-  const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
-    `${import.meta.env.BASE_URL}data/atari-rules.json`,
-    (url: string) => fetch(url).then((res) => res.json())
-  );
+  const { atariRules, isLoading: isAtariRulesLoading } = useAtariRulesQuery();
 
-  const atariMap = useMemo(() => (atariRules ? createAtariMap(atariRules) : null), [atariRules]);
+  const atariMap = useMemo(() => createAtariMap(atariRules), [atariRules]);
 
   const hasAtariRuleForSong = useMemo(() => {
     if (!atariMap) return undefined;
