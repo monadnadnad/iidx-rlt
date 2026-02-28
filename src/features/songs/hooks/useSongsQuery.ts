@@ -3,6 +3,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import type { Song } from "../../../schema/song";
 import { appDb } from "../../../db/appDb";
 import { buildDifficultyLevelPairs, normalizeSongText } from "../../../utils/songSearch";
+import { groupSongsByTitleId } from "../model/songSummaryRow";
 
 export type SongsSearchState = {
   title: string;
@@ -13,6 +14,7 @@ export type SongsSearchState = {
 };
 
 export const DIFFICULTY_ORDER: Array<Song["difficulty"]> = ["spb", "spn", "sph", "spa", "spl"];
+const EMPTY_SONGS: Song[] = [];
 
 const difficultyRank = (difficulty: Song["difficulty"]) => {
   const idx = DIFFICULTY_ORDER.indexOf(difficulty);
@@ -67,8 +69,11 @@ export const useSongsQuery = ({ searchState, hasAtariRuleForSong }: SongsQueryOp
     return result.sort(sortSongs);
   }, [normalizedTitle, normalizedVersion, difficultyValues, levelValues, onlyWithAtari, hasAtariRuleForSong]);
 
+  const songsValue = useMemo(() => songs ?? EMPTY_SONGS, [songs]);
+  const summaryRows = useMemo(() => groupSongsByTitleId(songsValue), [songsValue]);
+
   return {
-    songs: songs ?? [],
+    summaryRows,
     isLoading: songs === undefined,
   } as const;
 };

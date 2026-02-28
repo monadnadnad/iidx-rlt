@@ -16,7 +16,7 @@ import type { Song } from "../schema/song";
 
 export const SongsPage: React.FC = () => {
   const [searchState, setSearchState] = useState<SongsSearchState>(createInitialSongSearchState);
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [selectedChart, setSelectedChart] = useState<Song | null>(null);
   const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
     `${import.meta.env.BASE_URL}data/atari-rules.json`,
     (url: string) => fetch(url).then((res) => res.json())
@@ -32,15 +32,15 @@ export const SongsPage: React.FC = () => {
     };
   }, [atariMap]);
 
-  const { songs, isLoading } = useSongsQuery({ searchState, hasAtariRuleForSong });
+  const { summaryRows, isLoading } = useSongsQuery({ searchState, hasAtariRuleForSong });
 
   const selectedRules = useMemo(() => {
-    if (!selectedSong || !atariMap) return [] as AtariRule[];
-    return atariMap.getRulesForSong(selectedSong.songId, selectedSong.difficulty) ?? [];
-  }, [selectedSong, atariMap]);
+    if (!selectedChart || !atariMap) return [] as AtariRule[];
+    return atariMap.getRulesForSong(selectedChart.songId, selectedChart.difficulty) ?? [];
+  }, [selectedChart, atariMap]);
 
   const {
-    paginated: paginatedSongs,
+    paginated: paginatedRows,
     totalCount,
     page: currentPage,
     pageCount,
@@ -48,7 +48,7 @@ export const SongsPage: React.FC = () => {
     setPage,
     handlePageChange,
     handlePerPageChange,
-  } = usePager(songs);
+  } = usePager(summaryRows);
 
   const handleSearchChange = (nextState: SongsSearchState) => {
     setSearchState(nextState);
@@ -80,12 +80,12 @@ export const SongsPage: React.FC = () => {
             onItemsPerPageChange={handlePerPageChange}
             maxWidth={960}
           >
-            <SongsList songs={paginatedSongs} onSelect={setSelectedSong} />
+            <SongsList rows={paginatedRows} onSelectChart={setSelectedChart} />
           </Pager>
         )}
 
-        {selectedSong && (
-          <SongDetailSheet song={selectedSong} rules={selectedRules} onClose={() => setSelectedSong(null)} />
+        {selectedChart && (
+          <SongDetailSheet song={selectedChart} rules={selectedRules} onClose={() => setSelectedChart(null)} />
         )}
       </Stack>
     </Page>
