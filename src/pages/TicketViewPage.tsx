@@ -194,7 +194,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const isLoading = !isSample && isAtariRulesLoading;
 
-  if (isLoading && !import.meta.env.SSR) {
+  if (isLoading) {
     return (
       <Page title={pageTitle}>
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
