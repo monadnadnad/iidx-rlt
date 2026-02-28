@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   createChartInfoToSongsSchema,
-  iidxDataTableChartInfoSchema,
+  iidxDataTableChartInfoValueSchema,
   iidxDataTableNormalizedTitleSchema,
   iidxDataTableSongInfoSchema,
   iidxDataTableTextageTagSchema,
@@ -15,6 +15,7 @@ import {
   TARGET_LEVELS,
   type ChartInfo,
 } from "./schema";
+import { z } from "zod";
 
 const OUTPUT_RELATIVE_PATH = "public/data/songs.json";
 const VERSION_OUTPUT_RELATIVE_PATH = "public/data/songs.version.json";
@@ -65,7 +66,18 @@ export const generateSongsData = async () => {
 
   const titlesMap = new Map(Object.entries(iidxDataTableTitleSchema.parse(titlesRaw)));
   const textageTagsMap = new Map(Object.entries(iidxDataTableTextageTagSchema.parse(textageTagsRaw)));
-  const chartInfoRecord = iidxDataTableChartInfoSchema.parse(chartInfoRaw);
+  const chartInfoRecordRaw = z.record(z.string(), z.unknown()).parse(chartInfoRaw);
+  const invalidChartInfoIds: string[] = [];
+  const chartInfoRecord = Object.fromEntries(
+    Object.entries(chartInfoRecordRaw).flatMap(([id, value]) => {
+      const parsed = iidxDataTableChartInfoValueSchema.safeParse(value);
+      if (!parsed.success) {
+        invalidChartInfoIds.push(id);
+        return [];
+      }
+      return [[id, parsed.data] as const];
+    })
+  );
   const songInfoMap = new Map(Object.entries(iidxDataTableSongInfoSchema.parse(songInfoRaw)));
   const normalizedTitlesMap = new Map(Object.entries(iidxDataTableNormalizedTitleSchema.parse(normalizedTitlesRaw)));
   const versionNames = versionNamesSchema.parse(versionNamesRaw);
@@ -84,6 +96,12 @@ export const generateSongsData = async () => {
     const chartInfo: ChartInfo = { ...value, id };
     return parser.parse(chartInfo);
   });
+
+  if (invalidChartInfoIds.length > 0) {
+    console.warn(
+      `Skipped ${invalidChartInfoIds.length} chart-info entries with invalid shape: ${invalidChartInfoIds.slice(0, 10).join(", ")}${invalidChartInfoIds.length > 10 ? ", ..." : ""}`
+    );
+  }
 
   const sortedSongs = sortSongs(songs);
   const outputPath = resolve(projectRoot, OUTPUT_RELATIVE_PATH);
