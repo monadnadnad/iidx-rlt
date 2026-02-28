@@ -2,6 +2,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "check": "pnpm typecheck && pnpm lint && pnpm vitest run",
     "typecheck": "tsc --noEmit",
     "build": "tsc && vite build && tsx scripts/generateSitemap.ts",
     "preview": "vite preview",
