@@ -30,12 +30,12 @@ export const DifficultyChips: React.FC<DifficultyChipsProps> = ({ songTitle, cha
       direction="row"
       spacing={0.75}
       useFlexGap
-      sx={{ flexWrap: "wrap", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
+      sx={{ flexWrap: "nowrap", justifyContent: { xs: "flex-start", sm: "flex-end" } }}
     >
       {SONG_SUMMARY_DIFFICULTIES.map((difficulty) => {
         const chart = chartsByDifficulty[difficulty];
         const baseLabel = DIFFICULTY_LABEL[difficulty];
-        const label = chart ? `${baseLabel} ☆${chart.level}` : baseLabel;
+        const label = `${baseLabel} ☆${chart ? chart.level : "--"}`;
 
         if (!chart) {
           return (
@@ -48,6 +48,12 @@ export const DifficultyChips: React.FC<DifficultyChipsProps> = ({ songTitle, cha
               sx={{
                 fontWeight: 600,
                 borderStyle: "dashed",
+                width: { xs: 92, sm: 100 },
+                height: 32,
+                "& .MuiChip-label": {
+                  px: 0.75,
+                  textAlign: "center",
+                },
               }}
             />
           );
@@ -66,6 +72,12 @@ export const DifficultyChips: React.FC<DifficultyChipsProps> = ({ songTitle, cha
               fontWeight: 700,
               borderColor: color,
               color,
+              width: { xs: 92, sm: 100 },
+              height: 32,
+              "& .MuiChip-label": {
+                px: 0.75,
+                textAlign: "center",
+              },
             }}
             variant="outlined"
           />

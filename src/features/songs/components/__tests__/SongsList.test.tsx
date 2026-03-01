@@ -68,7 +68,7 @@ describe("SongsList", () => {
 
     renderWithTheme(<SongsList rows={rows} />);
 
-    expect(screen.getByText("SPA")).toBeInTheDocument();
-    expect(screen.getByText("SPL")).toBeInTheDocument();
+    expect(screen.getByText("SPA ☆--")).toBeInTheDocument();
+    expect(screen.getByText("SPL ☆--")).toBeInTheDocument();
   });
 });
