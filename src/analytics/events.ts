@@ -35,6 +35,20 @@ export const trackTicketsImportSuccess = (importedCount: number) => {
   });
 };
 
+type TicketImportErrorType = "empty_input" | "invalid_json" | "not_array" | "unexpected";
+
+type TrackTicketsImportFailedParams = {
+  readonly errorType: TicketImportErrorType;
+  readonly inputSize: number;
+};
+
+export const trackTicketsImportFailed = ({ errorType, inputSize }: TrackTicketsImportFailedParams) => {
+  ReactGA.event("import_tickets_failed", {
+    error_type: errorType,
+    input_size: inputSize,
+  });
+};
+
 export const trackManualImport = () => {
   ReactGA.event({
     category: "User",

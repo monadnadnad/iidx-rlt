@@ -19,6 +19,7 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("idle");
     expect(result.current.state.error).toBeNull();
+    expect(result.current.state.errorType).toBeNull();
     expect(result.current.state.importedCount).toBe(0);
   });
 
@@ -34,6 +35,7 @@ describe("useImporter", () => {
     expect(result.current.state.status).toBe("success");
     expect(result.current.state.importedCount).toBe(mockTickets.length);
     expect(result.current.state.error).toBeNull();
+    expect(result.current.state.errorType).toBeNull();
     expect(onSuccessMock).toHaveBeenCalledWith(mockTickets.length);
   });
 
@@ -52,6 +54,7 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("idle");
     expect(result.current.state.error).toBeNull();
+    expect(result.current.state.errorType).toBeNull();
     expect(result.current.state.importedCount).toBe(0);
   });
 
@@ -64,7 +67,8 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("error");
     expect(result.current.state.error).toBe("インポートするチケットデータがありません。");
-    expect(onErrorMock).toHaveBeenCalledWith("インポートするチケットデータがありません。");
+    expect(result.current.state.errorType).toBe("empty_input");
+    expect(onErrorMock).toHaveBeenCalledWith("インポートするチケットデータがありません。", "empty_input");
   });
 
   it("インポート失敗: 不正な形式", () => {
@@ -76,7 +80,11 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("error");
     expect(result.current.state.error).toContain("チケットデータの形式が正しくありません。");
-    expect(onErrorMock).toHaveBeenCalledWith(expect.stringContaining("チケットデータの形式が正しくありません。"));
+    expect(result.current.state.errorType).toBe("invalid_json");
+    expect(onErrorMock).toHaveBeenCalledWith(
+      expect.stringContaining("チケットデータの形式が正しくありません。"),
+      "invalid_json"
+    );
   });
 
   it("インポート失敗: 配列ではない形式", () => {
@@ -88,7 +96,8 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("error");
     expect(result.current.state.error).toBe("データが配列形式になっていません。");
-    expect(onErrorMock).toHaveBeenCalledWith("データが配列形式になっていません。");
+    expect(result.current.state.errorType).toBe("not_array");
+    expect(onErrorMock).toHaveBeenCalledWith("データが配列形式になっていません。", "not_array");
   });
 
   it("インポート失敗: 予期せぬエラー", () => {
@@ -103,8 +112,10 @@ describe("useImporter", () => {
 
     expect(result.current.state.status).toBe("error");
     expect(result.current.state.error).toContain("チケットのインポート中に予期せぬエラーが発生しました。");
+    expect(result.current.state.errorType).toBe("unexpected");
     expect(onErrorMock).toHaveBeenCalledWith(
-      expect.stringContaining("チケットのインポート中に予期せぬエラーが発生しました。")
+      expect.stringContaining("チケットのインポート中に予期せぬエラーが発生しました。"),
+      "unexpected"
     );
   });
 });

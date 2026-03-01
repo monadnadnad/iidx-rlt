@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-import { trackManualImport, trackTicketsImportSuccess } from "../analytics/events";
+import { trackManualImport, trackTicketsImportFailed, trackTicketsImportSuccess } from "../analytics/events";
 import { Page } from "../components/layout/Page";
 import { useSnackbarStore } from "../store/snackbarStore";
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
@@ -52,6 +52,8 @@ const getA11yProps = (index: number) => ({
 });
 
 export const TicketImporterPage: React.FC = () => {
+  const [jsonText, setJsonText] = useState("");
+
   const setTickets = useTicketsStore((s) => s.setTickets);
   const addTicket = useTicketsStore((s) => s.addTicket);
 
@@ -65,11 +67,11 @@ export const TicketImporterPage: React.FC = () => {
       showSnackbar(`${importedCount}件のチケットをインポートしました。`, "success");
       trackTicketsImportSuccess(importedCount);
     },
-    onError: (errorMessage) => {
+    onError: (errorMessage, errorType) => {
       showSnackbar(errorMessage, "error");
+      trackTicketsImportFailed({ errorType, inputSize: jsonText.length });
     },
   });
-  const [jsonText, setJsonText] = useState("");
 
   const [isManualLoading, setIsManualLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
