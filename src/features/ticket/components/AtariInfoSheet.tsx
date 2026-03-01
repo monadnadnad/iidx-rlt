@@ -1,8 +1,8 @@
 import CloseIcon from "@mui/icons-material/Close";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Box, IconButton, List, ListItem, ListItemText, Typography } from "@mui/material";
-import ReactGA from "react-ga4";
 
+import { trackTextageClickFromDetail } from "../../../analytics/events";
 import { FloatingSheet } from "../../../components/ui/FloatingSheet";
 import { useSettingsStore } from "../../../store/settingsStore";
 import { AtariRule, Ticket } from "../../../types";
@@ -18,11 +18,11 @@ export const AtariInfoSheet = ({ ticket, rules, onClose }: AtariInfoSheetProps) 
   const playSide = useSettingsStore((s) => s.playSide);
 
   const handleTextageFollow = (rule: AtariRule) => {
-    ReactGA.event("click_textage_link_from_detail", {
-      song_title: rule.title,
+    trackTextageClickFromDetail({
+      songTitle: rule.title,
       difficulty: rule.difficulty,
-      lane_text: ticket.laneText,
-      play_side: playSide,
+      laneText: ticket.laneText,
+      playSide,
     });
   };
 

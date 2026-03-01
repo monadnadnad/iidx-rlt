@@ -1,16 +1,14 @@
 import { alpha, AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import React from "react";
-import ReactGA from "react-ga4";
 import { Link as RouterLink } from "react-router";
+
+import { trackFeedbackClick } from "../../analytics/events";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";
 
 const handleSurveyClick = () => {
-  ReactGA.event({
-    category: "UserAction",
-    action: `Click Google Form (Header)`,
-  });
+  trackFeedbackClick();
 };
 
 export const AppHeader: React.FC = () => {

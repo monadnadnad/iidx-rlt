@@ -5,8 +5,8 @@ import LocalActivityOutlinedIcon from "@mui/icons-material/LocalActivityOutlined
 import ShareIcon from "@mui/icons-material/Share";
 import { Box, IconButton, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
-import ReactGA from "react-ga4";
 
+import { trackTextageClickFromSongDetail } from "../../../../analytics/events";
 import { FloatingSheet } from "../../../../components/ui/FloatingSheet";
 import type { Song } from "../../../../schema/song";
 import { useSettingsStore } from "../../../../store/settingsStore";
@@ -49,11 +49,11 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
 
   const handleTextageClick = useCallback(
     (laneText: string) => {
-      ReactGA.event("click_textage_link_from_song_detail", {
-        song_id: song.songId,
-        song_title: song.title,
+      trackTextageClickFromSongDetail({
+        songId: song.songId,
+        songTitle: song.title,
         difficulty: song.difficulty,
-        lane_text: laneText,
+        laneText,
       });
     },
     [song.songId, song.title, song.difficulty]
@@ -67,18 +67,6 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
       return `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     },
     [makePreviewUrl, song.title, song.difficulty]
-  );
-
-  const handleShareClick = useCallback(
-    (laneText: string) => {
-      ReactGA.event("click_share_button_from_song_detail", {
-        song_id: song.songId,
-        song_title: song.title,
-        difficulty: song.difficulty,
-        lane_text: laneText,
-      });
-    },
-    [song.songId, song.title, song.difficulty]
   );
 
   const sheetTitle = (
@@ -134,7 +122,6 @@ export const SongDetailSheet: React.FC<SongDetailSheetProps> = ({ song, rules, o
                           href={makeTweetUrl(memo.laneText)}
                           target="_blank"
                           rel="noreferrer"
-                          onClick={() => handleShareClick(memo.laneText)}
                         >
                           <ShareIcon fontSize="small" />
                         </IconButton>

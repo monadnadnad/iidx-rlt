@@ -14,8 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import ReactGA from "react-ga4";
 
+import { trackManualImport, trackTicketsImportSuccess } from "../analytics/events";
 import { Page } from "../components/layout/Page";
 import { useSnackbarStore } from "../store/snackbarStore";
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
@@ -23,7 +23,7 @@ import { ManualImportForm } from "../features/import/components/ManualImportForm
 import { useImporter } from "../features/import/hooks/useImporter";
 import { useClipboard } from "../hooks/useClipboard";
 import { useTicketsStore } from "../store/ticketsStore";
-import { Ticket } from "../types";
+import type { Ticket } from "../types";
 
 const bookmarkletCode = `javascript:(function(){const t='https://monadnadnad.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
@@ -63,9 +63,7 @@ export const TicketImporterPage: React.FC = () => {
     onSuccess: (importedCount) => {
       setJsonText("");
       showSnackbar(`${importedCount}件のチケットをインポートしました。`, "success");
-      ReactGA.event("import_tickets_success", {
-        imported_count: importedCount,
-      });
+      trackTicketsImportSuccess(importedCount);
     },
     onError: (errorMessage) => {
       showSnackbar(errorMessage, "error");
@@ -81,10 +79,7 @@ export const TicketImporterPage: React.FC = () => {
       setIsManualLoading(true);
       addTicket(ticket);
       showSnackbar(`${ticket.laneText} を追加しました。`, "success");
-      ReactGA.event({
-        category: "User",
-        action: "manual_import",
-      });
+      trackManualImport();
     } catch {
       showSnackbar("チケットの追加に失敗しました。", "error");
     } finally {

@@ -1,13 +1,11 @@
 import { Link, type LinkProps } from "@mui/material";
-import ReactGA from "react-ga4";
+
+import { trackHashtagClick } from "../../analytics/events";
 
 export type HashtagLinkProps = Omit<LinkProps, "href" | "target" | "rel" | "aria-label" | "children">;
 
 const handleHashtagClick = () => {
-  ReactGA.event({
-    category: "UserAction",
-    action: "Click Hashtag",
-  });
+  trackHashtagClick();
 };
 
 export const HashtagLink = (props: HashtagLinkProps) => {

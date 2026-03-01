@@ -1,8 +1,8 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Button, Card, CardActions, CardContent, IconButton, Stack, Typography } from "@mui/material";
-import ReactGA from "react-ga4";
 
+import { trackTextageClickFromMemos } from "../analytics/events";
 import { Page } from "../components/layout/Page";
 import { appDb } from "../db/appDb";
 import { useMemos, type MemoWithSong } from "../features/memo/useMemos";
@@ -15,11 +15,11 @@ export const MemosPage: React.FC = () => {
   const playSide = useSettingsStore((s) => s.playSide);
 
   const handleTextageClick = (memo: MemoWithSong) => {
-    ReactGA.event("click_textage_link_from_memos_page", {
-      song_id: memo.songId,
-      song_title: memo.song?.title,
+    trackTextageClickFromMemos({
+      songId: memo.songId,
+      songTitle: memo.song?.title,
       difficulty: memo.difficulty,
-      lane_text: memo.laneText,
+      laneText: memo.laneText,
     });
   };
 

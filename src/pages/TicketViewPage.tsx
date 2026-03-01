@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
-import ReactGA from "react-ga4";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Link } from "react-router";
 
+import { trackTextageClickFromTicketList } from "../analytics/events";
 import { Page } from "../components/layout/Page";
 import { Pager } from "../components/ui";
 import { useAtariRulesQuery } from "../features/shared/data/useAtariRulesQuery";
@@ -163,12 +163,12 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const handleTextageFollow = useCallback(
     (laneText: string) => {
       if (!textageSong) return;
-      const eventName = filterMode === "recommend" ? "click_textage_link_recommend" : "click_textage_link_all";
-      ReactGA.event(eventName, {
-        song_title: textageSong.title,
+      trackTextageClickFromTicketList({
+        filterMode,
+        songTitle: textageSong.title,
         difficulty: textageSong.difficulty,
-        lane_text: laneText,
-        play_side: playSide,
+        laneText,
+        playSide,
       });
     },
     [textageSong, filterMode, playSide]
