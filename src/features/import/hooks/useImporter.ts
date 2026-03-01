@@ -1,5 +1,6 @@
 import { useCallback, useReducer } from "react";
 
+import { ticketSchema } from "../../../schema/ticket";
 import { Ticket } from "../../../types";
 
 export type ImporterState = {
@@ -9,7 +10,7 @@ export type ImporterState = {
   importedCount: number;
 };
 
-export type ImportErrorType = "empty_input" | "invalid_json" | "not_array" | "unexpected";
+export type ImportErrorType = "empty_input" | "invalid_json" | "not_array" | "invalid_ticket" | "unexpected";
 
 type Action =
   | { type: "START_IMPORT" }
@@ -70,9 +71,18 @@ export const useImporter = (onImport: (tickets: Ticket[]) => void, callbacks: Im
           onError?.(errorMessage, errorType);
           return;
         }
-        onImport(parsedData);
-        dispatch({ type: "IMPORT_SUCCESS", payload: { count: parsedData.length } });
-        onSuccess?.(parsedData.length);
+        const parsedTickets = ticketSchema.array().safeParse(parsedData);
+        if (!parsedTickets.success) {
+          const errorMessage =
+            "チケットデータ内に不正な値があります。公式サイトでブックマークレットを再実行し、表示された内容をすべてコピーして貼り付けてください。";
+          const errorType: ImportErrorType = "invalid_ticket";
+          dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
+          onError?.(errorMessage, errorType);
+          return;
+        }
+        onImport(parsedTickets.data);
+        dispatch({ type: "IMPORT_SUCCESS", payload: { count: parsedTickets.data.length } });
+        onSuccess?.(parsedTickets.data.length);
       } catch (e) {
         const errorType: ImportErrorType = e instanceof SyntaxError ? "invalid_json" : "unexpected";
         const errorMessage =

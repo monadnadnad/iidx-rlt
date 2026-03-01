@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { persist, PersistStorage, StorageValue } from "zustand/middleware";
+
+import { ticketSchema } from "../schema/ticket";
 import { Ticket } from "../types";
 
 type TicketsState = {
@@ -15,7 +17,11 @@ const makeTicketsStorage = (): PersistStorage<{ tickets: Ticket[] }> => ({
     const raw = localStorage.getItem("tickets");
     if (!raw) return null;
     try {
-      const arr = JSON.parse(raw) as Ticket[];
+      const parsed = JSON.parse(raw) as unknown;
+      const rawTickets = Array.isArray(parsed) ? parsed : [];
+      const arr = rawTickets
+        .map((ticket) => ticketSchema.safeParse(ticket))
+        .flatMap((result) => (result.success ? [result.data] : []));
       return { state: { tickets: arr }, version: 0 } satisfies StorageValue<{ tickets: Ticket[] }>;
     } catch {
       return { state: { tickets: [] }, version: 0 } satisfies StorageValue<{ tickets: Ticket[] }>;

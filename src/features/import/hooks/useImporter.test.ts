@@ -100,6 +100,23 @@ describe("useImporter", () => {
     expect(onErrorMock).toHaveBeenCalledWith("データが配列形式になっていません。", "not_array");
   });
 
+  it("インポート失敗: チケット配列内に不正な要素がある", () => {
+    const { result } = renderHook(() => useImporter(onImportMock, { onError: onErrorMock }));
+
+    act(() => {
+      result.current.importTickets("[{}]");
+    });
+
+    expect(result.current.state.status).toBe("error");
+    expect(result.current.state.error).toContain("チケットデータ内に不正な値があります。");
+    expect(result.current.state.errorType).toBe("invalid_ticket");
+    expect(onErrorMock).toHaveBeenCalledWith(
+      expect.stringContaining("チケットデータ内に不正な値があります。"),
+      "invalid_ticket"
+    );
+    expect(onImportMock).not.toHaveBeenCalled();
+  });
+
   it("インポート失敗: 予期せぬエラー", () => {
     onImportMock.mockImplementationOnce(() => {
       throw new Error("実行時エラー");

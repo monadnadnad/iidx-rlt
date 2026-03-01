@@ -35,7 +35,7 @@ export const trackTicketsImportSuccess = (importedCount: number) => {
   });
 };
 
-type TicketImportErrorType = "empty_input" | "invalid_json" | "not_array" | "unexpected";
+type TicketImportErrorType = "empty_input" | "invalid_json" | "not_array" | "invalid_ticket" | "unexpected";
 
 type TrackTicketsImportFailedParams = {
   readonly errorType: TicketImportErrorType;
