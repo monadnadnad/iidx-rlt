@@ -25,8 +25,8 @@ export const useTicketFilter = ({
 }: UseTicketFilterParams) => {
   const atariMap = useMemo(() => createAtariMap(atariRules), [atariRules]);
 
-  const selectedAtariRules = useMemo(() => {
-    if (!textageSong) return [] as AtariRule[];
+  const selectedAtariRules = useMemo<AtariRule[]>(() => {
+    if (!textageSong) return [];
     return atariMap.getRulesForSong(textageSong.songId, textageSong.difficulty) ?? [];
   }, [atariMap, textageSong]);
 

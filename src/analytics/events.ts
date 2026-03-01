@@ -1,5 +1,6 @@
 import ReactGA from "react-ga4";
 
+import type { ImportErrorType } from "../features/import/hooks/useImporter";
 import type { Song } from "../schema/song";
 import type { PlaySide } from "../types";
 
@@ -35,10 +36,8 @@ export const trackTicketsImportSuccess = (importedCount: number) => {
   });
 };
 
-type TicketImportErrorType = "empty_input" | "invalid_json" | "not_array" | "invalid_ticket" | "unexpected";
-
 type TrackTicketsImportFailedParams = {
-  readonly errorType: TicketImportErrorType;
+  readonly errorType: ImportErrorType;
   readonly inputSize: number;
 };
 

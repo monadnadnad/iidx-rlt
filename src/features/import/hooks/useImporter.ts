@@ -3,14 +3,14 @@ import { useCallback, useReducer } from "react";
 import { ticketSchema } from "../../../schema/ticket";
 import { Ticket } from "../../../types";
 
+export type ImportErrorType = "empty_input" | "invalid_json" | "not_array" | "invalid_ticket" | "unexpected";
+
 export type ImporterState = {
   status: "idle" | "loading" | "success" | "error";
   error: string | null;
   errorType: ImportErrorType | null;
   importedCount: number;
 };
-
-export type ImportErrorType = "empty_input" | "invalid_json" | "not_array" | "invalid_ticket" | "unexpected";
 
 type Action =
   | { type: "START_IMPORT" }
@@ -52,45 +52,43 @@ export const useImporter = (onImport: (tickets: Ticket[]) => void, callbacks: Im
 
   const importTickets = useCallback(
     (jsonText: string) => {
+      const fail = (errorType: ImportErrorType, errorMessage: string) => {
+        dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
+        onError?.(errorMessage, errorType);
+      };
+
       dispatch({ type: "START_IMPORT" });
 
       if (!jsonText.trim()) {
         const errorMessage = "インポートするチケットデータがありません。";
-        const errorType: ImportErrorType = "empty_input";
-        dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
-        onError?.(errorMessage, errorType);
+        fail("empty_input", errorMessage);
         return;
       }
 
       try {
-        const parsedData = JSON.parse(jsonText) as Ticket[];
+        const parsedData: unknown = JSON.parse(jsonText);
         if (!Array.isArray(parsedData)) {
-          const errorMessage = "データが配列形式になっていません。";
-          const errorType: ImportErrorType = "not_array";
-          dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
-          onError?.(errorMessage, errorType);
+          fail("not_array", "データが配列形式になっていません。");
           return;
         }
         const parsedTickets = ticketSchema.array().safeParse(parsedData);
         if (!parsedTickets.success) {
-          const errorMessage =
-            "チケットデータ内に不正な値があります。公式サイトでブックマークレットを再実行し、表示された内容をすべてコピーして貼り付けてください。";
-          const errorType: ImportErrorType = "invalid_ticket";
-          dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
-          onError?.(errorMessage, errorType);
+          fail(
+            "invalid_ticket",
+            "チケットデータ内に不正な値があります。公式サイトでブックマークレットを再実行し、表示された内容をすべてコピーして貼り付けてください。"
+          );
           return;
         }
         onImport(parsedTickets.data);
         dispatch({ type: "IMPORT_SUCCESS", payload: { count: parsedTickets.data.length } });
         onSuccess?.(parsedTickets.data.length);
       } catch (e) {
-        const errorType: ImportErrorType = e instanceof SyntaxError ? "invalid_json" : "unexpected";
-        const errorMessage =
+        fail(
+          e instanceof SyntaxError ? "invalid_json" : "unexpected",
           e instanceof SyntaxError
             ? "チケットデータの形式が正しくありません。公式サイトでブックマークレットを実行し、表示された内容をすべてコピーして貼り付けてください。"
-            : `チケットのインポート中に予期せぬエラーが発生しました。${e as string}`;
-        dispatch({ type: "IMPORT_ERROR", payload: { error: errorMessage, errorType } });
-        onError?.(errorMessage, errorType);
+            : `チケットのインポート中に予期せぬエラーが発生しました。${e as string}`
+        );
       }
     },
     [onError, onImport, onSuccess]
