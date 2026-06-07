@@ -661,5 +661,22 @@
         "isNonScratchSideUnordered": true
       }
     ]
+  },
+  {
+    "id": "preset-39",
+    "songId": "3081",
+    "difficulty": "spa",
+    "title": "栄冠のカンパネラ",
+    "url": "https://textage.cc/score/30/_eikan_c.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
   }
 ]
