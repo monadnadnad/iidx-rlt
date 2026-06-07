@@ -678,5 +678,39 @@
         "isNonScratchSideUnordered": true
       }
     ]
+  },
+  {
+    "id": "preset-40",
+    "songId": "1414",
+    "difficulty": "spa",
+    "title": "FIRE FIRE",
+    "url": "https://textage.cc/score/14/firefire.html?1AC00",
+    "priority": 1,
+    "description": "2356の場合もある",
+    "patterns": [
+      {
+        "scratchSideText": "136",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-41",
+    "songId": "1949",
+    "difficulty": "spa",
+    "title": "fffff",
+    "url": "https://textage.cc/score/19/fffff.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
   }
 ]
