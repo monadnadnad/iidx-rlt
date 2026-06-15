@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Divider, Link as MuiLink, Stack, Typography } from "@mui/material";
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Link } from "react-router";
@@ -203,6 +203,12 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     <Page title={pageTitle}>
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <Alert severity="info" icon={false}>
+            ランダム配置の当たりを曲ごとに調べられる新しいサイトを作っています。{" "}
+            <MuiLink href="https://iidx-ranq.pages.dev" target="_blank" rel="noopener noreferrer">
+              https://iidx-ranq.pages.dev
+            </MuiLink>
+          </Alert>
           <TicketFilterPanel
             playSide={playSide}
             onPlaySideChange={handlePlaySideChange}

@@ -1,5 +1,6 @@
+import LaunchIcon from "@mui/icons-material/Launch";
 import ScheduleIcon from "@mui/icons-material/Schedule";
-import { Box, Card, CardContent, CardHeader, Divider, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Page } from "../components/layout/Page";
@@ -12,9 +13,18 @@ export interface UpdateHistoryEntry {
   title: string;
   summary: string;
   details?: string[];
+  link?: { href: string; label: string };
 }
 
 export const updateHistory = [
+  {
+    id: "ranq-launch",
+    releasedAt: "2026-06-15",
+    title: "曲ごとの当たり配置を調べられるツールを公開しました",
+    summary:
+      "曲ごとに当たり配置を手動で登録していく方式には限界があったので、当たり配置を自動で計算して曲ごとに掲載する新しいサイトを作りました。当面このツールも残します。",
+    link: { href: "https://iidx-ranq.pages.dev", label: "https://iidx-ranq.pages.dev" },
+  },
   {
     id: "feat-memo-init",
     releasedAt: "2025-12-01",
@@ -103,6 +113,17 @@ export const UpdateHistoryCard: React.FC<UpdateHistoryCardProps> = ({ entry }) =
       <CardContent sx={{ pt: 2 }}>
         <Stack spacing={1.5}>
           <Typography variant="body1">{entry.summary}</Typography>
+          {entry.link && (
+            <Link
+              href={entry.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
+            >
+              {entry.link.label}
+              <LaunchIcon fontSize="inherit" />
+            </Link>
+          )}
           {entry.details && (
             <Box component="ul" sx={{ pl: 3, color: "text.secondary" }}>
               {entry.details.map((item) => (
