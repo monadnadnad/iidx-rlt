@@ -1,11 +1,9 @@
 import Dexie, { type Table } from "dexie";
 
 import type { Song } from "../schema/song";
-import type { Memo } from "../schema/memo";
 import { resolveVersionName, VERSION_NAMES } from "../utils/version";
 
 export type SongRow = Song;
-export type MemoRow = Memo;
 
 export interface MetaRow {
   key: string;
@@ -14,7 +12,6 @@ export interface MetaRow {
 
 class AppDB extends Dexie {
   songs!: Table<SongRow, string>;
-  memos!: Table<MemoRow, [string, string, string]>;
   meta!: Table<MetaRow, string>;
 
   constructor() {
@@ -60,6 +57,11 @@ class AppDB extends Dexie {
         "id, songId, [songId+difficulty], difficulty, level, [difficulty+level], titleNormalized, version, versionName",
       memos: "[songId+difficulty+laneText], songId, [songId+difficulty], laneText, updatedAt",
       meta: "key",
+    });
+
+    // 配置メモ機能の廃止に伴い memos テーブルを破棄。過去 version の memos 定義は既存ユーザーの upgrade chain のため残す
+    this.version(5).stores({
+      memos: null,
     });
 
     this.table<SongRow, string>("songs").hook("creating", (_primKey, obj) => {

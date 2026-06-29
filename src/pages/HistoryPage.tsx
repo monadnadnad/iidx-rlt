@@ -18,12 +18,18 @@ export interface UpdateHistoryEntry {
 
 export const updateHistory = [
   {
+    id: "remove-songs-memo",
+    releasedAt: "2026-06-29",
+    title: "試験的機能を削除",
+    summary: "別のサイトに移転したため、試験的に入れた曲一覧と配置メモを削除しました",
+  },
+  {
     id: "ranq-launch",
     releasedAt: "2026-06-15",
-    title: "曲ごとの当たり配置を調べられるツールを公開しました",
+    title: "このサイトより多くの当たり配置を探せるサイトを公開しました",
     summary:
-      "曲ごとに当たり配置を手動で登録していく方式には限界があったので、当たり配置を自動で計算して曲ごとに掲載する新しいサイトを作りました。当面このツールも残します。",
-    link: { href: "https://iidx-ranq.pages.dev", label: "https://iidx-ranq.pages.dev" },
+      "当たり配置になるルールを手動で定義していましたが限界があったので、自動算出するようにし、新しいサイトで公開しました。当面このツールも残します。",
+    link: { href: "https://iidx-ranq.pages.dev", label: "iidx-ranq.pages.dev" },
   },
   {
     id: "feat-memo-init",
