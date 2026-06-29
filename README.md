@@ -2,6 +2,8 @@
 
 公開先: https://monadnadnad.github.io/iidx-rlt/
 
+手動で定義した当たり配置ルールに限界があるため、[新サイト](https://iidx-ranq.pages.dev)で作り直しています。
+
 KONAMIの音楽ゲーム「beatmania IIDX」における、「ランダムレーンチケット」（譜面の配置を固定できるアイテム）の活用を支援するツールです。
 
 <details>
