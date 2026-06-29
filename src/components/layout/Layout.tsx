@@ -1,8 +1,6 @@
 import HistoryIcon from "@mui/icons-material/History";
 import InfoIcon from "@mui/icons-material/Info";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import { Box, Container, ListItemIcon, Menu, MenuItem, useMediaQuery, useTheme } from "@mui/material";
@@ -19,8 +17,6 @@ import { AppNavItem } from "./types";
 const MAIN_NAV_ITEMS: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
   { path: "/tickets", label: "チケット一覧", icon: <ListAltIcon /> },
-  { path: "/songs", label: "譜面一覧", icon: <LibraryMusicIcon /> },
-  { path: "/memos", label: "配置メモ", icon: <NoteAltIcon /> },
 ];
 
 const MORE_NAV_ITEM: AppNavItem = { path: "/more", label: "その他", icon: <MoreHorizIcon /> };

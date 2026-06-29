@@ -204,9 +204,9 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <Alert severity="info" icon={false}>
-            ランダム配置の当たりを曲ごとに調べられる新しいサイトを作っています。{" "}
+            より多くの当たり配置を探せるサイトに移転しています{" "}
             <MuiLink href="https://iidx-ranq.pages.dev" target="_blank" rel="noopener noreferrer">
-              https://iidx-ranq.pages.dev
+              iidx-ranq.pages.dev
             </MuiLink>
           </Alert>
           <TicketFilterPanel
