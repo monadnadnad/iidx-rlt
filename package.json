@@ -55,7 +55,7 @@
     "jsdom": "28.1.0",
     "license-checker": "25.0.1",
     "msw": "2.12.10",
-    "prettier": "3.8.1",
+    "prettier": "3.8.4",
     "rollup-plugin-visualizer": "7.0.0",
     "sitemap": "9.0.1",
     "tsx": "4.21.0",
