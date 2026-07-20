@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "8.56.1",
     "@typescript-eslint/parser": "8.56.1",
     "@vitejs/plugin-react": "5.1.4",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "@vitest/eslint-plugin": "1.6.23",
     "eslint": "9.39.5",
     "eslint-config-prettier": "10.1.8",
@@ -64,7 +64,7 @@
     "vite": "7.3.6",
     "vite-plugin-checker": "0.12.0",
     "vite-plugin-pwa": "1.2.0",
-    "vitest": "4.1.9",
+    "vitest": "4.1.10",
     "workbox-build": "7.4.0"
   },
   "packageManager": "pnpm@11.8.0"
