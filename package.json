@@ -28,7 +28,7 @@
     "react-dom": "19.2.4",
     "react-ga4": "2.1.0",
     "react-hook-form": "7.71.2",
-    "react-router": "7.15.1",
+    "react-router": "7.18.0",
     "swr": "2.4.1",
     "workbox-window": "7.4.0",
     "zod": "4.3.6",
