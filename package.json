@@ -54,7 +54,7 @@
     "fake-indexeddb": "6.2.5",
     "jsdom": "28.1.0",
     "license-checker": "25.0.1",
-    "msw": "2.12.10",
+    "msw": "2.15.0",
     "prettier": "3.8.4",
     "rollup-plugin-visualizer": "7.0.1",
     "sitemap": "9.0.1",
