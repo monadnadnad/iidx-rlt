@@ -67,5 +67,5 @@
     "vitest": "4.1.11",
     "workbox-build": "7.4.1"
   },
-  "packageManager": "pnpm@11.8.0"
+  "packageManager": "pnpm@11.11.0"
 }
