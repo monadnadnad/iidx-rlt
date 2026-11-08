@@ -127,8 +127,8 @@ importers:
         specifier: 3.9.10
         version: 3.9.10
       rollup-plugin-visualizer:
-        specifier: 7.1.1
-        version: 7.1.1(rollup@4.59.0)
+        specifier: 7.1.2
+        version: 7.1.2(rollup@4.59.0)
       sitemap:
         specifier: 9.0.1
         version: 9.0.1
@@ -3121,8 +3121,8 @@ packages:
   rettime@0.11.11:
     resolution: {integrity: sha512-ILJRqVWBCTlg9r42fFgwVZx1gnFAcQF8mRoMkbgQfIrjEDf9nbBFDFx00oloOa+Q869FUtaYDXZvEfnecQSCoQ==}
 
-  rollup-plugin-visualizer@7.1.1:
-    resolution: {integrity: sha512-ThaGiHTU8XW02OkK80TrTHATraJmM9OAduU4otal+7gyXLpYEtmGBLfx5kW+EHvvLwn03YGW2NnwKUIqsYlJAA==}
+  rollup-plugin-visualizer@7.1.2:
+    resolution: {integrity: sha512-+yrEz9LJ7fxd7T0yj4GPvcKHKfJNzTzKT7FHiF3f/US+7EaWlgB8PoGbUOlobD4Al8v6TeCCl/Fgbov5FV/DaA==}
     engines: {node: '>=22'}
     hasBin: true
     peerDependencies:
@@ -7100,7 +7100,7 @@ snapshots:
 
   rettime@0.11.11: {}
 
-  rollup-plugin-visualizer@7.1.1(rollup@4.59.0):
+  rollup-plugin-visualizer@7.1.2(rollup@4.59.0):
     dependencies:
       open: 11.0.0
       picomatch: 4.0.7
